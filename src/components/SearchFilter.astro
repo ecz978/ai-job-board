@@ -1,0 +1,138 @@
+---
+interface Props {
+  allTags: string[];
+}
+
+const { allTags } = Astro.props;
+---
+
+<div class="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-6 mb-8">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Search Bar -->
+    <div>
+      <label for="search" class="block text-sm font-medium mb-2">
+        Search Jobs
+      </label>
+      <input
+        type="text"
+        id="search"
+        placeholder="Title, company..."
+        class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+    </div>
+
+    <!-- Location Filter -->
+    <div>
+      <label for="location" class="block text-sm font-medium mb-2">
+        Location
+      </label>
+      <input
+        type="text"
+        id="location"
+        placeholder="e.g., Remote, NYC"
+        class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      />
+    </div>
+
+    <!-- Tag Filter -->
+    <div>
+      <label for="tags" class="block text-sm font-medium mb-2">
+        Technology
+      </label>
+      <select
+        id="tags"
+        multiple
+        class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 h-10"
+      >
+        <option value="">All Technologies</option>
+        {allTags.map((tag) => (
+          <option value={tag}>{tag}</option>
+        ))}
+      </select>
+    </div>
+  </div>
+
+  <!-- Active Filters Display -->
+  <div id="active-filters" class="mt-4 flex flex-wrap gap-2">
+  </div>
+</div>
+
+<script client:only="astro">
+  // Client-side filtering logic
+  const searchInput = document.getElementById("search") as HTMLInputElement;
+  const locationInput = document.getElementById("location") as HTMLInputElement;
+  const tagsSelect = document.getElementById("tags") as HTMLSelectElement;
+  const activeFiltersDiv = document.getElementById("active-filters");
+
+  function filterJobs() {
+    const cards = document.querySelectorAll("[data-job-card]");
+    const searchTerm = searchInput.value.toLowerCase();
+    const locationTerm = locationInput.value.toLowerCase();
+    const selectedTags = Array.from(tagsSelect.selectedOptions).map(
+      (option) => option.value
+    );
+
+    let visibleCount = 0;
+
+    cards.forEach((card) => {
+      const title = (card.getAttribute("data-title") || "").toLowerCase();
+      const company = (card.getAttribute("data-company") || "").toLowerCase();
+      const location = (card.getAttribute("data-location") || "").toLowerCase();
+      const cardTags = (card.getAttribute("data-tags") || "").split(",");
+
+      const matchesSearch =
+        !searchTerm ||
+        title.includes(searchTerm) ||
+        company.includes(searchTerm);
+
+      const matchesLocation =
+        !locationTerm || location.includes(locationTerm);
+
+      const matchesTags =
+        selectedTags.length === 0 ||
+        selectedTags.some((tag) => cardTags.includes(tag.trim()));
+
+      const isVisible = matchesSearch && matchesLocation && matchesTags;
+
+      (card as HTMLElement).style.display = isVisible ? "" : "none";
+      if (isVisible) visibleCount++;
+    });
+
+    // Update active filters display
+    const filters = [];
+    if (searchTerm) filters.push(`Search: "${searchTerm}"`);
+    if (locationTerm) filters.push(`Location: "${locationTerm}"`);
+    if (selectedTags.length > 0) filters.push(`Tags: ${selectedTags.join(", ")}`);
+
+    if (activeFiltersDiv) {
+      activeFiltersDiv.innerHTML = filters
+        .map(
+          (filter) =>
+            `<span class="badge">${filter}</span>`
+        )
+        .join("");
+    }
+
+    // Show no results message
+    const jobsContainer = document.getElementById("jobs-container");
+    if (jobsContainer) {
+      const noResults = document.getElementById("no-results");
+      if (visibleCount === 0) {
+        if (!noResults) {
+          const message = document.createElement("div");
+          message.id = "no-results";
+          message.className =
+            "col-span-full text-center py-12 text-slate-500";
+          message.textContent = "No jobs found matching your filters.";
+          jobsContainer.appendChild(message);
+        }
+      } else {
+        noResults?.remove();
+      }
+    }
+  }
+
+  searchInput.addEventListener("input", filterJobs);
+  locationInput.addEventListener("input", filterJobs);
+  tagsSelect.addEventListener("change", filterJobs);
+</script>

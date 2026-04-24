@@ -1,0 +1,165 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { createClient } from "@supabase/supabase-js";
+
+export const prerender = false;
+
+const { id } = Astro.params;
+
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+let job = null;
+let error = null;
+
+try {
+  const { data, error: fetchError } = await supabase
+    .from("jobs")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (fetchError) {
+    error = fetchError.message;
+  } else {
+    job = data;
+  }
+} catch (e) {
+  error = "Failed to fetch job details";
+}
+
+// Dynamic routing - each job is rendered on-demand
+// No static path generation needed for dynamic routes
+---
+
+<BaseLayout title={job ? `${job.title} - AI Job Board` : "Job Not Found"}>
+  <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+    <!-- Header -->
+    <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <a
+          href="/"
+          class="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 mb-6"
+        >
+          ← Back to All Jobs
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {error || !job ? (
+        <div class="bg-red-50 dark:bg-red-900 border border-red-200 dark:border-red-800 rounded-lg p-6 text-center">
+          <h1 class="text-2xl font-bold text-red-800 dark:text-red-200 mb-2">
+            Job Not Found
+          </h1>
+          <p class="text-red-700 dark:text-red-300 mb-4">
+            {error || "The job you're looking for doesn't exist or has been removed."}
+          </p>
+          <a href="/" class="btn-primary inline-block">
+            Back to Job Board
+          </a>
+        </div>
+      ) : (
+        <>
+          <!-- Job Header -->
+          <div class="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-8 mb-6">
+            <div class="mb-6">
+              <h1 class="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+                {job.title}
+              </h1>
+              <div class="flex flex-wrap gap-4 text-lg text-slate-600 dark:text-slate-400">
+                <span class="flex items-center gap-1">
+                  🏢 {job.company}
+                </span>
+                <span class="flex items-center gap-1">
+                  📍 {job.location || "Remote"}
+                </span>
+                {job.salary_range && (
+                  <span class="flex items-center gap-1 font-medium text-green-600 dark:text-green-400">
+                    💰 {job.salary_range}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <!-- Meta Info -->
+            <div class="flex flex-wrap gap-4 text-sm text-slate-500 dark:text-slate-400 pt-4 border-t border-slate-200 dark:border-slate-700">
+              <span>Posted: {new Date(job.created_at).toLocaleDateString()}</span>
+              <span>Source: {job.source}</span>
+              <span>ID: {job.id}</span>
+            </div>
+          </div>
+
+          <!-- AI Summary -->
+          {job.gemini_summary && (
+            <div class="bg-indigo-50 dark:bg-indigo-900 border border-indigo-200 dark:border-indigo-800 rounded-lg p-6 mb-6">
+              <h2 class="text-lg font-bold text-indigo-900 dark:text-indigo-100 mb-3">
+                ✨ AI Summary
+              </h2>
+              <p class="text-indigo-800 dark:text-indigo-200 text-lg leading-relaxed">
+                {job.gemini_summary}
+              </p>
+            </div>
+          )}
+
+          <!-- Tags -->
+          {job.tags && job.tags.length > 0 && (
+            <div class="mb-6">
+              <h2 class="text-sm font-semibold text-slate-900 dark:text-white mb-3">
+                Technologies & Skills
+              </h2>
+              <div class="flex flex-wrap gap-2">
+                {job.tags.map((tag: string) => (
+                  <span class="badge">{tag}</span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <!-- Full Description -->
+          <div class="bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 p-8 mb-6">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+              Job Description
+            </h2>
+            <div class="prose dark:prose-invert prose-sm max-w-none">
+              <p class="text-slate-700 dark:text-slate-300 whitespace-pre-wrap">
+                {job.description}
+              </p>
+            </div>
+          </div>
+
+          <!-- Apply Button -->
+          <div class="flex gap-4">
+            <a
+              href={job.apply_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-primary text-lg px-6 py-3 flex items-center gap-2"
+            >
+              Apply Now →
+            </a>
+            <a
+              href="/"
+              class="btn-secondary text-lg px-6 py-3"
+            >
+              See Other Jobs
+            </a>
+          </div>
+        </>
+      )}
+    </main>
+  </div>
+</BaseLayout>
+
+<style>
+  .prose {
+    color: inherit;
+  }
+
+  .prose p {
+    margin: 1rem 0;
+  }
+</style>
