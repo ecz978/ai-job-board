@@ -14,6 +14,20 @@ npm run dev
 
 Apri http://localhost:3000.
 
+## Deploy su Cloudflare Pages
+
+1. Su dash.cloudflare.com → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
+2. Seleziona il repository `ecz978/ai-job-board`, branch `main` (o quello che vuoi pubblicare).
+3. Nelle impostazioni di build:
+   - **Root directory**: `dio-chatbot`
+   - **Install command**: `npm install --legacy-peer-deps` (necessario per un conflitto di peer-dependency tra `@cloudflare/next-on-pages` e `wrangler`)
+   - **Build command**: `npm run pages:build`
+   - **Build output directory**: `.vercel/output/static`
+4. In **Environment variables** aggiungi `ANTHROPIC_API_KEY` con la tua chiave.
+5. Deploy.
+
+L'API route usa `runtime = "edge"` per essere compatibile con il runtime dei Workers di Cloudflare Pages.
+
 ## Note
 
 - Il prompt di sistema (`src/app/api/chat/route.ts`) impone che il bot si dichiari
