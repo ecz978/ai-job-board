@@ -34,12 +34,27 @@ const DEMO = {
   }
 };
 
+const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let typeTimer = null;
+function typeText(el, text) {
+  clearInterval(typeTimer);
+  if (REDUCED) { el.textContent = text; el.classList.remove("typing"); return; }
+  el.textContent = "";
+  el.classList.add("typing");
+  let i = 0;
+  typeTimer = setInterval(() => {
+    i += 2;
+    el.textContent = text.slice(0, i);
+    if (i >= text.length) { clearInterval(typeTimer); el.classList.remove("typing"); }
+  }, 14);
+}
+
 let demoKey = "acq";
 function showDemo(k) {
   demoKey = k;
   document.querySelectorAll(".tab").forEach((t) => t.setAttribute("aria-selected", t.dataset.d === k));
   document.getElementById("in-label").textContent = DEMO[k].label;
-  document.getElementById("in-text").textContent = DEMO[k].text;
+  typeText(document.getElementById("in-text"), DEMO[k].text);
   document.getElementById("out-wrap").classList.add("hidden");
   const run = document.getElementById("run");
   run.disabled = false; run.textContent = "Prepara la bozza →";
@@ -120,7 +135,9 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   );
 
-  document.getElementById("cells").innerHTML = Array.from({ length: 30 }, (_, i) => `<i class="${i < 24 ? "" : "o"}"></i>`).join("");
+  document.getElementById("cells").innerHTML = Array.from({ length: 30 }, (_, i) => `<i class="${i < 24 ? "" : "o"}" style="--k:${i}"></i>`).join("");
+  initReveal();
+  initNet();
 
   document.getElementById("utenti").addEventListener("input", calcola);
   document.getElementById("ridondanza").addEventListener("change", calcola);
@@ -142,3 +159,96 @@ document.addEventListener("DOMContentLoaded", () => {
     location.href = `mailto:info@example.invalid?subject=${encodeURIComponent("Richiesta colloquio")}&body=${encodeURIComponent(body)}`;
   });
 });
+
+// Comparsa graduale allo scroll
+function initReveal() {
+  const sel = ".strip div, #soluzioni .picker, .panel > div, .node, .step, .grid > .card, .conf > div, .eyebrow, section h2";
+  const els = [...document.querySelectorAll(sel)];
+  els.forEach((el) => {
+    el.classList.add("reveal");
+    const sibs = el.parentElement ? [...el.parentElement.children].filter((c) => c.classList.contains("reveal")) : [];
+    el.style.setProperty("--d", Math.min(sibs.indexOf(el), 6) * 90 + "ms");
+  });
+  const cells = document.getElementById("cells");
+  if (REDUCED || !("IntersectionObserver" in window)) {
+    els.forEach((el) => el.classList.add("in")); cells.classList.add("in"); return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  els.forEach((el) => io.observe(el));
+  io.observe(cells);
+}
+
+// Rete neurale di sfondo: pochi nodi, linee sottili, segnali lenti
+function initNet() {
+  const c = document.getElementById("net");
+  if (!c || !c.getContext) return;
+  const ctx = c.getContext("2d");
+  let w = 0, h = 0, nodes = [], pulses = [], raf = 0, visible = true;
+  const LINK = 150;
+
+  function size() {
+    const r = c.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = r.width; h = r.height;
+    c.width = w * dpr; c.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const n = Math.max(18, Math.min(46, Math.round((w * h) / 22000)));
+    nodes = Array.from({ length: n }, () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.18, vy: (Math.random() - 0.5) * 0.18,
+    }));
+    pulses = [];
+  }
+  function edges() {
+    const out = [];
+    for (let i = 0; i < nodes.length; i++)
+      for (let j = i + 1; j < nodes.length; j++) {
+        const d = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
+        if (d < LINK) out.push([i, j, d]);
+      }
+    return out;
+  }
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    const es = edges();
+    ctx.lineWidth = 1;
+    es.forEach(([i, j, d]) => {
+      ctx.strokeStyle = `rgba(36,60,110,${0.16 * (1 - d / LINK)})`;
+      ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke();
+    });
+    nodes.forEach((n) => { ctx.fillStyle = "rgba(36,60,110,.28)"; ctx.beginPath(); ctx.arc(n.x, n.y, 2, 0, 6.283); ctx.fill(); });
+    pulses.forEach((p) => {
+      const a = nodes[p.i], b = nodes[p.j];
+      const x = a.x + (b.x - a.x) * p.t, y = a.y + (b.y - a.y) * p.t;
+      ctx.fillStyle = `rgba(36,87,255,${Math.sin(p.t * Math.PI) * 0.9})`;
+      ctx.beginPath(); ctx.arc(x, y, 2.8, 0, 6.283); ctx.fill();
+    });
+    return es;
+  }
+  function step() {
+    nodes.forEach((n) => {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > w) n.vx *= -1;
+      if (n.y < 0 || n.y > h) n.vy *= -1;
+    });
+    const es = draw();
+    if (es.length && pulses.length < 5 && Math.random() < 0.025) {
+      const e = es[Math.floor(Math.random() * es.length)];
+      pulses.push({ i: e[0], j: e[1], t: 0 });
+    }
+    pulses.forEach((p) => (p.t += 0.012));
+    pulses = pulses.filter((p) => p.t < 1);
+    if (visible) raf = requestAnimationFrame(step);
+  }
+
+  size(); draw();
+  if (REDUCED) return;
+  new IntersectionObserver((en) => {
+    visible = en[0].isIntersecting;
+    cancelAnimationFrame(raf);
+    if (visible) raf = requestAnimationFrame(step);
+  }).observe(c);
+  let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { size(); draw(); }, 150); });
+}
