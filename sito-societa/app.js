@@ -92,7 +92,7 @@ function calcola() {
     bassa: "Con dati poco sensibili il cloud può bastare: confrontiamo i costi prima di proporvi hardware.",
   }[dati];
   document.getElementById("risultato").innerHTML = `
-    <div class="label" style="color:#a9b2bd">Configurazione indicativa</div>
+    <div class="label">Configurazione indicativa</div>
     <div class="big">${f.nome}${r > 1 ? " × 2" : ""}</div>
     <p>Adatta a ${f.adatta}. Esegue ${f.modelli}.</p>
     <div class="kv">
@@ -100,12 +100,12 @@ function calcola() {
       <div><b>Installazione</b>${euro(SERVIZIO[0])} – ${euro(SERVIZIO[1])}</div>
       <div><b>Totale una tantum</b>${euro(tot[0])} – ${euro(tot[1])}</div>
     </div>
-    <div class="label" style="color:#a9b2bd">Cloud per ${u} utenti: ${euro(cloud)} / anno (stima)</div>
+    <div class="label">Cloud per ${u} utenti: ${euro(cloud)} / anno (stima)</div>
     <div class="bar"><i style="width:${pct}%"></i></div>
     <p class="note">${anni >= 10 ? "Il cloud costa meno per molti anni: l'hardware si giustifica solo per riservatezza." : `Pareggio indicativo dopo circa ${anni.toFixed(1).replace(".", ",")} anni, senza contare energia, manutenzione e personale.`}</p>
     <p>${cons}</p>
     <p class="note">Fasce indicative, IVA esclusa, non sono un'offerta. I benchmark misurati da noi saranno pubblicati qui.</p>
-    <a class="btn ochre" href="#contatti">Richiedi un preventivo</a>`;
+    <a class="btn hot" href="#contatti">Richiedi un preventivo</a>`;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
