@@ -511,3 +511,13 @@ h1 em::after { content: ""; position: absolute; left: 0; right: 0; bottom: -.04e
 .vr.vh span + span { color: var(--accent); background: var(--soft); }
 .closer { margin: 40px 0 0; font: 300 clamp(26px, 3.4vw, 40px)/1.15 var(--display); letter-spacing: -.015em; }
 @media (max-width: 640px) { .vr { grid-template-columns: 1fr; } .vr span + span { border-left: 0; border-top: 1px dashed var(--line); } .vr.vh { display: none; } }
+
+/* ───── flusso: ambiti multipli ed esiti alternativi ───── */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips button { border: 1px solid var(--line); background: #fff; padding: 8px 12px; font: 500 10.5px var(--sans); letter-spacing: .1em; text-transform: uppercase; cursor: pointer; border-radius: 2px; color: var(--muted); transition: background .25s, color .25s, border-color .25s; }
+.chips button:hover { border-color: #aeb8c8; color: var(--ink); }
+.chips button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.case .lim.alt { color: var(--accent); background: #e7ecfb; }
+.human.alt { background: var(--accent); }
+.flow-detail .next { margin: 8px 0 12px; }
+.case .lim { position: static; justify-self: start; margin-top: 6px; }

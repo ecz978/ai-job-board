@@ -104,7 +104,91 @@ const DATI = {
   "Fattura da registrare": { esito: "ok", f: [["Fatture elettroniche", "XML con campi strutturati, aliquota presente nel file", "ok"], ["Anagrafica fornitori", "88% già presenti, 12% da creare", "warn"], ["Scadenzario", "Unico e aggiornato", "ok"]], raccom: "Dati adatti. Conviene leggere l'XML allegato invece del testo della PEC." },
   "Documento non classificabile": { esito: "ko", f: [["Allegato", "Scansione illeggibile, 2 pagine", "ko"], ["Archivio", "3 pratiche aperte dello stesso mittente", "warn"], ["Qualità delle scansioni dello studio", "41% sotto la soglia di lettura", "ko"]], raccom: "Prima di classificare servono scansioni leggibili: conviene sistemare l'acquisizione dei documenti." },
 };
-const AUTO = [["acq", 0], ["acq", 2], ["seg", 1], ["seg", 2], ["stu", 1], ["stu", 2]];
+/* ── Altri ambiti ── */
+const ALT_TIPO = { first: ["t-first", "Prima i dati"], noai: ["t-no", "Senza AI"], limited: ["t-assist", "Agente con limiti"] };
+CASI.amm = [
+  { titolo: "Risposta a un sollecito", canale: "Email · cliente", text: "Buongiorno, rispondo al vostro sollecito: la fattura 2026/214 è stata pagata il 9 ottobre con bonifico. Allego la ricevuta. Cordiali saluti, L. Verdi",
+    lettura: [["Canale", "Email"], ["Lingua", "Italiano"], ["Allegati", "Ricevuta in PDF"], ["Richiesta", "Riscontro a un sollecito"]],
+    ric: [["fattura 2026/214", "Fattura attiva 2026/214 · € 3.250,00", "Documenti D-20", "ok"], ["pagata il 9 ottobre", "Pagamento dichiarato, non ancora riscontrato", "Incassi I-04", "warn"], ["ricevuta", "Bonifico del 09/10 di € 3.250,00", "Allegati L-03", "ok"]],
+    regole: [["ok", "Fattura individuata con numero e importo", "D-20"], ["warn", "Incasso non ancora in banca: da verificare prima di chiudere il sollecito", "I-04"], ["ok", "Nessuna chiusura automatica: decide l'amministrazione", "A-01"]],
+    bozza: `<div class="out"><table><tr><td>Cliente</td><td>L. Verdi</td></tr><tr><td>Fattura</td><td>2026/214 · € 3.250,00</td></tr><tr><td>Pagamento dichiarato</td><td>Bonifico del 09/10</td></tr><tr><td>Stato</td><td>${WN("da riscontrare in banca")}</td></tr></table><p><b>Risposta proposta:</b> grazie, verifichiamo l'accredito e vi confermiamo la chiusura.</p></div>`,
+    verifica: { esito: "ok", chi: "L'amministrazione verifica l'incasso e risponde" }, registro: "risposta proposta · incasso da riscontrare" },
+  { titolo: "Previsione di cassa su file sparsi", canale: "Richiesta interna · titolare", text: "Potete prepararmi ogni lunedì un riepilogo di incassi e scadenze dei prossimi 60 giorni? Ora lo faccio a mano da tre file.",
+    lettura: [["Canale", "Richiesta interna"], ["Richiesta", "Riepilogo periodico"], ["Fonti citate", "3 file"], ["Frequenza", "Settimanale"]],
+    ric: [["tre file", "Scadenzario clienti, scadenzario fornitori, estratto conto", "Fonti F-01", "warn"], ["incassi e scadenze", "Importi e date in colonne diverse tra i file", "Formati F-02", "ko"], ["60 giorni", "Orizzonte temporale", "Parametri P-01", "ok"]],
+    regole: [["ko", "Formati diversi tra i tre file: nessun calcolo affidabile", "F-02"], ["warn", "Un riepilogo ripetuto è una regola di calcolo, non un compito per un agente", "A-07"], ["ok", "Il calcolo è deterministico e verificabile", "A-03"]],
+    bozza: null, motivo: "Non serve un agente: serve un riepilogo calcolato con regole, su dati uniformati.",
+    verifica: { esito: "alt", tipo: "first", titolo: "Prima i dati, poi un report automatico senza AI", passi: ["Uniformare i tre file in un unico scadenzario", "Impostare il riepilogo settimanale con regole di calcolo", "Valutare l'AI solo per le note a margine, se servono"] }, registro: "alternativa · report senza AI dopo la sistemazione dei dati" },
+];
+CASI.hr = [
+  { titolo: "Candidatura spontanea", canale: "Email · candidato", text: "Buongiorno, allego il mio CV per la posizione di magazziniere. Ho 6 anni di esperienza con il carrello elevatore e il patentino in corso di validità. Disponibile da subito. Marco R.",
+    lettura: [["Canale", "Email"], ["Lingua", "Italiano"], ["Allegati", "CV in PDF"], ["Dati personali", "Dati del candidato"]],
+    ric: [["magazziniere", "Posizione aperta: addetto magazzino (P-212)", "Posizioni S-210", "ok"], ["carrello elevatore, patentino", "Competenza dichiarata, da verificare con il documento", "Competenze S-215", "warn"], ["disponibile da subito", "Disponibilità immediata", "Date D-02", "ok"]],
+    regole: [["ok", "Estrazione delle competenze dichiarate, senza giudizio", "H-01"], ["ok", "Nessun punteggio automatico del candidato", "H-02"], ["warn", "Il patentino va verificato sul documento", "H-03"]],
+    bozza: `<div class="out"><table><tr><td>Candidato</td><td>M. R.</td></tr><tr><td>Posizione</td><td>Addetto magazzino (P-212)</td></tr><tr><td>Competenze dichiarate</td><td>Carrello elevatore · 6 anni</td></tr><tr><td>Da verificare</td><td>${WN("patentino")}</td></tr></table><p>Nessuna valutazione né graduatoria: la decisione spetta al selezionatore.</p></div>`,
+    verifica: { esito: "ok", chi: "Il selezionatore legge il CV e decide" }, registro: "scheda predisposta · nessun punteggio per scelta" },
+  { titolo: "Selezione automatica dei CV", canale: "Richiesta interna · responsabile HR", text: "Possiamo far scartare in automatico i CV sotto un certo punteggio? Ne arrivano 300 a settimana.",
+    lettura: [["Canale", "Richiesta interna"], ["Richiesta", "Selezione automatica"], ["Volume", "300 CV a settimana"], ["Dati personali", "Sì"]],
+    ric: [["scartare in automatico", "Decisione su persone", "Limiti E-06", "ko"], ["sotto un certo punteggio", "Valutazione automatica dei candidati", "Limiti E-06", "ko"], ["300 a settimana", "Volume alto e ripetitivo", "Volumi V-01", "ok"]],
+    regole: [["ko", "Valutazioni su persone: non si automatizzano", "E-06"], ["ok", "L'AI può riassumere e ordinare, non escludere", "H-05"], ["warn", "Conformità normativa da valutare prima di qualsiasi uso", "H-07"]],
+    bozza: null, motivo: "Escludere candidati in automatico non è un compito che affidiamo all'AI.",
+    verifica: { esito: "alt", tipo: "limited", titolo: "Preselezione assistita: l'AI riassume, il selezionatore decide", passi: ["Estrarre competenze ed esperienze in una scheda uniforme", "Ordinare per requisiti dichiarati, senza escludere nessuno", "Il selezionatore valuta ogni scheda"] }, registro: "alternativa · AI solo per riassumere, nessuna esclusione automatica" },
+];
+CASI.log = [
+  { titolo: "Ritardo di un fornitore", canale: "Email · fornitore", text: "Gentile cliente, la consegna dell'ordine 7782 slitta dal 22 al 29 ottobre per un ritardo del vettore. Ci scusiamo. Logistica Alfa",
+    lettura: [["Canale", "Email"], ["Lingua", "Italiano"], ["Mittente", "Fornitore Alfa"], ["Richiesta", "Comunicazione di ritardo"]],
+    ric: [["ordine 7782", "Ordine fornitore OF-7782 · 3 righe", "Riconciliazione R-05", "ok"], ["dal 22 al 29 ottobre", "Nuova consegna 29/10 (+7 giorni)", "Date D-02", "ok"]],
+    regole: [["ok", "Ordine individuato con il numero", "R-05"], ["warn", "Il ritardo supera la copertura di magazzino per 1 articolo: avvisare gli acquisti", "G-06"], ["ok", "Nessun ordine di cliente modificato in automatico", "L-01"]],
+    bozza: `<div class="out"><table><tr><td>Ordine</td><td>OF-7782</td></tr><tr><td>Nuova consegna</td><td>29/10 (+7 giorni)</td></tr><tr><td>Articoli a rischio</td><td>${WN("1 · copertura di 4 giorni")}</td></tr></table><p><b>Proposta:</b> avvisare i commerciali dei clienti interessati.</p></div>`,
+    verifica: { esito: "ok", chi: "L'ufficio acquisti decide se cercare un'alternativa" }, registro: "avviso predisposto · 1 articolo a rischio di rottura di stock" },
+  { titolo: "Bolle di spedizione", canale: "Richiesta interna · responsabile magazzino", text: "Vorremmo l'AI per compilare le bolle di spedizione dai nostri ordini. Il gestionale ha già tutti i dati.",
+    lettura: [["Canale", "Richiesta interna"], ["Richiesta", "Compilazione di bolle"], ["Fonte", "Gestionale"], ["Testo libero", "No"]],
+    ric: [["bolle di spedizione", "Documento generabile dal gestionale", "Documenti D-31", "ok"], ["dati già nel gestionale", "Ordine, indirizzo e colli già strutturati", "Fonti F-03", "ok"]],
+    regole: [["ok", "I dati sono già strutturati: serve una regola, non un modello", "A-07"], ["ok", "Nessuna interpretazione di testo libero", "A-02"], ["warn", "Un modello introdurrebbe errori dove oggi non ce ne sono", "A-09"]],
+    bozza: null, motivo: "Non serve l'AI: il gestionale può generare le bolle con una regola.",
+    verifica: { esito: "alt", tipo: "noai", titolo: "Una configurazione del gestionale, senza AI", passi: ["Verificare il modulo di spedizione del gestionale", "Configurare la generazione automatica delle bolle", "Riconsiderare l'AI solo per i casi con note in testo libero"] }, registro: "alternativa · configurazione del gestionale, nessuna AI" },
+];
+CASI.cli = [
+  { titolo: "Richiesta di assistenza", canale: "Email · cliente", text: "Buongiorno, la caldaia che ci avete installato a marzo ha smesso di scaldare da stamattina e mostra l'errore E12. Siamo in 5 in ufficio e fa freddo. Potete mandare qualcuno oggi? Studio Bianchi",
+    lettura: [["Canale", "Email"], ["Lingua", "Italiano"], ["Allegati", "Nessuno"], ["Richiesta", "Intervento tecnico urgente"]],
+    ric: [["caldaia installata a marzo", "Impianto I-0412 · installazione 14/03, in garanzia", "Impianti A-11", "ok"], ["errore E12", "Guasto noto: sensore di pressione", "Guasti G-12", "ok"], ["oggi", "Richiesta urgente", "Priorità P-02", "warn"]],
+    regole: [["ok", "Impianto in garanzia: segnalare all'assistenza tecnica", "G-01"], ["ok", "Guasto E12 con procedura nota (controllo della pressione)", "G-12"], ["warn", "Urgenza: nessuna data promessa senza il planning dei tecnici", "P-02"]],
+    bozza: `<div class="out"><p><b>Risposta:</b> istruzioni per il primo controllo della pressione; richiesta di un recapito telefonico; l'assistenza propone un appuntamento.</p><p><b>Scheda per il tecnico:</b> impianto I-0412 · in garanzia · errore E12 · urgenza segnalata.</p></div>`,
+    verifica: { esito: "ok", chi: "L'assistenza conferma la data dell'intervento" }, registro: "risposta proposta · nessuna data promessa" },
+  { limite: true, titolo: "Reclamo", canale: "Email · cliente", text: "Questa è la terza volta che sbagliate la consegna. Valuto di rivolgermi a un avvocato. Chiamatemi. G. Conti",
+    lettura: [["Canale", "Email"], ["Lingua", "Italiano"], ["Allegati", "Nessuno"], ["Richiesta", "Reclamo con toni di contenzioso"]],
+    ric: [["terza volta", "Storico: 2 consegne contestate", "Storico S-30", "ok"], ["avvocato", "Possibile contenzioso", "Categorie E-07", "ko"]],
+    regole: [["ko", "Reclamo con possibile contenzioso: nessuna risposta automatica", "E-07"], ["ok", "Raccolta dello storico a disposizione di chi risponderà", "S-30"]],
+    bozza: null, motivo: "Un reclamo con possibile contenzioso richiede una persona e una risposta ponderata.",
+    verifica: { esito: "stop", chi: "Il titolare, con priorità alta", motivo: "Possibile contenzioso.", sugg: "Preparare lo storico delle consegne contestate prima di chiamare." }, registro: "escalation · reclamo con possibile contenzioso · nessuna bozza" },
+];
+CASI.prod = [
+  { titolo: "Non conformità di un lotto", canale: "Messaggio interno · reparto", text: "Lotto 4417: durante il controllo finale 12 pezzi su 400 con bava sul bordo. Linea 2, turno B. Fermato il lotto in attesa.",
+    lettura: [["Canale", "Messaggio interno"], ["Lingua", "Italiano"], ["Allegati", "Nessuno"], ["Richiesta", "Segnalazione di non conformità"]],
+    ric: [["lotto 4417", "Lotto 4417 · articolo 31-0870", "Lotti L-02", "ok"], ["12 su 400", "Difettosità del 3%", "Calcoli C-01", "ok"], ["bava sul bordo", "Difetto D-14: bava", "Difetti D-14", "ok"], ["linea 2, turno B", "Reparto stampaggio · turno B", "Reparti R-03", "ok"]],
+    regole: [["ok", "Difetto classificato con il catalogo dei difetti", "D-14"], ["ok", "Soglia di allerta del 2% superata: aprire una non conformità", "Q-03"], ["ok", "Il lotto resta bloccato fino alla decisione del responsabile qualità", "Q-05"]],
+    bozza: `<div class="out"><table><tr><td>Lotto</td><td>4417 · articolo 31-0870</td></tr><tr><td>Difetto</td><td>D-14 · bava sul bordo</td></tr><tr><td>Difettosità</td><td>${WN("3% (soglia 2%)")}</td></tr><tr><td>Azione</td><td>Lotto bloccato</td></tr></table><p><b>Suggerito:</b> controllare l'utensile della linea 2 (2 casi analoghi nello storico).</p></div>`,
+    verifica: { esito: "ok", chi: "Il responsabile qualità decide e firma" }, registro: "scheda di non conformità predisposta · soglia superata" },
+  { titolo: "Previsione dei guasti", canale: "Richiesta interna · direzione", text: "Vorremmo che l'AI prevedesse i guasti dei macchinari prima che succedano.",
+    lettura: [["Canale", "Richiesta interna"], ["Richiesta", "Manutenzione predittiva"], ["Fonti citate", "Dati dei macchinari"], ["Obiettivo", "Anticipare i fermi"]],
+    ric: [["prevedere i guasti", "Manutenzione predittiva", "Obiettivi O-01", "warn"], ["dati dei macchinari", "Sensori assenti, interventi registrati a mano", "Fonti F-09", "ko"]],
+    regole: [["ko", "Servono dati storici sistematici dei guasti: oggi non ci sono", "F-09"], ["warn", "Con pochi guasti registrati un modello non è affidabile", "M-04"], ["ok", "Si può partire dalla registrazione strutturata degli interventi", "M-06"]],
+    bozza: null, motivo: "Senza dati storici sistematici nessuna previsione sarebbe affidabile.",
+    verifica: { esito: "alt", tipo: "first", titolo: "Prima raccogliere i dati, poi valutare la previsione", passi: ["Registrare gli interventi in modo strutturato: causa, componente, ore di fermo", "Raccogliere alcuni mesi di dati", "Valutare di nuovo se la previsione è fattibile"] }, registro: "alternativa · raccolta strutturata dei dati prima di qualsiasi modello" },
+];
+Object.assign(DATI, {
+  "Risposta a un sollecito": { esito: "warn", f: [["Fatture attive", "Numerazione continua, collegate ai clienti", "ok"], ["Movimenti bancari", "Importati ogni giorno, causale libera", "warn"], ["Anagrafica clienti", "Unica e aggiornata", "ok"]], raccom: "Dati adatti, con riserva sulla riconciliazione dei bonifici." },
+  "Previsione di cassa su file sparsi": { esito: "ko", f: [["Scadenzario clienti", "Colonne diverse da quello dei fornitori", "ko"], ["Scadenzario fornitori", "Date in formato testo", "warn"], ["Estratto conto", "Esportabile in CSV", "ok"]], raccom: "Un agente qui non serve: serve prima uno scadenzario unico, poi un report calcolato con regole." },
+  "Candidatura spontanea": { esito: "warn", f: [["Archivio candidature", "CV in PDF di buona qualità", "ok"], ["Posizioni aperte", "Codificate per competenze", "ok"], ["Dati personali", "Conservazione da definire", "warn"]], raccom: "Dati adatti, con attenzione alla conservazione dei dati personali." },
+  "Selezione automatica dei CV": { esito: "warn", f: [["CV ricevuti", "Formati diversi: PDF, Word, immagini", "warn"], ["Posizioni", "Requisiti non sempre scritti", "warn"], ["Criteri di selezione", "Non formalizzati", "ko"]], raccom: "Prima servono criteri scritti. L'AI può riassumere i CV, non escludere candidati." },
+  "Ritardo di un fornitore": { esito: "warn", f: [["Ordini ai fornitori", "Numerati e collegati ai fornitori", "ok"], ["Coperture di magazzino", "Calcolate ogni notte", "ok"], ["Tempi di consegna storici", "Disponibili solo per i fornitori principali", "warn"]], raccom: "Dati adatti, con riserva sui tempi storici." },
+  "Bolle di spedizione": { esito: "ok", f: [["Ordini", "Campi strutturati e completi", "ok"], ["Indirizzi", "Validati all'inserimento", "ok"], ["Colli e pesi", "Registrati dal magazzino", "ok"]], raccom: "I dati sono ottimi, ed è per questo che non serve l'AI: basta una regola del gestionale." },
+  "Richiesta di assistenza": { esito: "warn", f: [["Anagrafica impianti", "Installazioni collegate ai clienti", "ok"], ["Guasti noti", "Catalogo con procedure per i codici principali", "ok"], ["Planning dei tecnici", "Gestito su un foglio condiviso", "warn"]], raccom: "Dati adatti: la data dell'intervento resta all'assistenza." },
+  "Reclamo": { esito: "ko", f: [["Storico clienti", "Consegne e contestazioni collegate", "ok"], ["Procedure per i reclami", "Non scritte", "ko"], ["Registro delle comunicazioni", "Email e telefono non tracciati insieme", "warn"]], raccom: "Non è un caso da automatizzare. Conviene invece scrivere la procedura per i reclami." },
+  "Non conformità di un lotto": { esito: "warn", f: [["Catalogo dei difetti", "Codificato e in uso", "ok"], ["Lotti e tracciabilità", "Collegati a linea e turno", "ok"], ["Storico delle non conformità", "In un foglio, poco strutturato", "warn"]], raccom: "Dati adatti, con riserva sullo storico delle non conformità." },
+  "Previsione dei guasti": { esito: "ko", f: [["Interventi di manutenzione", "Registrati a mano, descrizioni libere", "ko"], ["Sensori delle macchine", "Assenti sulla maggior parte", "ko"], ["Fermi macchina", "Tracciati solo in parte", "warn"]], raccom: "Oggi non esistono i dati per prevedere i guasti: si parte dalla raccolta." },
+});
+const AUTO = [["acq", 0], ["amm", 1], ["seg", 2], ["hr", 1], ["stu", 1], ["log", 1], ["cli", 0], ["prod", 1], ["stu", 2], ["cli", 1], ["acq", 2], ["prod", 0]];
 const F = { a: "acq", i: 0, reached: -1, shown: -1, timers: [], touched: false, auto: null, started: false };
 let typeTimer = null;
 function typeText(el, text, done) {
@@ -118,11 +202,12 @@ function typeText(el, text, done) {
   }, 12);
 }
 const fCase = () => CASI[F.a][F.i];
+const fTag = (c) => c.limite ? '<span class="lim">caso limite</span>' : c.verifica.esito === "alt" ? `<span class="lim alt">${{ first: "prima i dati", noai: "senza AI", limited: "agente con limiti" }[c.verifica.tipo]}</span>` : "";
 function fClear() { F.timers.forEach(clearTimeout); F.timers = []; F.reached = -1; F.shown = -1; }
 function fRenderSteps() {
   const c = fCase();
   $("f-steps").innerHTML = STEPS.map((s, k) => {
-    const st = k <= F.reached ? ((c.limite && k >= 4) ? "stop" : "done") : "";
+    const st = k <= F.reached ? (((c.limite || c.verifica.esito !== "ok") && k >= 4) ? "stop" : "done") : "";
     return `<li><button type="button" class="${st} ${k === F.shown ? "on" : ""}" data-k="${k}" ${k > F.reached ? "disabled" : ""}><span class="n">${k + 1}</span><span class="t">${s}</span></button></li>`;
   }).join("");
   $("f-steps").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => { fTouch(); fShow(parseInt(b.dataset.k, 10)); }));
@@ -136,8 +221,9 @@ function fDetail(k) {
   if (k === 1) return `<div class="out"><table>${c.lettura.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")}</table></div><p class="note">Il testo viene normalizzato e classificato. Nessun contenuto esce dal flusso.</p>`;
   if (k === 2) return `<div class="out"><table><tr><th>Scritto</th><th>Riconosciuto</th><th>Regola</th><th>Esito</th></tr>${c.ric.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="mono">${r[2]}</td><td>${r[3] === "ok" ? OK("ok") : r[3] === "warn" ? WN("da verificare") : KO("non riconosciuto")}</td></tr>`).join("")}</table></div><p class="note">Il vocabolario aziendale traduce le parole di clienti e colleghi nei codici del gestionale, una volta sola per tutti.</p>`;
   if (k === 3) return `<ul class="rules">${c.regole.map((r) => `<li class="${r[0]}"><i>${r[0] === "ok" ? "✓" : r[0] === "warn" ? "!" : "×"}</i><span>${r[1]}</span><em>${r[2]}</em></li>`).join("")}</ul><p class="note">Regole scritte e approvate dal cliente. Ogni esito rimanda a una regola.</p>`;
-  if (k === 4) return c.bozza ? c.bozza : `<div class="stopbox"><b>Nessuna bozza.</b> ${c.motivo}</div>`;
+  if (k === 4) return c.bozza ? c.bozza : `<div class="stopbox"><b>${c.verifica.esito === "alt" ? "Nessun agente per questo caso." : "Nessuna bozza."}</b> ${c.motivo}</div>`;
   const v = c.verifica;
+  if (v.esito === "alt") { const t = ALT_TIPO[v.tipo]; return `<div class="human alt"><span>Approccio proposto: ${v.titolo}</span></div><p><span class="ptag ${t[0]}">${t[1]}</span></p><ol class="next">${v.passi.map((x) => `<li>${x}</li>`).join("")}</ol><p class="note">La valutazione dei dati può portare a una soluzione diversa da un agente. Se è la più adatta, è quella che proponiamo.</p>`; }
   return v.esito === "ok"
     ? `<div class="human" id="f-human"><span>Verifica umana · ${v.chi}</span><button type="button" id="f-ok">Convalida</button></div><p class="note">L'invio avviene solo dopo la convalida della persona.</p>`
     : `<div class="human stop"><span>Inoltrato a: ${v.chi}</span></div><p><b>Motivo:</b> ${v.motivo}</p><p><b>Suggerito:</b> ${v.sugg}</p>`;
@@ -161,7 +247,7 @@ function fLog() {
 function fSelect(a, i) {
   fClear(); F.a = a; F.i = i;
   document.querySelectorAll("#f-ambito button").forEach((x) => x.setAttribute("aria-pressed", x.dataset.a === a));
-  $("f-casi").innerHTML = CASI[a].map((c, k) => `<button type="button" class="case ${k === i ? "on" : ""}" data-i="${k}"><b>${c.titolo}</b><small>${c.canale}</small>${c.limite ? '<span class="lim">caso limite</span>' : ""}</button>`).join("");
+  $("f-casi").innerHTML = CASI[a].map((c, k) => `<button type="button" class="case ${k === i ? "on" : ""}" data-i="${k}"><b>${c.titolo}</b><small>${c.canale}</small>${fTag(c)}</button>`).join("");
   $("f-casi").querySelectorAll(".case").forEach((b) => b.addEventListener("click", () => { fTouch(); fSelect(F.a, parseInt(b.dataset.i, 10)); }));
   $("f-label").textContent = fCase().canale;
   $("f-log").innerHTML = ""; $("f-detail").innerHTML = '<div class="fd empty">Avviate il flusso per vedere i passaggi, uno per volta.</div>';

@@ -188,11 +188,11 @@
     </div>
     <div class="flow-block" id="flusso">
       <h3 class="fb-title">Guardate un flusso, passo per passo.</h3>
-      <p class="muted" style="max-width:700px">Ogni flusso parte dai dati: se non sono adatti, si ferma e dice cosa sistemare prima. Se lo sono, si vede cosa succede passo per passo. Alcuni casi si completano, altri si fermano per scelta di progetto.</p>
+      <p class="muted" style="max-width:700px">Otto ambiti, diciannove casi. Ogni flusso parte dai dati: se sono adatti si vede cosa succede passo per passo; se non lo sono, il flusso si ferma o propone un approccio diverso. Alcuni casi si completano, altri si fermano per scelta di progetto, altri ancora portano a una soluzione senza agente.</p>
       <div class="flow">
       <div class="flow-in">
         <div class="field"><label class="l">Ambito</label>
-          <div class="seg light" id="f-ambito"><button type="button" aria-pressed="true" data-a="acq">Acquisti</button><button type="button" aria-pressed="false" data-a="seg">Segreteria</button><button type="button" aria-pressed="false" data-a="stu">Studio</button></div></div>
+          <div class="chips" id="f-ambito"><button type="button" aria-pressed="true" data-a="acq">Acquisti</button><button type="button" aria-pressed="false" data-a="seg">Segreteria</button><button type="button" aria-pressed="false" data-a="stu">Studio</button><button type="button" aria-pressed="false" data-a="amm">Amministrazione</button><button type="button" aria-pressed="false" data-a="hr">Risorse umane</button><button type="button" aria-pressed="false" data-a="log">Logistica</button><button type="button" aria-pressed="false" data-a="cli">Assistenza clienti</button><button type="button" aria-pressed="false" data-a="prod">Produzione</button></div></div>
         <div class="field"><label class="l">Caso</label><div class="caselist" id="f-casi"></div></div>
         <div class="field"><label class="l" id="f-label">Comunicazione in ingresso</label><div class="inbox" id="f-text"></div></div>
         <div class="flow-btns"><button class="btn sm" id="f-run" type="button">Avvia il flusso →</button></div>
