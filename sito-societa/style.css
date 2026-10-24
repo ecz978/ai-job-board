@@ -300,19 +300,6 @@ footer { padding: 34px 0 54px; font-size: 13px; color: var(--muted); border-top:
 .rs .legend { margin: 8px 0 14px; }
 .print-sum { display: none; }
 
-/* stampa */
-@media print {
-  body.printing .top, body.printing .hero, body.printing .strip, body.printing footer, body.printing section:not(#hardware) { display: none !important; }
-  body.printing { background: #fff; }
-  body.printing #hardware { display: block !important; background: #fff !important; color: #000 !important; padding: 0 !important; }
-  body.printing #hardware .calc { grid-template-columns: 1fr; }
-  body.printing #hardware .calc-in, body.printing #hardware .eyebrow, body.printing #hardware h2, body.printing #hardware > .wrap > p { display: none !important; }
-  body.printing .reveal { opacity: 1 !important; transform: none !important; }
-  body.printing .rs { border: 1px solid #ccc; break-inside: avoid; }
-  body.printing .verdict .btns { display: none; }
-  body.printing .verdict { border-color: #999; } body.printing .verdict p { color: #000; }
-  body.printing .print-sum { display: block; white-space: pre-wrap; font: 12px/1.5 var(--sans); border: 1px solid #ccc; padding: 14px; margin: 0 0 16px; }
-}
 .calc-out, .tool-out { min-width: 0; }
 .calc-out > *, .tool-out > * { min-width: 0; }
 .rs { overflow-x: auto; }
@@ -457,3 +444,29 @@ h1 em::after { content: ""; position: absolute; left: 0; right: 0; bottom: -.04e
 .flow-log .mono { font: 12px/1.6 var(--mono); color: var(--muted); letter-spacing: .02em; animation: rowin .6s var(--ease) both; }
 @media (max-width: 640px) { .stepper .t { font-size: 8.5px; letter-spacing: .06em; } .stepper .n { width: 30px; height: 30px; } .stepper li:not(:last-child)::after { top: 15px; left: calc(50% + 17px); right: calc(-50% + 17px); } }
 @media (prefers-reduced-motion: reduce) { .deliv-list i { animation: none !important; } }
+
+/* ───── pagine e blocchi ───── */
+.flow-block { margin-top: 104px; padding-top: 72px; border-top: 1px solid var(--line); }
+.fb-title { font: 300 clamp(26px, 3.4vw, 40px)/1.12 var(--display); letter-spacing: -.015em; margin: 0 0 14px; }
+.hw-cta { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--line); }
+.calc-wrap { background: var(--night); color: #e9eef7; padding: 48px 40px; border-radius: 4px; margin-top: 44px; }
+@media (max-width: 640px) { .calc-wrap { padding: 32px 18px; margin-left: -4px; margin-right: -4px; } }
+.calc-wrap .calc { margin-top: 36px; }
+#strumenti { padding-top: 96px; border-top: 0; }
+
+/* ───── stampa ───── */
+@media print {
+  body.printing .top, body.printing footer, body.printing #p-home, body.printing #progress, body.printing .tools-head, body.printing .tool:not([data-tool="dim"]) { display: none !important; }
+  body.printing { background: #fff; }
+  body.printing #p-strumenti { display: block !important; }
+  body.printing #strumenti { padding: 0; }
+  body.printing .calc-wrap { display: block !important; background: #fff !important; color: #000 !important; padding: 0 !important; margin: 0; }
+  body.printing .calc-wrap .calc { grid-template-columns: 1fr; margin-top: 0; }
+  body.printing .calc-wrap .calc-in, body.printing .calc-wrap > h3, body.printing .calc-wrap > p { display: none !important; }
+  body.printing .reveal { opacity: 1 !important; transform: none !important; }
+  body.printing .rs { border: 1px solid #ccc; break-inside: avoid; }
+  body.printing .verdict .btns { display: none; }
+  body.printing .verdict { border-color: #999; } body.printing .verdict p { color: #000; }
+  body.printing .print-sum { display: block; white-space: pre-wrap; font: 12px/1.5 var(--sans); border: 1px solid #ccc; padding: 14px; margin: 0 0 16px; }
+}
+@media (min-width: 980px) { .card.calc-in { position: sticky; top: 92px; } }

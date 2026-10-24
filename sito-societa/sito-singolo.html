@@ -313,19 +313,6 @@ footer { padding: 34px 0 54px; font-size: 13px; color: var(--muted); border-top:
 .rs .legend { margin: 8px 0 14px; }
 .print-sum { display: none; }
 
-/* stampa */
-@media print {
-  body.printing .top, body.printing .hero, body.printing .strip, body.printing footer, body.printing section:not(#hardware) { display: none !important; }
-  body.printing { background: #fff; }
-  body.printing #hardware { display: block !important; background: #fff !important; color: #000 !important; padding: 0 !important; }
-  body.printing #hardware .calc { grid-template-columns: 1fr; }
-  body.printing #hardware .calc-in, body.printing #hardware .eyebrow, body.printing #hardware h2, body.printing #hardware > .wrap > p { display: none !important; }
-  body.printing .reveal { opacity: 1 !important; transform: none !important; }
-  body.printing .rs { border: 1px solid #ccc; break-inside: avoid; }
-  body.printing .verdict .btns { display: none; }
-  body.printing .verdict { border-color: #999; } body.printing .verdict p { color: #000; }
-  body.printing .print-sum { display: block; white-space: pre-wrap; font: 12px/1.5 var(--sans); border: 1px solid #ccc; padding: 14px; margin: 0 0 16px; }
-}
 .calc-out, .tool-out { min-width: 0; }
 .calc-out > *, .tool-out > * { min-width: 0; }
 .rs { overflow-x: auto; }
@@ -470,6 +457,32 @@ h1 em::after { content: ""; position: absolute; left: 0; right: 0; bottom: -.04e
 .flow-log .mono { font: 12px/1.6 var(--mono); color: var(--muted); letter-spacing: .02em; animation: rowin .6s var(--ease) both; }
 @media (max-width: 640px) { .stepper .t { font-size: 8.5px; letter-spacing: .06em; } .stepper .n { width: 30px; height: 30px; } .stepper li:not(:last-child)::after { top: 15px; left: calc(50% + 17px); right: calc(-50% + 17px); } }
 @media (prefers-reduced-motion: reduce) { .deliv-list i { animation: none !important; } }
+
+/* ───── pagine e blocchi ───── */
+.flow-block { margin-top: 104px; padding-top: 72px; border-top: 1px solid var(--line); }
+.fb-title { font: 300 clamp(26px, 3.4vw, 40px)/1.12 var(--display); letter-spacing: -.015em; margin: 0 0 14px; }
+.hw-cta { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--line); }
+.calc-wrap { background: var(--night); color: #e9eef7; padding: 48px 40px; border-radius: 4px; margin-top: 44px; }
+@media (max-width: 640px) { .calc-wrap { padding: 32px 18px; margin-left: -4px; margin-right: -4px; } }
+.calc-wrap .calc { margin-top: 36px; }
+#strumenti { padding-top: 96px; border-top: 0; }
+
+/* ───── stampa ───── */
+@media print {
+  body.printing .top, body.printing footer, body.printing #p-home, body.printing #progress, body.printing .tools-head, body.printing .tool:not([data-tool="dim"]) { display: none !important; }
+  body.printing { background: #fff; }
+  body.printing #p-strumenti { display: block !important; }
+  body.printing #strumenti { padding: 0; }
+  body.printing .calc-wrap { display: block !important; background: #fff !important; color: #000 !important; padding: 0 !important; margin: 0; }
+  body.printing .calc-wrap .calc { grid-template-columns: 1fr; margin-top: 0; }
+  body.printing .calc-wrap .calc-in, body.printing .calc-wrap > h3, body.printing .calc-wrap > p { display: none !important; }
+  body.printing .reveal { opacity: 1 !important; transform: none !important; }
+  body.printing .rs { border: 1px solid #ccc; break-inside: avoid; }
+  body.printing .verdict .btns { display: none; }
+  body.printing .verdict { border-color: #999; } body.printing .verdict p { color: #000; }
+  body.printing .print-sum { display: block; white-space: pre-wrap; font: 12px/1.5 var(--sans); border: 1px solid #ccc; padding: 14px; margin: 0 0 16px; }
+}
+@media (min-width: 980px) { .card.calc-in { position: sticky; top: 92px; } }
 </style>
 <script>
 // Demo, schede, strumenti, calcolatore, animazioni. Tutti i dati della demo sono fittizi.
@@ -1087,7 +1100,7 @@ function initNet() {
   }
   size(); draw();
   if (REDUCED) return;
-  new IntersectionObserver((en) => { visible = en[0].isIntersecting; cancelAnimationFrame(raf); if (visible) raf = requestAnimationFrame(step); }).observe(c);
+  new IntersectionObserver((en) => { visible = en[0].isIntersecting; cancelAnimationFrame(raf); if (visible) { if (w === 0 || h === 0) { size(); draw(); } raf = requestAnimationFrame(step); } }).observe(c);
   const hero = c.parentElement;
   hero.addEventListener("pointermove", (e) => { const r = c.getBoundingClientRect(); mouse = { x: e.clientX - r.left, y: e.clientY - r.top }; });
   hero.addEventListener("pointerleave", () => { mouse = null; });
@@ -1138,6 +1151,28 @@ function armLive() {
   ids.forEach((e) => io.observe(e));
 }
 
+/* ═════════ Pagine: home e strumenti ═════════ */
+const TOOLSLUG = { mappa: "map", verifica: "camp", memoria: "mem", dimensionamento: "dim", contesti: "casi" };
+let currentTool = "map";
+function selectTool(t) {
+  currentTool = t;
+  document.querySelectorAll("#tool-picker .pick").forEach((x) => x.setAttribute("aria-selected", x.dataset.t === t));
+  document.querySelectorAll("#strumenti .tool").forEach((p) => p.classList.toggle("hidden", p.dataset.tool !== t));
+}
+function route(first) {
+  const h = location.hash || "", tools = h.startsWith("#/strumenti");
+  $("p-home").classList.toggle("hidden", tools);
+  $("p-strumenti").classList.toggle("hidden", !tools);
+  document.querySelectorAll(".top nav a").forEach((a) => { if (a.getAttribute("href") === "#/strumenti") a.classList.toggle("active", tools); else if (tools) a.classList.remove("active"); });
+  if (tools) {
+    selectTool(TOOLSLUG[h.split("/")[2]] || currentTool);
+    if (!first) scrollTo({ top: 0, behavior: "instant" });
+  } else if (h.length > 1 && !h.startsWith("#/")) {
+    const el = document.getElementById(h.slice(1));
+    if (el) requestAnimationFrame(() => el.scrollIntoView());
+  } else if (!first) scrollTo({ top: 0, behavior: "instant" });
+}
+
 /* ═════════ Avvio ═════════ */
 function bindSeg(sel, attr, cb) {
   document.querySelectorAll(sel + " button").forEach((b) => b.addEventListener("click", () => {
@@ -1165,9 +1200,9 @@ document.addEventListener("DOMContentLoaded", () => {
   $("cells").innerHTML = Array.from({ length: 30 }, (_, i) => `<i class="${i < 24 ? "" : "o"}" style="--k:${i}"></i>`).join("");
 
   // schede degli strumenti
-  document.querySelectorAll("#strumenti .pick").forEach((b) => b.addEventListener("click", () => {
-    document.querySelectorAll("#strumenti .pick").forEach((x) => x.setAttribute("aria-selected", x === b));
-    document.querySelectorAll("#strumenti .tool").forEach((p) => p.classList.toggle("hidden", p.dataset.tool !== b.dataset.t));
+  document.querySelectorAll("#tool-picker .pick").forEach((b) => b.addEventListener("click", () => {
+    selectTool(b.dataset.t);
+    history.replaceState(null, "", "#/strumenti/" + b.dataset.slug);
   }));
   // mappa
   mapInit(); mapRender();
@@ -1194,6 +1229,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initNet();
   initScroll();
   armLive();
+
+  addEventListener("hashchange", () => route(false));
+  route(true);
 
   // contatti
   const form = $("contatto");
@@ -1245,10 +1283,7 @@ document.addEventListener("DOMContentLoaded", () => {
     <nav>
       <a href="#soluzioni">Ambiti</a>
       <a href="#metodo">Approccio</a>
-      <a href="#dati">Dati</a>
-      <a href="#strumenti">Strumenti</a>
-      <a href="#hardware">Dimensionamento</a>
-      <a href="#casi">Contesti</a>
+      <a href="#/strumenti">Strumenti</a>
       <a href="#chisiamo">Chi siamo</a>
     </nav>
     <a class="btn sm" href="#contatti">Contatti</a>
@@ -1256,6 +1291,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </header>
 
 <main>
+<div class="page" id="p-home">
 <section class="hero">
   <canvas id="net" aria-hidden="true"></canvas>
   <div class="wrap hero-grid">
@@ -1376,15 +1412,10 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="node esc" data-n="↳">Documento non classificabile: passaggio diretto al professionista</div>
       </div>
     </div>
-  </div>
-</section>
-
-<section id="flusso">
-  <div class="wrap">
-    <p class="eyebrow">Il flusso in dettaglio</p>
-    <h2>Un flusso, passo per passo.</h2>
-    <p class="lead" style="max-width:700px">Scegliete un caso e avviatelo. La bozza è l'ultimo passo: il lavoro è in quelli che la precedono. Alcuni casi si completano, altri si fermano per scelta di progetto, e il flusso dice perché.</p>
-    <div class="flow">
+    <div class="flow-block" id="flusso">
+      <h3 class="fb-title">Guardate un flusso, passo per passo.</h3>
+      <p class="muted" style="max-width:700px">La bozza è l'ultimo passo: il lavoro è in quelli che la precedono. Alcuni casi si completano, altri si fermano per scelta di progetto, e il flusso dice perché.</p>
+      <div class="flow">
       <div class="flow-in">
         <div class="field"><label class="l">Ambito</label>
           <div class="seg light" id="f-ambito"><button type="button" aria-pressed="true" data-a="acq">Acquisti</button><button type="button" aria-pressed="false" data-a="seg">Segreteria</button><button type="button" aria-pressed="false" data-a="stu">Studio</button></div></div>
@@ -1398,6 +1429,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="flow-detail" id="f-detail"></div>
         <div class="flow-log" id="f-log"></div>
       </div>
+    </div>
     </div>
   </div>
 </section>
@@ -1415,7 +1447,7 @@ document.addEventListener("DOMContentLoaded", () => {
     <div class="grid">
       <div class="card">
         <h3>Verifica dei risultati</h3>
-        <p>Prima dell'avvio si concorda con il cliente come si misura l'esito. A titolo di esempio: su 30 richieste consecutive, almeno 24 bozze utilizzate senza modifiche sostanziali. È un criterio di accettazione concordato; la dimensione del campione si valuta con lo strumento «Verifica a campione».</p>
+        <p>Prima dell'avvio si concorda con il cliente come si misura l'esito. A titolo di esempio: su 30 richieste consecutive, almeno 24 bozze utilizzate senza modifiche sostanziali. È un criterio di accettazione concordato; la dimensione del campione si valuta con lo strumento <a href="#/strumenti/verifica" style="text-decoration:underline">«Verifica a campione»</a>.</p>
         <div class="cells" id="cells"></div>
         <p class="note">Se la soglia non è raggiunta, le cause sono documentate per iscritto e l'affiancamento prosegue. Dopo la consegna è previsto un periodo di affiancamento di 90 giorni, con incontro settimanale e verifica finale scritta.</p>
       </div>
@@ -1438,8 +1470,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <section id="dati">
   <div class="wrap">
-    <p class="eyebrow">Dati e riservatezza</p>
-    <h2>Dove risiedono i dati, e perché è una scelta di progetto.</h2>
+    <p class="eyebrow">Dati e infrastruttura</p>
+    <h2>Dove risiedono i dati, e con quale infrastruttura.</h2>
     <p class="lead" style="max-width:640px">Non esiste una soluzione unica. La scelta dipende dalla natura dei dati trattati, dagli obblighi del cliente e dal livello di qualità richiesto.</p>
     <div class="grid" style="margin-top:44px">
       <div class="card opt">
@@ -1459,18 +1491,51 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     </div>
     <p class="note" style="margin-top:22px">Anche con elaborazione in sede restano in capo all'organizzazione il registro dei trattamenti, la gestione degli accessi e la sicurezza di rete. Titolare del trattamento è il cliente; il consulente opera come responsabile, sulla base di un accordo scritto (art. 28 GDPR).</p>
+    <div class="hw-cta">
+      <p class="lead" style="max-width:640px">Forniamo anche l'infrastruttura: dimensionamento, fornitura e installazione dell'hardware per l'elaborazione in sede, con una stima di costi e tempi di rientro prima di ogni decisione.</p>
+      <div class="cta-row"><a class="btn hot" href="#/strumenti/dimensionamento">Dimensionamento dell'hardware</a><a class="btn ghost" href="#contatti">Richiedi un incontro</a></div>
+    </div>
   </div>
 </section>
 
+<section id="chisiamo">
+  <div class="wrap">
+    <p class="eyebrow">Chi siamo</p>
+    <h2>Un percorso interdisciplinare: informatica, filosofia, processi.</h2>
+    <div class="grid" style="margin-top:36px">
+      <div class="card"><h3><span class="ph">Nome socio 1</span></h3><p>Perito capotecnico informatico, laureato in filosofia (tesi in area logico-antropologica), con vent'anni di esperienza tra formazione, docenza, coordinamento e sviluppo digitale. Si occupa di modelli linguistici nei flussi di lavoro, con criteri di qualità e punti di controllo umano.</p></div>
+      <div class="card"><h3><span class="ph">Nome socio 2</span></h3><p><span class="ph">Da scrivere.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contatti" class="dark">
+  <div class="wrap">
+    <p class="eyebrow">Contatti</p>
+    <h2>Un incontro per comprendere il processo.</h2>
+    <p class="muted" style="max-width:620px">Il primo incontro serve a capire il lavoro, non a proporre uno strumento. Se emerge un margine di intervento, si prosegue con una mappatura e con un progetto pilota su un flusso reale, con criteri di verifica condivisi.</p>
+    <form id="contatto">
+      <div><label for="nome">Nome e cognome</label><input id="nome" name="nome" required></div>
+      <div><label for="azienda">Organizzazione</label><input id="azienda" name="azienda"></div>
+      <div><label for="msg">Il processo su cui vorreste intervenire</label><textarea id="msg" name="msg" rows="4"></textarea></div>
+      <button class="btn hot" type="submit">Invia la richiesta</button>
+    </form>
+  </div>
+</section>
+</div>
+
+<div class="page hidden" id="p-strumenti">
 <section id="strumenti">
   <div class="wrap">
-    <p class="eyebrow">Strumenti</p>
-    <h2>Tre strumenti per ragionare sul vostro caso.</h2>
-    <p class="lead" style="max-width:660px">Non sono preventivi: servono a impostare il confronto con numeri e criteri chiari. I risultati sono stime, da validare nella fase di analisi.</p>
-    <div class="picker" role="tablist">
-      <button class="pick" role="tab" aria-selected="true" data-t="map">Mappa delle attività</button>
-      <button class="pick" role="tab" aria-selected="false" data-t="camp">Verifica a campione</button>
-      <button class="pick" role="tab" aria-selected="false" data-t="mem">Memoria dei modelli</button>
+    <p class="eyebrow tools-head">Strumenti</p>
+    <h2 class="tools-head">Strumenti per ragionare sul vostro caso.</h2>
+    <p class="lead tools-head" style="max-width:680px">Non sono preventivi: servono a impostare il confronto con numeri e criteri chiari. I risultati sono stime, da validare nella fase di analisi.</p>
+    <div class="picker tools-head" id="tool-picker" role="tablist">
+      <button class="pick" role="tab" aria-selected="true" data-t="map" data-slug="mappa">Mappa delle attività</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="camp" data-slug="verifica">Verifica a campione</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="mem" data-slug="memoria">Memoria dei modelli</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="dim" data-slug="dimensionamento">Dimensionamento</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="casi" data-slug="contesti">Contesti</button>
     </div>
 
     <div class="tool" data-tool="map">
@@ -1513,15 +1578,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="tool-out" id="mm-out"></div>
       </div>
     </div>
-  </div>
-</section>
 
-<section id="hardware" class="dark">
-  <div class="wrap">
-    <p class="eyebrow">Dimensionamento</p>
-    <h2>Valutare l'opzione di elaborazione in sede.</h2>
-    <p class="muted" style="max-width:700px">Strumento di prima valutazione: dimensiona l'infrastruttura, stima i costi di acquisto e di esercizio, li confronta con l'uso di un modello in cloud e indica i tempi di rientro. Le ipotesi sono modificabili e vanno validate nella fase di analisi.</p>
-    <div class="calc">
+    <div class="tool calc-wrap dark hidden" data-tool="dim" id="hardware">
+      <h3 class="fb-title" style="color:#f3f6fb">Valutare l'opzione di elaborazione in sede.</h3>
+      <p class="muted" style="max-width:700px">Strumento di prima valutazione: dimensiona l'infrastruttura, stima i costi di acquisto e di esercizio, li confronta con l'uso di un modello in cloud e indica i tempi di rientro. Le ipotesi sono modificabili e vanno validate nella fase di analisi.</p>
+      <div class="calc">
       <div class="card calc-in">
         <div class="field"><label for="c-ambito">Ambito</label>
           <select id="c-ambito">
@@ -1562,16 +1623,13 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
       <div id="risultato" class="calc-out"></div>
     </div>
-  </div>
-</section>
+    </div>
 
-<section id="casi" class="cases">
-  <div class="wrap">
-    <p class="eyebrow">Contesti di applicazione</p>
-    <h2>Dodici contesti in cui il metodo si applica.</h2>
-    <p class="lead" style="max-width:660px">Per ciascun contesto indichiamo l'indicatore con cui si misura l'esito dell'intervento. I risultati vengono rilevati in fase di verifica, non promessi in anticipo.</p>
-    <p class="note" style="margin-top:14px"><span class="ph">Da completare prima della pubblicazione:</span> sono esempi di applicazione, non riferimenti. Sostituire o affiancare con progetti reali, descritti con metodo di misura e risultato rilevato.</p>
-    <div class="picker" id="casi-filtro" role="tablist" style="margin-top:28px">
+    <div class="tool hidden" data-tool="casi">
+      <h3 class="fb-title">Dodici contesti in cui il metodo si applica.</h3>
+      <p class="muted" style="max-width:660px">Per ciascun contesto indichiamo l'indicatore con cui si misura l'esito dell'intervento. I risultati vengono rilevati in fase di verifica, non promessi in anticipo.</p>
+      <p class="note" style="margin-top:14px"><span class="ph">Da completare prima della pubblicazione:</span> sono esempi di applicazione, non riferimenti. Sostituire o affiancare con progetti reali, descritti con metodo di misura e risultato rilevato.</p>
+      <div class="picker" id="casi-filtro" role="tablist" style="margin-top:28px">
       <button class="pick" role="tab" aria-selected="true" data-f="all">Tutti · 12</button>
       <button class="pick" role="tab" aria-selected="false" data-f="acq">Acquisti e ordini</button>
       <button class="pick" role="tab" aria-selected="false" data-f="seg">Segreterie</button>
@@ -1592,33 +1650,10 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="card" data-a="stu"><span class="tag">Esempio illustrativo</span><h3>Studio di consulenza del lavoro</h3><p>Smistamento delle richieste e bozze di risposta ai dipendenti</p><div class="indic"><b>Indicatore</b>Tempo di smistamento e tempo di preparazione delle bozze</div></div>
       <div class="card" data-a="acq"><span class="tag">Esempio illustrativo</span><h3>Impresa di impiantistica</h3><p>Richieste di offerta ai fornitori</p><div class="indic"><b>Indicatore</b>Tempo per richiesta e completezza dei dati nelle richieste inviate</div></div>
     </div>
-  </div>
-</section>
-
-<section id="chisiamo">
-  <div class="wrap">
-    <p class="eyebrow">Chi siamo</p>
-    <h2>Un percorso interdisciplinare: informatica, filosofia, processi.</h2>
-    <div class="grid" style="margin-top:36px">
-      <div class="card"><h3><span class="ph">Nome socio 1</span></h3><p>Perito capotecnico informatico, laureato in filosofia (tesi in area logico-antropologica), con vent'anni di esperienza tra formazione, docenza, coordinamento e sviluppo digitale. Si occupa di modelli linguistici nei flussi di lavoro, con criteri di qualità e punti di controllo umano.</p></div>
-      <div class="card"><h3><span class="ph">Nome socio 2</span></h3><p><span class="ph">Da scrivere.</span></p></div>
     </div>
   </div>
 </section>
-
-<section id="contatti" class="dark">
-  <div class="wrap">
-    <p class="eyebrow">Contatti</p>
-    <h2>Un incontro per comprendere il processo.</h2>
-    <p class="muted" style="max-width:620px">Il primo incontro serve a capire il lavoro, non a proporre uno strumento. Se emerge un margine di intervento, si prosegue con una mappatura e con un progetto pilota su un flusso reale, con criteri di verifica condivisi.</p>
-    <form id="contatto">
-      <div><label for="nome">Nome e cognome</label><input id="nome" name="nome" required></div>
-      <div><label for="azienda">Organizzazione</label><input id="azienda" name="azienda"></div>
-      <div><label for="msg">Il processo su cui vorreste intervenire</label><textarea id="msg" name="msg" rows="4"></textarea></div>
-      <button class="btn hot" type="submit">Invia la richiesta</button>
-    </form>
-  </div>
-</section>
+</div>
 </main>
 
 <footer>

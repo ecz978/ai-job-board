@@ -613,7 +613,7 @@ function initNet() {
   }
   size(); draw();
   if (REDUCED) return;
-  new IntersectionObserver((en) => { visible = en[0].isIntersecting; cancelAnimationFrame(raf); if (visible) raf = requestAnimationFrame(step); }).observe(c);
+  new IntersectionObserver((en) => { visible = en[0].isIntersecting; cancelAnimationFrame(raf); if (visible) { if (w === 0 || h === 0) { size(); draw(); } raf = requestAnimationFrame(step); } }).observe(c);
   const hero = c.parentElement;
   hero.addEventListener("pointermove", (e) => { const r = c.getBoundingClientRect(); mouse = { x: e.clientX - r.left, y: e.clientY - r.top }; });
   hero.addEventListener("pointerleave", () => { mouse = null; });
@@ -664,6 +664,28 @@ function armLive() {
   ids.forEach((e) => io.observe(e));
 }
 
+/* ═════════ Pagine: home e strumenti ═════════ */
+const TOOLSLUG = { mappa: "map", verifica: "camp", memoria: "mem", dimensionamento: "dim", contesti: "casi" };
+let currentTool = "map";
+function selectTool(t) {
+  currentTool = t;
+  document.querySelectorAll("#tool-picker .pick").forEach((x) => x.setAttribute("aria-selected", x.dataset.t === t));
+  document.querySelectorAll("#strumenti .tool").forEach((p) => p.classList.toggle("hidden", p.dataset.tool !== t));
+}
+function route(first) {
+  const h = location.hash || "", tools = h.startsWith("#/strumenti");
+  $("p-home").classList.toggle("hidden", tools);
+  $("p-strumenti").classList.toggle("hidden", !tools);
+  document.querySelectorAll(".top nav a").forEach((a) => { if (a.getAttribute("href") === "#/strumenti") a.classList.toggle("active", tools); else if (tools) a.classList.remove("active"); });
+  if (tools) {
+    selectTool(TOOLSLUG[h.split("/")[2]] || currentTool);
+    if (!first) scrollTo({ top: 0, behavior: "instant" });
+  } else if (h.length > 1 && !h.startsWith("#/")) {
+    const el = document.getElementById(h.slice(1));
+    if (el) requestAnimationFrame(() => el.scrollIntoView());
+  } else if (!first) scrollTo({ top: 0, behavior: "instant" });
+}
+
 /* ═════════ Avvio ═════════ */
 function bindSeg(sel, attr, cb) {
   document.querySelectorAll(sel + " button").forEach((b) => b.addEventListener("click", () => {
@@ -691,9 +713,9 @@ document.addEventListener("DOMContentLoaded", () => {
   $("cells").innerHTML = Array.from({ length: 30 }, (_, i) => `<i class="${i < 24 ? "" : "o"}" style="--k:${i}"></i>`).join("");
 
   // schede degli strumenti
-  document.querySelectorAll("#strumenti .pick").forEach((b) => b.addEventListener("click", () => {
-    document.querySelectorAll("#strumenti .pick").forEach((x) => x.setAttribute("aria-selected", x === b));
-    document.querySelectorAll("#strumenti .tool").forEach((p) => p.classList.toggle("hidden", p.dataset.tool !== b.dataset.t));
+  document.querySelectorAll("#tool-picker .pick").forEach((b) => b.addEventListener("click", () => {
+    selectTool(b.dataset.t);
+    history.replaceState(null, "", "#/strumenti/" + b.dataset.slug);
   }));
   // mappa
   mapInit(); mapRender();
@@ -720,6 +742,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initNet();
   initScroll();
   armLive();
+
+  addEventListener("hashchange", () => route(false));
+  route(true);
 
   // contatti
   const form = $("contatto");
