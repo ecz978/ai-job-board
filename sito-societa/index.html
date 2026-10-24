@@ -32,6 +32,7 @@
       <a href="#soluzioni">Ambiti</a>
       <a href="#metodo">Approccio</a>
       <a href="#dati">Dati</a>
+      <a href="#strumenti">Strumenti</a>
       <a href="#hardware">Dimensionamento</a>
       <a href="#casi">Esperienze</a>
       <a href="#chisiamo">Chi siamo</a>
@@ -186,7 +187,7 @@
     <div class="grid">
       <div class="card">
         <h3>Verifica dei risultati</h3>
-        <p>Prima dell'avvio si concorda con il cliente come si misura l'esito. A titolo di esempio: su 30 richieste consecutive, almeno 24 bozze utilizzate senza modifiche sostanziali.</p>
+        <p>Prima dell'avvio si concorda con il cliente come si misura l'esito. A titolo di esempio: su 30 richieste consecutive, almeno 24 bozze utilizzate senza modifiche sostanziali. È un criterio di accettazione concordato; la dimensione del campione si valuta con lo strumento «Verifica a campione».</p>
         <div class="cells" id="cells"></div>
         <p class="note">Se la soglia non è raggiunta, le cause sono documentate per iscritto e l'affiancamento prosegue. Dopo la consegna è previsto un periodo di affiancamento di 90 giorni, con incontro settimanale e verifica finale scritta.</p>
       </div>
@@ -233,6 +234,60 @@
   </div>
 </section>
 
+<section id="strumenti">
+  <div class="wrap">
+    <p class="eyebrow">Strumenti</p>
+    <h2>Tre strumenti per ragionare sul vostro caso.</h2>
+    <p class="lead" style="max-width:660px">Non sono preventivi: servono a impostare il confronto con numeri e criteri chiari. I risultati sono stime, da validare nella fase di analisi.</p>
+    <div class="picker" role="tablist">
+      <button class="pick" role="tab" aria-selected="true" data-t="map">Mappa delle attività</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="camp">Verifica a campione</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="mem">Memoria dei modelli</button>
+    </div>
+
+    <div class="tool" data-tool="map">
+      <div class="tool-grid">
+        <div class="tool-in">
+          <div class="field"><label class="l">Ambito</label>
+            <div class="seg light" id="m-ambito"><button type="button" aria-pressed="true" data-a="acq">Acquisti</button><button type="button" aria-pressed="false" data-a="seg">Segreteria</button><button type="button" aria-pressed="false" data-a="stu">Studio</button></div></div>
+          <div class="field"><label class="l">Attività e ore a settimana</label><div class="acts" id="m-list"></div></div>
+          <div class="field"><label class="l" for="m-orario">Costo orario del personale (€/h)</label><input id="m-orario" type="number" step="1" value="28"></div>
+        </div>
+        <div class="tool-out" id="m-out"></div>
+      </div>
+    </div>
+
+    <div class="tool hidden" data-tool="camp">
+      <div class="tool-grid">
+        <div class="tool-in">
+          <div class="field"><label class="l" for="v-n">Richieste verificate <output id="o-vn">30</output></label><input id="v-n" type="range" min="10" max="200" value="30"></div>
+          <div class="field"><label class="l" for="v-k">Bozze utilizzabili <output id="o-vk">24</output></label><input id="v-k" type="range" min="0" max="30" value="24"></div>
+          <div class="field"><label class="l" for="v-s">Soglia da dimostrare <output id="o-vs">80%</output></label><input id="v-s" type="range" min="50" max="99" value="80"></div>
+          <div class="field"><label class="l">Confidenza</label>
+            <div class="seg light two" id="v-conf"><button type="button" aria-pressed="false" data-z="1.645">90%</button><button type="button" aria-pressed="true" data-z="1.96">95%</button></div></div>
+          <div class="field"><label class="l" for="v-p">Qualità reale ipotizzata <output id="o-vp">92%</output></label><input id="v-p" type="range" min="80" max="99" value="92"></div>
+        </div>
+        <div class="tool-out" id="v-out"></div>
+      </div>
+    </div>
+
+    <div class="tool hidden" data-tool="mem">
+      <div class="tool-grid">
+        <div class="tool-in">
+          <div class="field"><label class="l" for="mm-par">Dimensione del modello</label>
+            <select id="mm-par"><option value="7">Circa 7 miliardi di parametri</option><option value="24">Circa 24 miliardi</option><option value="30" >Circa 30 miliardi</option><option value="70" selected>Circa 70 miliardi</option><option value="120">Circa 120 miliardi</option></select></div>
+          <div class="field"><label class="l">Precisione dei pesi</label>
+            <div class="seg light" id="mm-bits"><button type="button" aria-pressed="true" data-b="4">4 bit</button><button type="button" aria-pressed="false" data-b="8">8 bit</button><button type="button" aria-pressed="false" data-b="16">16 bit</button></div></div>
+          <div class="field"><label class="l" for="mm-ctx">Lunghezza del contesto</label>
+            <select id="mm-ctx"><option value="8192">8 mila token</option><option value="32768" selected>32 mila token</option><option value="131072">128 mila token</option></select></div>
+          <div class="field"><label class="l" for="mm-users">Utenti in parallelo <output id="o-mu">4</output></label><input id="mm-users" type="range" min="1" max="12" value="4"></div>
+        </div>
+        <div class="tool-out" id="mm-out"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="hardware" class="dark">
   <div class="wrap">
     <p class="eyebrow">Dimensionamento</p>
@@ -253,6 +308,8 @@
           <div class="seg" id="c-dati"><button type="button" aria-pressed="true" data-v="alta">Alta</button><button type="button" aria-pressed="false" data-v="media">Media</button><button type="button" aria-pressed="false" data-v="bassa">Bassa</button></div></div>
         <div class="field"><label for="c-arch">Archivio da indicizzare</label>
           <select id="c-arch"><option value="10">Fino a 10 GB</option><option value="100" selected>Fino a 100 GB</option><option value="500">Fino a 500 GB</option><option value="2000">Fino a 2 TB</option></select></div>
+        <div class="field"><label>Formula</label>
+          <div class="seg two" id="c-formula"><button type="button" aria-pressed="true" data-f="acq">Acquisto</button><button type="button" aria-pressed="false" data-f="nol">Noleggio 36 mesi</button></div></div>
         <div class="field checks">
           <label class="chk"><input id="c-ha" type="checkbox"> Alta disponibilità (due macchine)</label>
           <label class="chk"><input id="c-ups" type="checkbox" checked> Gruppo di continuità e rete</label>
@@ -266,6 +323,8 @@
             <label>Quota automatizzata (%)<input id="a-aut" type="number" step="5" value="60"></label>
             <label>Token per richiesta<input id="a-tokreq" type="number" step="500" value="4000"></label>
             <label>Prezzo del modello (€ per milione di token)<input id="a-token" type="number" step="0.5" value="6"></label>
+            <label>Crescita annua del volume (%)<input id="a-g" type="number" step="1" value="5"></label>
+            <label>Canone mensile del noleggio (% del valore)<input id="a-rent" type="number" step="0.1" value="3.2"></label>
             <label>Utenti contemporanei (%)<input id="a-cont" type="number" step="5" value="30"></label>
             <label>Costo del progetto (€)<input id="a-prog" type="number" step="500" value="15000"></label>
             <label>Supporto software annuo (€)<input id="a-supp" type="number" step="100" value="600"></label>
