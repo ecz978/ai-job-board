@@ -408,6 +408,68 @@ h1 em::after { content: ""; position: absolute; left: 0; right: 0; bottom: -.04e
   .step::before { opacity: 1 !important; }
   .rb::before, .pipe::after, .btn::after { display: none !important; }
 }
+
+/* ───── percorso nella parte alta ───── */
+.deliv { background: var(--card); border: 1px solid var(--line); border-radius: 4px; box-shadow: 0 30px 60px -40px rgba(11,20,38,.35); overflow: hidden; }
+.deliv-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 18px 26px; border-bottom: 1px solid var(--line); font: 500 10.5px var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.deliv-list { list-style: none; margin: 0; padding: 4px 26px; }
+.deliv-list li { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 18px; padding: 22px 0; border-bottom: 1px solid var(--line); position: relative; }
+.deliv-list li:last-child { border-bottom: 0; }
+.deliv-list li:not(:last-child)::after { content: ""; position: absolute; left: 17px; top: 62px; bottom: -22px; width: 1px; background: var(--line); z-index: 0; }
+.deliv-list i { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #b9c2d0; display: grid; place-items: center; font: 500 12px var(--sans); font-style: normal; color: var(--muted); background: var(--card); position: relative; z-index: 1; animation: dstep 12s var(--ease) infinite; }
+.deliv-list li:nth-child(2) i { animation-delay: 3s; } .deliv-list li:nth-child(3) i { animation-delay: 6s; } .deliv-list li:nth-child(4) i { animation-delay: 9s; }
+@keyframes dstep { 0%, 22% { background: var(--accent); color: #fff; border-color: var(--accent); } 30%, 100% { background: var(--card); color: var(--muted); border-color: #b9c2d0; } }
+.deliv-list small { display: block; font: 500 10px var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.deliv-list b { display: block; font: 400 23px/1.2 var(--display); letter-spacing: -.005em; }
+.deliv-list p { margin: 6px 0 0; font-size: 14.5px; color: var(--muted); line-height: 1.55; }
+.deliv-foot { padding: 18px 26px; background: var(--soft); border-top: 1px solid var(--line); font-size: 13.5px; color: var(--muted); line-height: 1.55; }
+
+/* ───── flusso passo per passo ───── */
+.flow { display: grid; gap: 32px; margin-top: 48px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 980px) { .flow { grid-template-columns: 380px minmax(0, 1fr); } .flow-in { position: sticky; top: 92px; } }
+.flow-in, .flow-main { background: var(--card); border: 1px solid var(--line); border-radius: 2px; padding: 28px; min-width: 0; }
+.flow-in label.l { display: block; font: 500 10.5px var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.flow-in .field { margin-bottom: 22px; }
+.caselist { display: grid; gap: 8px; }
+.case { text-align: left; border: 1px solid var(--line); background: #fff; padding: 12px 14px; border-radius: 2px; cursor: pointer; display: grid; gap: 2px; position: relative; transition: border-color .3s, background .3s; font: inherit; color: var(--ink); }
+.case:hover { border-color: #aeb8c8; }
+.case.on { border-color: var(--ink); background: var(--soft); }
+.case b { font-weight: 500; font-size: 14.5px; }
+.case small { color: var(--muted); font-size: 12.5px; }
+.case .lim { position: absolute; right: 12px; top: 12px; font: 500 9.5px var(--sans); letter-spacing: .12em; text-transform: uppercase; color: #8a5a00; background: #f7eed8; padding: 2px 8px; border-radius: 2px; }
+.flow-btns { display: flex; gap: 10px; }
+.stepper { list-style: none; margin: 0 0 26px; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; position: relative; }
+.stepper li { position: relative; }
+.stepper li:not(:last-child)::after { content: ""; position: absolute; top: 17px; left: calc(50% + 20px); right: calc(-50% + 20px); height: 1px; background: var(--line); }
+.stepper button { width: 100%; background: none; border: 0; cursor: default; padding: 0; display: grid; justify-items: center; gap: 8px; font: inherit; color: var(--muted); }
+.stepper button:not(:disabled) { cursor: pointer; }
+.stepper .n { width: 34px; height: 34px; border-radius: 50%; border: 1px solid #b9c2d0; display: grid; place-items: center; font: 500 12px var(--sans); background: var(--card); transition: background .4s, color .4s, border-color .4s, transform .4s var(--ease); }
+.stepper .t { font: 500 10px var(--sans); letter-spacing: .12em; text-transform: uppercase; text-align: center; }
+.stepper button.done .n { background: var(--ink); color: #fff; border-color: var(--ink); }
+.stepper button.stop .n { background: #8a5a00; color: #fff; border-color: #8a5a00; }
+.stepper button.on .n { box-shadow: 0 0 0 4px rgba(39,72,200,.16); transform: scale(1.08); }
+.stepper button.stop.on .n { box-shadow: 0 0 0 4px rgba(138,90,0,.2); }
+.stepper button.on .t, .stepper button.done .t { color: var(--ink); }
+.flow-detail { min-height: 270px; }
+.flow-detail .fd { animation: rowin .6s var(--ease) both; }
+.flow-detail .empty { color: var(--muted); font-size: 15px; padding: 60px 0; text-align: center; }
+.flow-detail .out { margin-bottom: 12px; }
+.flow-detail .out td:first-child { color: var(--muted); }
+.flow-detail .mono { font: 12px var(--mono); color: var(--muted); }
+.flow-detail .note { margin: 6px 0 0; }
+.rules { list-style: none; margin: 0 0 8px; padding: 0; }
+.rules li { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; align-items: start; }
+.rules i { font-style: normal; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font: 600 11px var(--sans); }
+.rules .ok i { background: #e4f3ec; color: var(--ok); } .rules .warn i { background: #f7eed8; color: #8a5a00; } .rules .ko i { background: #f6e2e0; color: #a8322d; }
+.rules em { font: 12px var(--mono); color: var(--muted); font-style: normal; }
+.stopbox { border: 1px dashed #c9a24d; background: #fffaf0; padding: 20px; font-size: 15px; line-height: 1.6; }
+.chip.stop { background: #f6e2e0; color: #a8322d; }
+.human.stop { background: #8a5a00; }
+.flow-main .human { margin: 4px 0 8px; }
+.flow-log { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); min-height: 34px; }
+.flow-log .mono { font: 12px/1.6 var(--mono); color: var(--muted); letter-spacing: .02em; animation: rowin .6s var(--ease) both; }
+@media (max-width: 640px) { .stepper .t { font-size: 8.5px; letter-spacing: .06em; } .stepper .n { width: 30px; height: 30px; } .stepper li:not(:last-child)::after { top: 15px; left: calc(50% + 17px); right: calc(-50% + 17px); } }
+@media (prefers-reduced-motion: reduce) { .deliv-list i { animation: none !important; } }
 </style>
 <script>
 // Demo, schede, strumenti, calcolatore, animazioni. Tutti i dati della demo sono fittizi.
@@ -433,42 +495,81 @@ function flashDiff(id) {
   prevTxt[id] = now;
 }
 
-/* ═════════ Demo ═════════ */
-const DEMO = {
-  acq: {
-    label: "Email in ingresso · cliente",
-    text: "Buongiorno, servono 40 sacchi di cemento 32.5, 12 mq di lastre di cartongesso da 13 mm e 6 profili 48 per mercoledì in cantiere a Monza. Mi mandate il prezzo? Grazie, G. Rossi",
-    out: `<table>
-      <tr><th>Scritto</th><th>Articolo</th><th>Qtà</th><th>Giacenza</th><th>€/unità</th></tr>
-      <tr><td>cemento 32.5</td><td>Cemento CEM II 32,5 · 25 kg</td><td>40</td><td><span class="chip">Disponibile</span></td><td>6,80</td></tr>
-      <tr><td>cartongesso 13 mm</td><td>Lastra standard 13 · 1,2×2 m</td><td>5</td><td><span class="chip warn">Parziale · 3</span></td><td>8,40</td></tr>
-      <tr><td>profili 48</td><td>Montante 48 · 3 m</td><td>6</td><td><span class="chip">Disponibile</span></td><td>3,20</td></tr>
-    </table>
-    <p><b>Margine stimato:</b> 22% · <b>Da ordinare al fornitore:</b> 2 lastre · <b>Prezzi:</b> listino cliente</p>`,
-    human: "Il commerciale stabilisce i prezzi e invia"
-  },
-  seg: {
-    label: "Email in ingresso · candidato",
-    text: "Buongiorno, vorrei sapere costo e date del corso per operatori socio sanitari, e se posso passare a parlarne giovedì pomeriggio. Grazie, M. Bianchi",
-    out: `<p><b>Classificazione:</b> informazione + richiesta di colloquio</p>
-    <p><b>Risposta (dalla scheda corso):</b> costo e date come da documentazione ufficiale; requisiti di accesso in allegato. <i>Fonte: scheda corso OSS, rev. 2026</i></p>
-    <p><b>Slot proposti:</b> giovedì 15:00 · giovedì 16:30</p>`,
-    human: "L'operatore verifica e conferma"
-  },
-  stu: {
-    label: "PEC in ingresso · studio",
-    text: "OGGETTO: Notifica atto di citazione. Il Tribunale di Monza comunica che l'udienza di prima comparizione è fissata per il 14/03/2027. In allegato atto (PDF, 18 pp.).",
-    out: `<p><b>Tipo:</b> atto giudiziario · notifica</p>
-    <p><b>Estratto dal testo:</b> Tribunale di Monza · udienza 14/03/2027 · atto di citazione, 18 pp.</p>
-    <p><b>Sintesi:</b> 1) citazione notificata via PEC; 2) udienza di prima comparizione fissata; 3) allegato da leggere integralmente.</p>
-    <p><b>Termini:</b> <span class="chip warn">da calcolare e verificare dal professionista</span></p>`,
-    human: "Il professionista legge e gestisce la pratica"
-  }
+/* ═════════ Flusso passo per passo ═════════ */
+const STEPS = ["Lettura", "Riconoscimento", "Regole", "Bozza", "Verifica"];
+const OK = (t) => `<span class="chip">${t}</span>`, WN = (t) => `<span class="chip warn">${t}</span>`, KO = (t) => `<span class="chip stop">${t}</span>`;
+const CASI = {
+  acq: [
+    { titolo: "Richiesta di preventivo", canale: "Email · cliente", text: "Buongiorno, servono 40 sacchi di cemento 32.5, 12 mq di lastre di cartongesso da 13 mm e 6 profili 48 per mercoledì in cantiere a Monza. Mi mandate il prezzo? Grazie, G. Rossi",
+      lettura: [["Canale", "Email"], ["Lingua", "Italiano"], ["Allegati", "Nessuno"], ["Dati personali", "Nome del mittente"], ["Richiesta", "Preventivo con consegna"]],
+      ric: [["cemento 32.5", "Cemento CEM II 32,5 · 25 kg", "Sinonimi S-014", "ok"], ["cartongesso 13 mm", "Lastra standard 13 · 1,2×2 m", "Sinonimi S-021", "ok"], ["profili 48", "Montante 48 · 3 m", "Sinonimi S-033", "ok"], ["12 mq", "5 lastre (arrotondamento per eccesso)", "Conversione U-02", "ok"]],
+      regole: [["ok", "Prezzi dal listino del cliente", "L-02"], ["ok", "Giacenza verificata a magazzino", "G-01"], ["warn", "Giacenza parziale su 1 articolo: preparata richiesta al fornitore", "G-04"], ["ok", "Margine calcolato sul costo medio ponderato", "M-01"], ["ok", "Margine sopra la soglia minima del 15%", "M-07"]],
+      bozza: `<div class="out"><table><tr><th>Articolo</th><th>Qtà</th><th>Giacenza</th><th>€/unità</th></tr>
+        <tr><td>Cemento CEM II 32,5 · 25 kg</td><td>40</td><td>${OK("Disponibile")}</td><td>6,80</td></tr>
+        <tr><td>Lastra standard 13 · 1,2×2 m</td><td>5</td><td>${WN("Parziale · 3")}</td><td>8,40</td></tr>
+        <tr><td>Montante 48 · 3 m</td><td>6</td><td>${OK("Disponibile")}</td><td>3,20</td></tr></table>
+        <p><b>Margine stimato:</b> 22% · <b>Da ordinare al fornitore:</b> 2 lastre</p></div>`,
+      verifica: { esito: "ok", chi: "Il commerciale stabilisce i prezzi e invia" }, registro: "bozza proposta · prezzi lasciati al commerciale" },
+    { titolo: "Conferma d'ordine", canale: "Email · cliente", text: "Ordine n. 4471: confermiamo 200 m di cavo FG16 3x2,5 e 20 scatole di derivazione 100x100. Consegna entro il 28 presso il cantiere di Lissone.",
+      lettura: [["Canale", "Email"], ["Lingua", "Italiano"], ["Allegati", "Nessuno"], ["Riferimento", "Ordine n. 4471"], ["Richiesta", "Conferma d'ordine con data"]],
+      ric: [["cavo FG16 3x2,5", "FG16OR16 3G2,5 · bobina da 100 m (2 bobine)", "Sinonimi S-041", "ok"], ["scatole 100x100", "Scatola di derivazione IP55 100×100", "Sinonimi S-052", "ok"], ["ordine 4471", "Preventivo P-3302 del cliente", "Riconciliazione R-05", "ok"]],
+      regole: [["ok", "Quantità e prezzi coerenti con il preventivo accettato", "R-05"], ["ok", "Giacenza sufficiente per l'intero ordine", "G-01"], ["ok", "Data di consegna compatibile con i tempi di evasione (2 giorni)", "T-03"], ["warn", "Indirizzo di consegna diverso dall'anagrafica: da confermare", "A-02"]],
+      bozza: `<div class="out"><table><tr><th>Articolo</th><th>Qtà</th><th>Stato</th></tr>
+        <tr><td>FG16OR16 3G2,5 · bobina 100 m</td><td>2</td><td>${OK("Da confermare")}</td></tr>
+        <tr><td>Scatola di derivazione IP55 100×100</td><td>20</td><td>${OK("Da confermare")}</td></tr></table>
+        <p><b>Consegna:</b> entro il 28 · ${WN("indirizzo da confermare")}</p></div>`,
+      verifica: { esito: "ok", chi: "L'ufficio ordini conferma l'indirizzo e l'ordine" }, registro: "ordine predisposto · 1 avvertenza sull'indirizzo" },
+    { limite: true, titolo: "Richiesta ambigua", canale: "Email · cliente", text: "Mandatemi quello di prima ma più grosso, urgente. Rossi",
+      lettura: [["Canale", "Email"], ["Lingua", "Italiano"], ["Allegati", "Nessuno"], ["Mittente", "«Rossi»"], ["Richiesta", "Non determinata"]],
+      ric: [["Rossi", "4 clienti con questo cognome", "Anagrafica A-01", "ko"], ["quello di prima", "Nessun riferimento a un ordine precedente", "Riconciliazione R-05", "ko"], ["più grosso", "Dimensione non determinabile", "Vocabolario S-000", "ko"], ["urgente", "Non è una data di consegna", "Tempi T-03", "warn"]],
+      regole: [["ko", "Cliente non identificabile in modo univoco", "E-01"], ["ko", "Articolo non determinabile", "E-02"], ["warn", "Urgenza senza data: non si assume nulla", "T-03"]],
+      bozza: null, motivo: "Con cliente e articolo non identificabili qualsiasi bozza sarebbe un'invenzione.",
+      verifica: { esito: "stop", chi: "Ufficio commerciale, con priorità alta", motivo: "Cliente e articolo non identificabili.", sugg: "Chiedere il codice cliente e il riferimento all'ultimo ordine." }, registro: "escalation · cliente ambiguo (4 omonimi) · nessuna bozza" },
+  ],
+  seg: [
+    { titolo: "Informazioni su un corso", canale: "Email · candidato", text: "Buongiorno, vorrei sapere costo e date del corso per operatori socio sanitari, e se posso passare a parlarne giovedì pomeriggio. Grazie, M. Bianchi",
+      lettura: [["Canale", "Email"], ["Lingua", "Italiano"], ["Allegati", "Nessuno"], ["Dati personali", "Nome del mittente"], ["Richiesta", "Informazioni e colloquio"]],
+      ric: [["corso operatori socio sanitari", "Corso OSS · edizione 2026", "Sinonimi S-102", "ok"], ["costo e date", "Scheda corso, sezione «Quota e calendario»", "Fonti D-01", "ok"], ["giovedì pomeriggio", "Fascia 14:00–18:00", "Calendario C-02", "ok"]],
+      regole: [["ok", "Risposta solo da documenti ufficiali, con fonte citata", "D-01"], ["ok", "Quote riportate senza modifiche, nessuna trattativa", "D-03"], ["ok", "Appuntamenti proposti solo dal calendario della segreteria", "C-02"]],
+      bozza: `<div class="out"><p><b>Classificazione:</b> informazione + richiesta di colloquio</p><p><b>Risposta:</b> costo e date come da scheda ufficiale; requisiti di accesso in allegato. <i>Fonte: scheda corso OSS, rev. 2026</i></p><p><b>Appuntamenti proposti:</b> giovedì 15:00 · giovedì 16:30</p></div>`,
+      verifica: { esito: "ok", chi: "L'operatore verifica e conferma" }, registro: "bozza proposta · fonte citata" },
+    { titolo: "Certificato per una famiglia", canale: "Email · genitore", text: "Salve, sono la mamma di L.B., classe 3B. Mi serve un certificato di frequenza per l'INPS entro venerdì. Come faccio?",
+      lettura: [["Canale", "Email"], ["Lingua", "Italiano"], ["Allegati", "Nessuno"], ["Dati personali", "Minore (iniziali) e genitore"], ["Richiesta", "Certificato di frequenza"]],
+      ric: [["certificato di frequenza", "Procedura «Certificati» · modulo M-12", "Sinonimi S-110", "ok"], ["INPS", "Uso: ente pubblico, nessuna marca da bollo", "Fonti D-04", "ok"], ["L.B., classe 3B", "Studente da verificare in anagrafica", "Identità V-01", "warn"]],
+      regole: [["ok", "Procedura dalla modulistica ufficiale", "D-04"], ["ok", "Nessun dato dello studente ripetuto nella risposta", "P-02"], ["warn", "Identità del richiedente da verificare prima di inviare il certificato", "V-01"]],
+      bozza: `<div class="out"><p><b>Risposta:</b> il certificato si richiede con il modulo allegato, da restituire in segreteria o via email. Tempi di rilascio indicati dalla procedura.</p><p><b>Nota per l'operatore:</b> verificare l'identità del genitore prima del rilascio. Nessun dato dello studente è riportato nel testo.</p></div>`,
+      verifica: { esito: "ok", chi: "L'operatore verifica l'identità e conferma" }, registro: "bozza proposta · minimizzazione dei dati applicata" },
+    { limite: true, titolo: "Comunicazione delicata", canale: "Email · genitore", text: "Mio figlio non vuole più venire a scuola, dice che lo prendono in giro. Non so cosa fare.",
+      lettura: [["Canale", "Email"], ["Lingua", "Italiano"], ["Allegati", "Nessuno"], ["Dati personali", "Minore (riferimento indiretto)"], ["Richiesta", "Non informativa"]],
+      ric: [["non vuole più venire a scuola", "Argomento: benessere dello studente", "Categorie E-03", "ko"], ["lo prendono in giro", "Possibile situazione di bullismo", "Categorie E-03", "ko"]],
+      regole: [["ko", "Situazione delicata riguardante un minore: nessuna risposta automatica", "E-03"], ["ko", "Priorità alta: inoltro immediato al referente", "E-04"]],
+      bozza: null, motivo: "Il messaggio riguarda il benessere di un minore. Non si risponde con un testo preparato.",
+      verifica: { esito: "stop", chi: "Referente per il benessere e dirigente, con priorità alta", motivo: "Situazione delicata riguardante un minore.", sugg: "Contattare la famiglia di persona o per telefono." }, registro: "escalation · benessere dello studente · nessuna bozza" },
+  ],
+  stu: [
+    { titolo: "Atto notificato via PEC", canale: "PEC · studio legale", text: "OGGETTO: Notifica atto di citazione. Il Tribunale di Monza comunica che l'udienza di prima comparizione è fissata per il 14/03/2027. In allegato atto (PDF, 18 pp.).",
+      lettura: [["Canale", "PEC"], ["Lingua", "Italiano"], ["Allegati", "PDF, 18 pagine"], ["Mittente", "Tribunale di Monza"], ["Firma", "Verificata"]],
+      ric: [["Tribunale di Monza", "Autorità giudiziaria", "Anagrafica A-10", "ok"], ["atto di citazione", "Atto introduttivo del giudizio", "Tipologie T-02", "ok"], ["14/03/2027", "Data di udienza (come scritta nel testo)", "Date D-02", "ok"]],
+      regole: [["ok", "Date riportate esattamente come scritte nel testo", "T-01"], ["ok", "Nessun calcolo di termini: spetta al professionista", "T-02"], ["ok", "Allegato da leggere integralmente dal professionista", "T-03"]],
+      bozza: `<div class="out"><p><b>Tipo:</b> atto giudiziario · notifica</p><p><b>Estratto dal testo:</b> Tribunale di Monza · udienza 14/03/2027 · atto di citazione, 18 pp.</p><p><b>Sintesi:</b> 1) citazione notificata via PEC; 2) udienza di prima comparizione fissata; 3) allegato da leggere.</p><p><b>Termini:</b> ${WN("da calcolare e verificare dal professionista")}</p></div>`,
+      verifica: { esito: "ok", chi: "Il professionista legge e gestisce la pratica" }, registro: "scheda predisposta · termini non calcolati per scelta" },
+    { titolo: "Fattura da registrare", canale: "PEC · studio di commercialisti", text: "Trasmissione fattura n. 118 del 12/10/2026. Rossi Impianti S.r.l. Importo € 4.880,00 IVA inclusa. Scadenza pagamento 30 giorni data fattura.",
+      lettura: [["Canale", "PEC"], ["Lingua", "Italiano"], ["Allegati", "XML della fattura"], ["Mittente", "Rossi Impianti S.r.l."], ["Cliente dello studio", "Individuato dal destinatario"]],
+      ric: [["fattura n. 118", "Fattura passiva n. 118 del 12/10/2026", "Documenti D-20", "ok"], ["€ 4.880,00 IVA inclusa", "Totale documento", "Importi I-01", "ok"], ["aliquota IVA", "Non indicata nel testo", "Importi I-02", "warn"], ["30 giorni data fattura", "Scadenza: 11/11/2026", "Scadenze C-05", "ok"]],
+      regole: [["ok", "Importi riportati come da documento, senza arrotondamenti", "I-01"], ["ok", "Scadenza calcolata con la regola indicata nel testo", "C-05"], ["warn", "Aliquota IVA mancante: da verificare sul documento originale", "I-02"]],
+      bozza: `<div class="out"><table><tr><th>Campo</th><th>Valore</th></tr><tr><td>Fornitore</td><td>Rossi Impianti S.r.l.</td></tr><tr><td>Documento</td><td>Fattura n. 118 del 12/10/2026</td></tr><tr><td>Totale</td><td>€ 4.880,00 (IVA inclusa)</td></tr><tr><td>Scadenza</td><td>11/11/2026</td></tr><tr><td>Aliquota IVA</td><td>${WN("da verificare")}</td></tr></table></div>`,
+      verifica: { esito: "ok", chi: "L'addetto verifica l'aliquota e registra" }, registro: "scheda predisposta · 1 avvertenza sull'aliquota" },
+    { limite: true, titolo: "Documento non classificabile", canale: "PEC · studio", text: "Riscontro alla Vs. del 3/9: si allega quanto concordato. (Allegato: scansione illeggibile, 2 pp.)",
+      lettura: [["Canale", "PEC"], ["Lingua", "Italiano"], ["Allegati", "Scansione, 2 pagine"], ["Qualità dell'allegato", "Testo non estraibile"], ["Mittente", "Non associato a una pratica"]],
+      ric: [["Vs. del 3/9", "3 pratiche aperte dello stesso mittente", "Riconciliazione R-01", "ko"], ["quanto concordato", "Contenuto non determinabile", "Tipologie T-00", "ko"], ["scansione", "Qualità insufficiente per la lettura", "Allegati L-03", "ko"]],
+      regole: [["ko", "Documento non leggibile: nessuna sintesi", "E-01"], ["ko", "Pratica non determinabile: nessuna assegnazione automatica", "E-05"]],
+      bozza: null, motivo: "Senza testo leggibile e senza pratica certa una scheda sarebbe solo una supposizione.",
+      verifica: { esito: "stop", chi: "Il professionista, senza scheda né sintesi", motivo: "Allegato illeggibile e pratica non determinabile.", sugg: "Chiedere al mittente un nuovo invio dell'allegato." }, registro: "escalation · allegato illeggibile · nessuna scheda" },
+  ],
 };
-const ORDER = ["acq", "seg", "stu"];
-const DONE_MSG = "<span>Convalidato dalla persona. Solo ora può avvenire l'invio.</span>";
-
-let typeTimer = null, demoKey = "acq", auto = null, userTouched = false;
+const AUTO = [["acq", 0], ["acq", 2], ["seg", 1], ["seg", 2], ["stu", 1], ["stu", 2]];
+const F = { a: "acq", i: 0, reached: -1, shown: -1, timers: [], touched: false, auto: null, started: false };
+let typeTimer = null;
 function typeText(el, text, done) {
   clearInterval(typeTimer);
   if (REDUCED) { el.textContent = text; el.classList.remove("typing"); done && done(); return; }
@@ -477,52 +578,84 @@ function typeText(el, text, done) {
   typeTimer = setInterval(() => {
     i += 2; el.textContent = text.slice(0, i);
     if (i >= text.length) { clearInterval(typeTimer); el.classList.remove("typing"); done && done(); }
-  }, 14);
+  }, 12);
 }
-function showDemo(k, done) {
-  demoKey = k;
-  document.querySelectorAll(".tab").forEach((t) => t.setAttribute("aria-selected", t.dataset.d === k));
-  $("in-label").textContent = DEMO[k].label;
-  $("out-wrap").classList.add("hidden");
-  const run = $("run"); run.disabled = false; run.textContent = "Avvia l'esempio →";
-  typeText($("in-text"), DEMO[k].text, done);
+const fCase = () => CASI[F.a][F.i];
+function fClear() { F.timers.forEach(clearTimeout); F.timers = []; F.reached = -1; F.shown = -1; }
+function fRenderSteps() {
+  const c = fCase();
+  $("f-steps").innerHTML = STEPS.map((s, k) => {
+    const st = k <= F.reached ? ((c.limite && k >= 3) ? "stop" : "done") : "";
+    return `<li><button type="button" class="${st} ${k === F.shown ? "on" : ""}" data-k="${k}" ${k > F.reached ? "disabled" : ""}><span class="n">${k + 1}</span><span class="t">${s}</span></button></li>`;
+  }).join("");
+  $("f-steps").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => { fTouch(); fShow(parseInt(b.dataset.k, 10)); }));
 }
-function runDemo(after) {
-  const d = DEMO[demoKey], out = $("out"), run = $("run");
-  run.disabled = true;
-  $("out-wrap").classList.remove("hidden");
-  out.innerHTML = '<div class="thinking">lettura del documento</div>';
-  setTimeout(() => {
-    out.innerHTML = `${d.out}<div class="human" id="human"><span>Verifica umana · ${d.human}</span><button type="button" id="ok">Convalida</button></div>`;
-    $("ok").addEventListener("click", () => {
-      userTouched = true;
-      const h = $("human"); h.classList.add("done"); h.innerHTML = DONE_MSG;
-    });
-    run.textContent = "Ripeti"; run.disabled = false;
-    after && after();
-  }, 900);
+function fDetail(k) {
+  const c = fCase();
+  if (k === 0) return `<div class="out"><table>${c.lettura.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")}</table></div><p class="note">Il testo viene normalizzato e classificato. Nessun contenuto esce dal flusso.</p>`;
+  if (k === 1) return `<div class="out"><table><tr><th>Scritto</th><th>Riconosciuto</th><th>Regola</th><th>Esito</th></tr>${c.ric.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="mono">${r[2]}</td><td>${r[3] === "ok" ? OK("ok") : r[3] === "warn" ? WN("da verificare") : KO("non riconosciuto")}</td></tr>`).join("")}</table></div><p class="note">Il vocabolario aziendale traduce le parole di clienti e colleghi nei codici del gestionale, una volta sola per tutti.</p>`;
+  if (k === 2) return `<ul class="rules">${c.regole.map((r) => `<li class="${r[0]}"><i>${r[0] === "ok" ? "✓" : r[0] === "warn" ? "!" : "×"}</i><span>${r[1]}</span><em>${r[2]}</em></li>`).join("")}</ul><p class="note">Regole scritte e approvate dal cliente. Ogni esito rimanda a una regola.</p>`;
+  if (k === 3) return c.bozza ? c.bozza : `<div class="stopbox"><b>Nessuna bozza.</b> ${c.motivo}</div>`;
+  const v = c.verifica;
+  return v.esito === "ok"
+    ? `<div class="human" id="f-human"><span>Verifica umana · ${v.chi}</span><button type="button" id="f-ok">Convalida</button></div><p class="note">L'invio avviene solo dopo la convalida della persona.</p>`
+    : `<div class="human stop"><span>Inoltrato a: ${v.chi}</span></div><p><b>Motivo:</b> ${v.motivo}</p><p><b>Suggerito:</b> ${v.sugg}</p>`;
 }
-function autoplay() {
-  if (REDUCED) return;
-  let idx = 0;
-  const cycle = () => {
-    if (userTouched) return;
-    showDemo(ORDER[idx], () => {
-      if (userTouched) return;
-      auto = setTimeout(() => runDemo(() => {
-        if (userTouched) return;
-        auto = setTimeout(() => {
-          if (userTouched) return;
-          const h = $("human");
-          if (h) { h.classList.add("done"); h.innerHTML = DONE_MSG; }
-          auto = setTimeout(() => { idx = (idx + 1) % ORDER.length; cycle(); }, 2600);
-        }, 2600);
-      }), 700);
-    });
+function fShow(k) {
+  F.shown = k; fRenderSteps();
+  const d = $("f-detail");
+  d.innerHTML = `<div class="fd"><div class="label">${k + 1}. ${STEPS[k]}</div>${fDetail(k)}</div>`;
+  const ok = $("f-ok");
+  if (ok) ok.addEventListener("click", () => { fTouch(); fConvalida(); });
+}
+function fConvalida() {
+  const h = $("f-human"); if (!h) return;
+  h.classList.add("done"); h.innerHTML = "<span>Convalidato dalla persona. Solo ora può avvenire l'invio.</span>";
+  const l = $("f-log"); if (l) l.innerHTML = l.innerHTML.replace("in attesa di convalida", "convalidata");
+}
+function fLog() {
+  const c = fCase(), t = new Date(), hh = String(t.getHours()).padStart(2, "0") + ":" + String(t.getMinutes()).padStart(2, "0");
+  $("f-log").innerHTML = `<span class="mono">REGISTRO · ${hh} · ${c.registro}${c.verifica.esito === "ok" ? " · in attesa di convalida" : ""}</span>`;
+}
+function fSelect(a, i) {
+  fClear(); F.a = a; F.i = i;
+  document.querySelectorAll("#f-ambito button").forEach((x) => x.setAttribute("aria-pressed", x.dataset.a === a));
+  $("f-casi").innerHTML = CASI[a].map((c, k) => `<button type="button" class="case ${k === i ? "on" : ""}" data-i="${k}"><b>${c.titolo}</b><small>${c.canale}</small>${c.limite ? '<span class="lim">caso limite</span>' : ""}</button>`).join("");
+  $("f-casi").querySelectorAll(".case").forEach((b) => b.addEventListener("click", () => { fTouch(); fSelect(F.a, parseInt(b.dataset.i, 10)); }));
+  $("f-label").textContent = fCase().canale;
+  $("f-log").innerHTML = ""; $("f-detail").innerHTML = '<div class="fd empty">Avviate il flusso per vedere i passaggi, uno per volta.</div>';
+  const run = $("f-run"); run.disabled = false; run.textContent = "Avvia il flusso →";
+  fRenderSteps();
+  typeText($("f-text"), fCase().text, () => { if (F.afterType) { const f = F.afterType; F.afterType = null; f(); } });
+}
+function fRun(done) {
+  fClear(); $("f-run").disabled = true; $("f-log").innerHTML = "";
+  const finish = () => { $("f-run").textContent = "Ripeti"; $("f-run").disabled = false; fLog(); done && done(); };
+  if (REDUCED) { F.reached = 4; fShow(4); finish(); return; }
+  STEPS.forEach((_, k) => F.timers.push(setTimeout(() => { F.reached = k; fShow(k); if (k === 4) finish(); }, 350 + k * 1250)));
+}
+function fTouch() { if (F.touched) return; F.touched = true; clearTimeout(F.auto); F.afterType = null; }
+function fAutoplay() {
+  if (REDUCED || F.touched) return;
+  let n = 0;
+  const next = () => {
+    if (F.touched) return;
+    const [a, i] = AUTO[n % AUTO.length]; n++;
+    F.afterType = () => { F.auto = setTimeout(() => fRun(() => { F.auto = setTimeout(() => { if (F.touched) return; if (fCase().verifica.esito === "ok") fConvalida(); F.auto = setTimeout(next, 2800); }, 3200); }), 600); };
+    fSelect(a, i);
   };
-  cycle();
+  next();
 }
-function stopAuto() { userTouched = true; clearTimeout(auto); }
+function flowInit() {
+  bindSeg("#f-ambito", "a", (a) => { fTouch(); fSelect(a, 0); });
+  $("f-run").addEventListener("click", () => { fTouch(); fRun(); });
+  fSelect("acq", 0);
+  const sec = $("flusso");
+  if (!REDUCED && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting && !F.started) { F.started = true; io.disconnect(); if (!F.touched) fAutoplay(); } }), { threshold: 0.35 });
+    io.observe(sec);
+  }
+}
 
 /* ═════════ Strumento 1 · Mappa delle attività ═════════ */
 const ATT = {
@@ -884,7 +1017,7 @@ function render() {
 
 /* ═════════ Comparsa allo scroll ═════════ */
 function initReveal() {
-  const sel = ".strip div, .ribbon, .stats, .picker, .panel > div, .node, .step, .grid > .card, .calc-in, .rs, .verdict, .tool-in, .eyebrow, section h2";
+  const sel = ".strip div, .deliv, .flow-in, .flow-main, .ribbon, .stats, .picker, .panel > div, .node, .step, .grid > .card, .calc-in, .rs, .verdict, .tool-in, .eyebrow, section h2";
   const els = [...document.querySelectorAll(sel)];
   els.forEach((el) => {
     el.classList.add("reveal");
@@ -1014,11 +1147,8 @@ function bindSeg(sel, attr, cb) {
 }
 document.addEventListener("DOMContentLoaded", () => {
   splitHeadline();
-  // demo
-  document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { stopAuto(); showDemo(t.dataset.d); }));
-  $("run").addEventListener("click", () => { stopAuto(); runDemo(); });
-  $("demo").addEventListener("pointerdown", () => { if (!userTouched) stopAuto(); });
-  showDemo("acq", () => { setTimeout(() => { if (!userTouched) autoplay(); }, 300); });
+  // flusso
+  flowInit();
 
   // schede degli ambiti
   document.querySelectorAll("#soluzioni .pick").forEach((b) => b.addEventListener("click", () => {
@@ -1144,24 +1274,15 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     </div>
 
-    <div class="demo" id="demo">
-      <div class="tabs" role="tablist">
-        <button class="tab" role="tab" aria-selected="true" data-d="acq">Acquisti</button>
-        <button class="tab" role="tab" aria-selected="false" data-d="seg">Segreteria</button>
-        <button class="tab" role="tab" aria-selected="false" data-d="stu">Studio</button>
-      </div>
-      <div class="demo-body">
-        <div>
-          <div class="label" id="in-label">Comunicazione in ingresso</div>
-          <div class="inbox" id="in-text"></div>
-        </div>
-        <button class="btn sm" id="run" style="justify-self:start">Avvia l'esempio →</button>
-        <div id="out-wrap" class="hidden">
-          <div class="label">Bozza predisposta dall'agente</div>
-          <div class="out" id="out"></div>
-        </div>
-        <p class="note" style="margin:0">Esempio illustrativo con dati fittizi.</p>
-      </div>
+    <div class="deliv" id="deliv">
+      <div class="deliv-head"><span>Il percorso</span><span>quattro fasi, quattro documenti</span></div>
+      <ol class="deliv-list">
+        <li><i>01</i><div><small>Fase 1 · Ascolto</small><b>Mappa dei processi</b><p>Interviste a chi svolge il lavoro: attività, eccezioni, tempi reali.</p></div></li>
+        <li><i>02</i><div><small>Fase 2 · Mappatura</small><b>Perimetro e punti di controllo</b><p>Ciò che non si automatizza; dove interviene una persona e quando si passa la mano.</p></div></li>
+        <li><i>03</i><div><small>Fase 3 · Realizzazione</small><b>Vocabolario, regole e flusso</b><p>Termini e codici univoci, regole scritte, flusso basato su fonti verificate.</p></div></li>
+        <li><i>04</i><div><small>Fase 4 · Presidio</small><b>Registro e indicatori</b><p>Errori e richieste non gestite, verifiche a campione, relazione finale.</p></div></li>
+      </ol>
+      <div class="deliv-foot">Ogni fase si chiude con un documento e con un criterio di verifica concordato. Un esempio di flusso funzionante è nella sezione «Un flusso, passo per passo».</div>
     </div>
   </div>
 
@@ -1253,6 +1374,29 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="node" data-n="04">Scheda pratica e sintesi in tre punti</div>
         <div class="node hum" data-n="05">Lettura e gestione da parte del professionista</div>
         <div class="node esc" data-n="↳">Documento non classificabile: passaggio diretto al professionista</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="flusso">
+  <div class="wrap">
+    <p class="eyebrow">Il flusso in dettaglio</p>
+    <h2>Un flusso, passo per passo.</h2>
+    <p class="lead" style="max-width:700px">Scegliete un caso e avviatelo. La bozza è l'ultimo passo: il lavoro è in quelli che la precedono. Alcuni casi si completano, altri si fermano per scelta di progetto, e il flusso dice perché.</p>
+    <div class="flow">
+      <div class="flow-in">
+        <div class="field"><label class="l">Ambito</label>
+          <div class="seg light" id="f-ambito"><button type="button" aria-pressed="true" data-a="acq">Acquisti</button><button type="button" aria-pressed="false" data-a="seg">Segreteria</button><button type="button" aria-pressed="false" data-a="stu">Studio</button></div></div>
+        <div class="field"><label class="l">Caso</label><div class="caselist" id="f-casi"></div></div>
+        <div class="field"><label class="l" id="f-label">Comunicazione in ingresso</label><div class="inbox" id="f-text"></div></div>
+        <div class="flow-btns"><button class="btn sm" id="f-run" type="button">Avvia il flusso →</button></div>
+        <p class="note" style="margin:14px 0 0">Esempi illustrativi con dati fittizi.</p>
+      </div>
+      <div class="flow-main">
+        <ol class="stepper" id="f-steps" aria-label="Passi del flusso"></ol>
+        <div class="flow-detail" id="f-detail"></div>
+        <div class="flow-log" id="f-log"></div>
       </div>
     </div>
   </div>

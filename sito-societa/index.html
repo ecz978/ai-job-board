@@ -77,24 +77,15 @@
       </div>
     </div>
 
-    <div class="demo" id="demo">
-      <div class="tabs" role="tablist">
-        <button class="tab" role="tab" aria-selected="true" data-d="acq">Acquisti</button>
-        <button class="tab" role="tab" aria-selected="false" data-d="seg">Segreteria</button>
-        <button class="tab" role="tab" aria-selected="false" data-d="stu">Studio</button>
-      </div>
-      <div class="demo-body">
-        <div>
-          <div class="label" id="in-label">Comunicazione in ingresso</div>
-          <div class="inbox" id="in-text"></div>
-        </div>
-        <button class="btn sm" id="run" style="justify-self:start">Avvia l'esempio →</button>
-        <div id="out-wrap" class="hidden">
-          <div class="label">Bozza predisposta dall'agente</div>
-          <div class="out" id="out"></div>
-        </div>
-        <p class="note" style="margin:0">Esempio illustrativo con dati fittizi.</p>
-      </div>
+    <div class="deliv" id="deliv">
+      <div class="deliv-head"><span>Il percorso</span><span>quattro fasi, quattro documenti</span></div>
+      <ol class="deliv-list">
+        <li><i>01</i><div><small>Fase 1 · Ascolto</small><b>Mappa dei processi</b><p>Interviste a chi svolge il lavoro: attività, eccezioni, tempi reali.</p></div></li>
+        <li><i>02</i><div><small>Fase 2 · Mappatura</small><b>Perimetro e punti di controllo</b><p>Ciò che non si automatizza; dove interviene una persona e quando si passa la mano.</p></div></li>
+        <li><i>03</i><div><small>Fase 3 · Realizzazione</small><b>Vocabolario, regole e flusso</b><p>Termini e codici univoci, regole scritte, flusso basato su fonti verificate.</p></div></li>
+        <li><i>04</i><div><small>Fase 4 · Presidio</small><b>Registro e indicatori</b><p>Errori e richieste non gestite, verifiche a campione, relazione finale.</p></div></li>
+      </ol>
+      <div class="deliv-foot">Ogni fase si chiude con un documento e con un criterio di verifica concordato. Un esempio di flusso funzionante è nella sezione «Un flusso, passo per passo».</div>
     </div>
   </div>
 
@@ -186,6 +177,29 @@
         <div class="node" data-n="04">Scheda pratica e sintesi in tre punti</div>
         <div class="node hum" data-n="05">Lettura e gestione da parte del professionista</div>
         <div class="node esc" data-n="↳">Documento non classificabile: passaggio diretto al professionista</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="flusso">
+  <div class="wrap">
+    <p class="eyebrow">Il flusso in dettaglio</p>
+    <h2>Un flusso, passo per passo.</h2>
+    <p class="lead" style="max-width:700px">Scegliete un caso e avviatelo. La bozza è l'ultimo passo: il lavoro è in quelli che la precedono. Alcuni casi si completano, altri si fermano per scelta di progetto, e il flusso dice perché.</p>
+    <div class="flow">
+      <div class="flow-in">
+        <div class="field"><label class="l">Ambito</label>
+          <div class="seg light" id="f-ambito"><button type="button" aria-pressed="true" data-a="acq">Acquisti</button><button type="button" aria-pressed="false" data-a="seg">Segreteria</button><button type="button" aria-pressed="false" data-a="stu">Studio</button></div></div>
+        <div class="field"><label class="l">Caso</label><div class="caselist" id="f-casi"></div></div>
+        <div class="field"><label class="l" id="f-label">Comunicazione in ingresso</label><div class="inbox" id="f-text"></div></div>
+        <div class="flow-btns"><button class="btn sm" id="f-run" type="button">Avvia il flusso →</button></div>
+        <p class="note" style="margin:14px 0 0">Esempi illustrativi con dati fittizi.</p>
+      </div>
+      <div class="flow-main">
+        <ol class="stepper" id="f-steps" aria-label="Passi del flusso"></ol>
+        <div class="flow-detail" id="f-detail"></div>
+        <div class="flow-log" id="f-log"></div>
       </div>
     </div>
   </div>
