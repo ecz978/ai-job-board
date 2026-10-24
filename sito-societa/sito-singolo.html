@@ -884,6 +884,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("#soluzioni .panel").forEach((p) => p.classList.toggle("hidden", p.dataset.p !== b.dataset.s));
   }));
 
+  // filtro dei contesti
+  document.querySelectorAll("#casi-filtro .pick").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll("#casi-filtro .pick").forEach((x) => x.setAttribute("aria-selected", x === b));
+    document.querySelectorAll("#casi-grid .card").forEach((c) => c.classList.toggle("hidden", b.dataset.f !== "all" && c.dataset.a !== b.dataset.f));
+  }));
+
   $("cells").innerHTML = Array.from({ length: 30 }, (_, i) => `<i class="${i < 24 ? "" : "o"}" style="--k:${i}"></i>`).join("");
 
   // schede degli strumenti
@@ -951,7 +957,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <a href="#dati">Dati</a>
       <a href="#strumenti">Strumenti</a>
       <a href="#hardware">Dimensionamento</a>
-      <a href="#casi">Esperienze</a>
+      <a href="#casi">Contesti</a>
       <a href="#chisiamo">Chi siamo</a>
     </nav>
     <a class="btn sm" href="#contatti">Contatti</a>
@@ -1256,17 +1262,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <section id="casi" class="cases">
   <div class="wrap">
-    <p class="eyebrow">Esperienze</p>
-    <h2>Contesti in cui lavoriamo.</h2>
-    <p class="lead" style="max-width:640px">Per ciascun contesto indichiamo l'indicatore con cui si misura l'esito dell'intervento. I risultati vengono rilevati in fase di collaudo, non promessi in anticipo.</p>
-    <p class="note" style="margin-top:14px"><span class="ph">Da completare prima della pubblicazione:</span> sostituire con progetti reali, descritti con metodo di misura e risultato rilevato.</p>
-    <div class="grid" style="margin-top:36px">
-      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Centro di formazione</h3><p>Segreteria e pianificazione degli appuntamenti</p><div class="indic"><b>Indicatore</b>Quota di richieste ricorrenti gestite senza intervento dell'operatore</div></div>
-      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Commercio di materiale edile</h3><p>Predisposizione dei preventivi</p><div class="indic"><b>Indicatore</b>Tempo medio per preventivo e quota di bozze utilizzate senza correzioni sostanziali</div></div>
-      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Studio tecnico associato</h3><p>Analisi di bandi e computi</p><div class="indic"><b>Indicatore</b>Tempo di analisi per bando e correttezza di clausole e scadenze estratte</div></div>
-      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Studio legale e fiscale</h3><p>Smistamento della posta certificata</p><div class="indic"><b>Indicatore</b>Tempo giornaliero dedicato allo smistamento e scadenze non rilevate</div></div>
-      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Agenzia per il lavoro</h3><p>Preselezione dei curriculum, con valutazione affidata al selezionatore</p><div class="indic"><b>Indicatore</b>Tempo di preselezione e tempo di risposta ai candidati</div></div>
-      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Distribuzione e logistica</h3><p>Inserimento degli ordini cliente</p><div class="indic"><b>Indicatore</b>Tempo per ordine ed errori di inserimento dati</div></div>
+    <p class="eyebrow">Contesti di applicazione</p>
+    <h2>Dodici contesti in cui il metodo si applica.</h2>
+    <p class="lead" style="max-width:660px">Per ciascun contesto indichiamo l'indicatore con cui si misura l'esito dell'intervento. I risultati vengono rilevati in fase di verifica, non promessi in anticipo.</p>
+    <p class="note" style="margin-top:14px"><span class="ph">Da completare prima della pubblicazione:</span> sono esempi di applicazione, non riferimenti. Sostituire o affiancare con progetti reali, descritti con metodo di misura e risultato rilevato.</p>
+    <div class="picker" id="casi-filtro" role="tablist" style="margin-top:28px">
+      <button class="pick" role="tab" aria-selected="true" data-f="all">Tutti · 12</button>
+      <button class="pick" role="tab" aria-selected="false" data-f="acq">Acquisti e ordini</button>
+      <button class="pick" role="tab" aria-selected="false" data-f="seg">Segreterie</button>
+      <button class="pick" role="tab" aria-selected="false" data-f="stu">Studi professionali</button>
+      <button class="pick" role="tab" aria-selected="false" data-f="alt">Altri contesti</button>
+    </div>
+    <div class="grid" id="casi-grid" style="margin-top:36px">
+      <div class="card" data-a="seg"><span class="tag">Esempio illustrativo</span><h3>Centro di formazione</h3><p>Segreteria e pianificazione degli appuntamenti</p><div class="indic"><b>Indicatore</b>Quota di richieste ricorrenti gestite senza intervento dell'operatore</div></div>
+      <div class="card" data-a="acq"><span class="tag">Esempio illustrativo</span><h3>Commercio di materiale edile</h3><p>Predisposizione dei preventivi</p><div class="indic"><b>Indicatore</b>Tempo medio per preventivo e quota di bozze utilizzate senza correzioni sostanziali</div></div>
+      <div class="card" data-a="stu"><span class="tag">Esempio illustrativo</span><h3>Studio tecnico associato</h3><p>Analisi di bandi e computi</p><div class="indic"><b>Indicatore</b>Tempo di analisi per bando e correttezza di clausole e scadenze estratte</div></div>
+      <div class="card" data-a="stu"><span class="tag">Esempio illustrativo</span><h3>Studio legale e fiscale</h3><p>Smistamento della posta certificata</p><div class="indic"><b>Indicatore</b>Tempo giornaliero dedicato allo smistamento e scadenze non rilevate</div></div>
+      <div class="card" data-a="alt"><span class="tag">Esempio illustrativo</span><h3>Agenzia per il lavoro</h3><p>Preselezione dei curriculum, con valutazione affidata al selezionatore</p><div class="indic"><b>Indicatore</b>Tempo di preselezione e tempo di risposta ai candidati</div></div>
+      <div class="card" data-a="acq"><span class="tag">Esempio illustrativo</span><h3>Distribuzione e logistica</h3><p>Inserimento degli ordini cliente</p><div class="indic"><b>Indicatore</b>Tempo per ordine ed errori di inserimento dati</div></div>
+      <div class="card" data-a="stu"><span class="tag">Esempio illustrativo</span><h3>Studio di commercialisti</h3><p>Raccolta e controllo dei documenti contabili dei clienti</p><div class="indic"><b>Indicatore</b>Tempo di registrazione per documento e quota di documenti con dati mancanti rilevati in anticipo</div></div>
+      <div class="card" data-a="acq"><span class="tag">Esempio illustrativo</span><h3>Azienda manifatturiera</h3><p>Riconciliazione tra ordine, bolla e fattura</p><div class="indic"><b>Indicatore</b>Tempo per ciclo di controllo e discrepanze individuate prima del pagamento</div></div>
+      <div class="card" data-a="seg"><span class="tag">Esempio illustrativo</span><h3>Scuola paritaria</h3><p>Segreteria didattica: comunicazioni e modulistica</p><div class="indic"><b>Indicatore</b>Quota di richieste delle famiglie gestite con risposta verificata e tempo di risposta</div></div>
+      <div class="card" data-a="seg"><span class="tag">Esempio illustrativo</span><h3>Ente di formazione accreditato</h3><p>Rendicontazione dei corsi finanziati</p><div class="indic"><b>Indicatore</b>Tempo di preparazione del rendiconto ed errori formali individuati prima della consegna</div></div>
+      <div class="card" data-a="stu"><span class="tag">Esempio illustrativo</span><h3>Studio di consulenza del lavoro</h3><p>Smistamento delle richieste e bozze di risposta ai dipendenti</p><div class="indic"><b>Indicatore</b>Tempo di smistamento e tempo di preparazione delle bozze</div></div>
+      <div class="card" data-a="acq"><span class="tag">Esempio illustrativo</span><h3>Impresa di impiantistica</h3><p>Richieste di offerta ai fornitori</p><div class="indic"><b>Indicatore</b>Tempo per richiesta e completezza dei dati nelle richieste inviate</div></div>
     </div>
   </div>
 </section>

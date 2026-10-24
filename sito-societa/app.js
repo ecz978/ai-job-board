@@ -549,6 +549,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("#soluzioni .panel").forEach((p) => p.classList.toggle("hidden", p.dataset.p !== b.dataset.s));
   }));
 
+  // filtro dei contesti
+  document.querySelectorAll("#casi-filtro .pick").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll("#casi-filtro .pick").forEach((x) => x.setAttribute("aria-selected", x === b));
+    document.querySelectorAll("#casi-grid .card").forEach((c) => c.classList.toggle("hidden", b.dataset.f !== "all" && c.dataset.a !== b.dataset.f));
+  }));
+
   $("cells").innerHTML = Array.from({ length: 30 }, (_, i) => `<i class="${i < 24 ? "" : "o"}" style="--k:${i}"></i>`).join("");
 
   // schede degli strumenti
