@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg stroke='%230e1623' stroke-opacity='.4'%3E%3Cpath d='M6 11L16 6M6 11L16 16M6 21L16 16M6 21L16 26M16 6L26 11M16 16L26 21M16 26L26 21'/%3E%3C/g%3E%3Cg fill='%230e1623'%3E%3Ccircle cx='6' cy='11' r='2.4'/%3E%3Ccircle cx='6' cy='21' r='2.4'/%3E%3Ccircle cx='16' cy='6' r='2.4'/%3E%3Ccircle cx='16' cy='16' r='2.4'/%3E%3Ccircle cx='16' cy='26' r='2.4'/%3E%3Ccircle cx='26' cy='11' r='2.4'/%3E%3C/g%3E%3Ccircle cx='26' cy='21' r='2.8' fill='%232457ff'/%3E%3C/svg%3E">
-<title>[Nome] · AI per segreterie, acquisti e studi</title>
-<meta name="description" content="Agenti AI che preparano il lavoro e lasciano la decisione alle persone. Prezzo per modulo, collaudo con soglie scritte, dati sotto il vostro controllo.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg stroke='%230e1623' stroke-opacity='.4'%3E%3Cpath d='M6 11L16 6M6 11L16 16M6 21L16 16M6 21L16 26M16 6L26 11M16 16L26 21M16 26L26 21'/%3E%3C/g%3E%3Cg fill='%230e1623'%3E%3Ccircle cx='6' cy='11' r='2.4'/%3E%3Ccircle cx='6' cy='21' r='2.4'/%3E%3Ccircle cx='16' cy='6' r='2.4'/%3E%3Ccircle cx='16' cy='16' r='2.4'/%3E%3Ccircle cx='16' cy='26' r='2.4'/%3E%3Ccircle cx='26' cy='11' r='2.4'/%3E%3C/g%3E%3Ccircle cx='26' cy='21' r='2.8' fill='%232748c8'/%3E%3C/svg%3E">
+<title>[Nome] · Consulenza sull'intelligenza artificiale nei processi</title>
+<meta name="description" content="Consulenza per introdurre l'intelligenza artificiale nei processi di segreterie, uffici acquisti e studi professionali: analisi, progettazione, verifica dei risultati e presidio nel tempo.">
 <link rel="stylesheet" href="fonts.css">
 <link rel="stylesheet" href="style.css">
 <script src="app.js" defer></script>
@@ -29,13 +29,14 @@
       <span>[Nome]</span>
     </a>
     <nav>
-      <a href="#soluzioni">Soluzioni</a>
-      <a href="#metodo">Metodo</a>
+      <a href="#soluzioni">Ambiti</a>
+      <a href="#metodo">Approccio</a>
       <a href="#dati">Dati</a>
-      <a href="#hardware">Hardware</a>
-      <a href="#casi">Casi</a>
+      <a href="#hardware">Dimensionamento</a>
+      <a href="#casi">Esperienze</a>
+      <a href="#chisiamo">Chi siamo</a>
     </nav>
-    <a class="btn sm" href="#contatti">Parliamone</a>
+    <a class="btn sm" href="#contatti">Contatti</a>
   </div>
 </header>
 
@@ -44,17 +45,17 @@
   <canvas id="net" aria-hidden="true"></canvas>
   <div class="wrap hero-grid">
     <div>
-      <p class="eyebrow">Segreterie · acquisti · studi professionali</p>
-      <h1>L'AI fa la bozza.<br><em>Tu firmi.</em></h1>
-      <p class="lead">Leggiamo email, PEC e ordini al posto di qualcuno e prepariamo il documento. Una persona controlla e conferma. Prezzo per modulo, collaudo scritto prima di partire.</p>
+      <p class="eyebrow">Consulenza sull'intelligenza artificiale</p>
+      <h1>L'intelligenza artificiale nei processi, <em>con metodo.</em></h1>
+      <p class="lead">Affianchiamo segreterie, uffici acquisti e studi professionali nell'introduzione di strumenti basati su modelli linguistici: analisi del processo, progettazione, verifica dei risultati e presidio nel tempo.</p>
       <div class="cta-row">
-        <a class="btn hot" href="#contatti">Prenota 30 minuti</a>
-        <a class="btn ghost" href="#soluzioni">Cosa facciamo</a>
+        <a class="btn hot" href="#contatti">Richiedi un incontro</a>
+        <a class="btn ghost" href="#metodo">L'approccio</a>
       </div>
       <div class="stats">
-        <div><b>0</b><span>scritture sul vostro gestionale</span></div>
-        <div><b>100%</b><span>delle bozze approvate da una persona</span></div>
-        <div><b>90</b><span>giorni di affiancamento dopo il collaudo</span></div>
+        <div><b>Sola lettura</b><span>I sistemi gestionali vengono letti, non modificati.</span></div>
+        <div><b>Decisione umana</b><span>Ogni documento è convalidato da una persona.</span></div>
+        <div><b>Verifica</b><span>I risultati si misurano su criteri concordati.</span></div>
       </div>
     </div>
 
@@ -66,42 +67,44 @@
       </div>
       <div class="demo-body">
         <div>
-          <div class="label" id="in-label">Email in arrivo</div>
+          <div class="label" id="in-label">Comunicazione in ingresso</div>
           <div class="inbox" id="in-text"></div>
         </div>
-        <button class="btn sm" id="run" style="justify-self:start">Prepara la bozza →</button>
+        <button class="btn sm" id="run" style="justify-self:start">Avvia l'esempio →</button>
         <div id="out-wrap" class="hidden">
-          <div class="label">Bozza dell'agente</div>
+          <div class="label">Bozza predisposta dall'agente</div>
           <div class="out" id="out"></div>
         </div>
-        <p class="note" style="margin:0">Esempio con dati fittizi. Nessun dato reale.</p>
+        <p class="note" style="margin:0">Esempio illustrativo con dati fittizi.</p>
       </div>
     </div>
   </div>
+
   <div class="wrap">
-    <div class="ribbon" aria-label="Come passa il lavoro">
+    <div class="ribbon" aria-label="Percorso del lavoro">
       <div class="rb"><small>Ingresso</small><b>Email · PEC · PDF</b></div><i></i>
       <div class="rb"><small>Lettura</small><b>Gestionale in sola lettura</b></div><i></i>
-      <div class="rb"><small>Agente</small><b>Prepara la bozza</b></div><i></i>
-      <div class="rb hum"><small>Persona</small><b>Controlla e approva</b></div><i></i>
-      <div class="rb"><small>Uscita</small><b>Invio e scheda pratica</b></div>
+      <div class="rb"><small>Agente</small><b>Predispone la bozza</b></div><i></i>
+      <div class="rb hum"><small>Persona</small><b>Verifica e convalida</b></div><i></i>
+      <div class="rb"><small>Uscita</small><b>Invio e archiviazione</b></div>
     </div>
   </div>
 </section>
 
 <div class="strip">
   <div class="wrap">
-    <div><b>01</b>L'AI prepara il lavoro e non prende decisioni.</div>
-    <div><b>02</b>I casi ambigui vanno a una persona, senza bozza.</div>
-    <div><b>03</b>La qualità si misura su criteri scritti, non sull'effetto.</div>
-    <div><b>04</b>Sul vostro gestionale leggiamo. Non scriviamo.</div>
+    <div><b>I</b>Lo strumento predispone, la persona decide.</div>
+    <div><b>II</b>I casi dubbi sono affidati a un operatore, senza bozza.</div>
+    <div><b>III</b>La qualità si misura su criteri stabiliti in anticipo.</div>
+    <div><b>IV</b>I sistemi gestionali sono consultati, non modificati.</div>
   </div>
 </div>
 
 <section id="soluzioni">
   <div class="wrap">
-    <p class="eyebrow">Soluzioni</p>
-    <h2>Tre ambiti, un metodo.</h2>
+    <p class="eyebrow">Ambiti di intervento</p>
+    <h2>Tre ambiti, un unico metodo.</h2>
+    <p class="lead" style="max-width:640px">Lavoriamo dove il lavoro è documentale, ripetitivo e governato da regole: la comunicazione in ingresso viene letta, classificata e trasformata in una bozza che una persona verifica.</p>
     <div class="picker" role="tablist">
       <button class="pick" role="tab" aria-selected="true" data-s="acq">Acquisti e ordini</button>
       <button class="pick" role="tab" aria-selected="false" data-s="seg">Segreterie</button>
@@ -110,58 +113,61 @@
 
     <div class="panel" data-p="acq">
       <div>
-        <h3>Dall'email al documento da approvare</h3>
-        <p class="muted">Richieste in formati diversi, codici scritti a modo del cliente, ore nei listini. Si parte da un vocabolario aziendale: ogni parola, codice e indicatore ha un solo significato per tutti.</p>
-        <h4>Cosa fa</h4>
-        <ul><li>Riconosce cliente e articoli da descrizioni libere e sigle.</li><li>Controlla giacenze, calcola il margine.</li><li>Prepara preventivo o ordine, con il motivo di ogni prezzo.</li><li>Propone riordini e confronta le offerte a costo finale.</li></ul>
-        <h4>Cosa non fa</h4>
-        <ul><li>Non scrive sul database di produzione.</li><li>Non sceglie i prezzi né invia: lo fa la persona.</li></ul>
+        <h3>Uffici acquisti e commerciale</h3>
+        <h4>La situazione</h4>
+        <p class="muted">Richieste in formati diversi, codici indicati in modo non uniforme, tempo dedicato alla ricerca nei listini. Il primo intervento è la definizione di un vocabolario aziendale: ogni termine, codice e indicatore ha un solo significato per tutti i reparti.</p>
+        <h4>L'intervento</h4>
+        <ul><li>Riconoscimento di cliente e articoli da descrizioni libere e sigle.</li><li>Verifica delle giacenze e calcolo del margine.</li><li>Predisposizione di preventivi e ordini, con il motivo di ogni prezzo proposto.</li><li>Proposte di riordino e confronto delle offerte a costo finale.</li></ul>
+        <h4>I limiti</h4>
+        <ul><li>Nessuna scrittura sul sistema gestionale di produzione.</li><li>Prezzi, ordini e invii restano di competenza della persona.</li></ul>
       </div>
       <div class="pipe">
-        <div class="node" data-n="01">Email o ordine (testo, PDF, immagine)</div>
-        <div class="node" data-n="02">Estrazione di quantità, materiali, tempi</div>
+        <div class="node" data-n="01">Ricezione di email o ordine (testo, PDF, immagine)</div>
+        <div class="node" data-n="02">Estrazione di quantità, materiali e tempi</div>
         <div class="node" data-n="03">Riconciliazione con anagrafiche e codici</div>
-        <div class="node" data-n="04">Bozza con margine, giacenza, motivo del prezzo</div>
-        <div class="node hum" data-n="05">Controllo umano: il commerciale approva</div>
-        <div class="node esc" data-n="↳">Codice non riconosciuto → direttamente all'ufficio</div>
+        <div class="node" data-n="04">Bozza con margine, giacenza e motivazione del prezzo</div>
+        <div class="node hum" data-n="05">Verifica e convalida da parte del responsabile</div>
+        <div class="node esc" data-n="↳">Codice non riconosciuto: passaggio diretto all'ufficio</div>
       </div>
     </div>
 
     <div class="panel hidden" data-p="seg">
       <div>
-        <h3>Scuole private e centri di formazione</h3>
-        <p class="muted">Nei periodi di iscrizione la segreteria passa ore su risposte ripetitive (orari, costi, requisiti) e appuntamenti da fissare.</p>
-        <h4>Cosa fa</h4>
-        <ul><li>Risponde dalla vostra documentazione, citando la fonte.</li><li>Propone gli slot dal calendario.</li><li>Prepara la bozza: la conferma è dell'operatore.</li></ul>
-        <h4>Cosa non fa</h4>
-        <ul><li>Non valuta né seleziona studenti.</li><li>Non tratta i casi ambigui: li passa a una persona.</li></ul>
+        <h3>Segreterie di scuole e centri di formazione</h3>
+        <h4>La situazione</h4>
+        <p class="muted">Nei periodi di iscrizione la segreteria dedica gran parte del tempo a risposte ricorrenti (orari, costi, requisiti) e alla fissazione di appuntamenti.</p>
+        <h4>L'intervento</h4>
+        <ul><li>Risposte basate sulla documentazione ufficiale, con indicazione della fonte.</li><li>Proposta degli appuntamenti disponibili in calendario.</li><li>Predisposizione della risposta, che l'operatore conferma.</li></ul>
+        <h4>I limiti</h4>
+        <ul><li>Nessuna valutazione né selezione degli studenti.</li><li>Le richieste ambigue sono trasferite a un operatore.</li></ul>
       </div>
       <div class="pipe">
-        <div class="node" data-n="01">Richiesta (sito, email)</div>
+        <div class="node" data-n="01">Richiesta dell'utente (sito, email)</div>
         <div class="node" data-n="02">Classificazione: informazione o colloquio</div>
-        <div class="node" data-n="03">Risposta da base di conoscenza, oppure verifica calendario</div>
-        <div class="node" data-n="04">Bozza di risposta o proposta di slot</div>
-        <div class="node hum" data-n="05">Controllo umano: l'operatore conferma</div>
-        <div class="node esc" data-n="↳">Richiesta ambigua → direttamente all'operatore</div>
+        <div class="node" data-n="03">Risposta dalla base documentale, oppure verifica del calendario</div>
+        <div class="node" data-n="04">Bozza di risposta o proposta di appuntamento</div>
+        <div class="node hum" data-n="05">Verifica e conferma da parte dell'operatore</div>
+        <div class="node esc" data-n="↳">Richiesta ambigua: passaggio diretto all'operatore</div>
       </div>
     </div>
 
     <div class="panel hidden" data-p="stu">
       <div>
-        <h3>Studi legali, commercialisti, tecnici</h3>
-        <p class="muted">Centinaia di PEC e documenti, scadenze da non perdere, bandi da leggere. La riservatezza è il requisito: l'elaborazione può restare interamente in studio, su hardware vostro.</p>
-        <h4>Cosa fa</h4>
-        <ul><li>Classifica il documento, estrae parti, ruoli, date.</li><li>Compila scheda pratica e scadenzario, scrive una sintesi in tre punti.</li><li>Per i bandi: estrae vincoli e rischi in una scheda di fattibilità.</li></ul>
-        <h4>Cosa non fa</h4>
-        <ul><li>Non sostituisce la lettura del professionista sul testo originale.</li><li>Non calcola né decide termini e responsabilità professionali.</li></ul>
+        <h3>Studi legali, commercialisti e tecnici</h3>
+        <h4>La situazione</h4>
+        <p class="muted">Un flusso continuo di PEC e documenti, scadenze da presidiare, bandi e disciplinari da leggere. La riservatezza è un requisito: l'elaborazione può restare interamente in studio, su infrastruttura del cliente.</p>
+        <h4>L'intervento</h4>
+        <ul><li>Classificazione del documento ed estrazione di parti, ruoli e date.</li><li>Compilazione della scheda pratica e dello scadenzario, con una sintesi in tre punti.</li><li>Per i bandi: estrazione di vincoli e rischi in una scheda di fattibilità.</li></ul>
+        <h4>I limiti</h4>
+        <ul><li>La lettura del testo originale resta al professionista.</li><li>Calcolo dei termini e responsabilità professionale non sono delegati allo strumento.</li></ul>
       </div>
       <div class="pipe">
-        <div class="node" data-n="01">PEC o documento (PDF, p7m, scansione)</div>
+        <div class="node" data-n="01">Ricezione di PEC o documento (PDF, p7m, scansione)</div>
         <div class="node" data-n="02">Classificazione: atto, notifica, fattura, comunicazione</div>
-        <div class="node" data-n="03">Estrazione di parti, ruoli, date</div>
+        <div class="node" data-n="03">Estrazione di parti, ruoli e date</div>
         <div class="node" data-n="04">Scheda pratica e sintesi in tre punti</div>
-        <div class="node hum" data-n="05">Controllo umano: il professionista legge e gestisce</div>
-        <div class="node esc" data-n="↳">Documento non classificabile → direttamente al professionista</div>
+        <div class="node hum" data-n="05">Lettura e gestione da parte del professionista</div>
+        <div class="node esc" data-n="↳">Documento non classificabile: passaggio diretto al professionista</div>
       </div>
     </div>
   </div>
@@ -169,33 +175,33 @@
 
 <section id="metodo" class="dark">
   <div class="wrap">
-    <p class="eyebrow">Metodo</p>
-    <h2>Il valore non è nell'automazione.<br>È in cosa si sceglie di non automatizzare.</h2>
+    <p class="eyebrow">Approccio</p>
+    <h2>Il valore non sta nell'automazione, ma nella scelta di ciò che non si automatizza.</h2>
     <div class="steps">
-      <div class="step"><small>01</small><h3>Ascolto</h3><p>Interviste a chi svolge il lavoro.</p></div>
-      <div class="step"><small>02</small><h3>Mappatura</h3><p>Cosa resta fuori, deciso prima.</p></div>
-      <div class="step"><small>03</small><h3>Costruzione</h3><p>Flusso su fonti verificate, con escalation.</p></div>
-      <div class="step"><small>04</small><h3>Presidio</h3><p>Registro degli errori, verifiche a campione.</p></div>
+      <div class="step"><small>Fase 1</small><h3>Ascolto</h3><p>Interviste a chi svolge il lavoro, per comprendere il processo reale e non quello descritto.</p></div>
+      <div class="step"><small>Fase 2</small><h3>Mappatura</h3><p>Definizione di ciò che resta fuori dall'automazione e dei punti di controllo umano.</p></div>
+      <div class="step"><small>Fase 3</small><h3>Realizzazione</h3><p>Flusso basato su fonti verificate, con regole di escalation e registro delle decisioni.</p></div>
+      <div class="step"><small>Fase 4</small><h3>Presidio</h3><p>Monitoraggio degli errori e delle richieste non gestite, con verifiche a campione.</p></div>
     </div>
     <div class="grid">
       <div class="card">
-        <h3>Collaudo con soglia scritta</h3>
-        <p>Concordata prima di iniziare. Esempio: su 30 richieste consecutive, almeno 24 bozze usate senza modifiche sostanziali.</p>
+        <h3>Verifica dei risultati</h3>
+        <p>Prima dell'avvio si concorda con il cliente come si misura l'esito. A titolo di esempio: su 30 richieste consecutive, almeno 24 bozze utilizzate senza modifiche sostanziali.</p>
         <div class="cells" id="cells"></div>
-        <p class="note">Se la soglia non è raggiunta scriviamo le cause e proseguiamo l'affiancamento. Dopo la consegna: 90 giorni di affiancamento con incontro settimanale e verifica finale scritta.</p>
+        <p class="note">Se la soglia non è raggiunta, le cause sono documentate per iscritto e l'affiancamento prosegue. Dopo la consegna è previsto un periodo di affiancamento di 90 giorni, con incontro settimanale e verifica finale scritta.</p>
       </div>
       <div class="card">
-        <h3>Quello che non facciamo fare all'AI</h3>
+        <h3>Ciò che non affidiamo all'AI</h3>
         <p>— Valutazioni su persone: crediti, disabilità, minori, finanziamenti individuali.</p>
         <p>— Importi, scadenze e requisiti formali senza verifica umana sul testo originale.</p>
-        <p>— Procedure che toccano la responsabilità professionale.</p>
-        <p>— Qualsiasi output senza un punto di escalation definito.</p>
+        <p>— Procedure che investono la responsabilità professionale.</p>
+        <p>— Qualunque esito privo di un punto di escalation definito.</p>
       </div>
       <div class="card">
-        <h3>Prezzo</h3>
-        <p>Per modulo, scritto prima: vocabolario, agente, formazione. Manutenzione con ore incluse.</p>
-        <p>Costi del modello e dei server intestati a voi. Dati e vocabolario sono vostri.</p>
-        <p><span class="ph">Listino da definire</span></p>
+        <h3>Condizioni di collaborazione</h3>
+        <p>L'incarico è articolato per fasi, con oggetto, tempi e criteri di verifica definiti per iscritto prima dell'avvio.</p>
+        <p>I costi del modello e dell'infrastruttura sono intestati al cliente. Dati e vocabolario sviluppati restano di proprietà del cliente.</p>
+        <p><span class="ph">Compensi: da definire</span></p>
       </div>
     </div>
   </div>
@@ -203,34 +209,35 @@
 
 <section id="dati">
   <div class="wrap">
-    <p class="eyebrow">Dove vanno i dati</p>
-    <h2>Tre opzioni, con i limiti dichiarati.</h2>
-    <div class="grid" style="margin-top:32px">
+    <p class="eyebrow">Dati e riservatezza</p>
+    <h2>Dove risiedono i dati, e perché è una scelta di progetto.</h2>
+    <p class="lead" style="max-width:640px">Non esiste una soluzione unica. La scelta dipende dalla natura dei dati trattati, dagli obblighi del cliente e dal livello di qualità richiesto.</p>
+    <div class="grid" style="margin-top:44px">
       <div class="card opt">
-        <h3>Modello via API</h3><span class="where">Fornitore del modello</span>
-        <p>Modelli commerciali (es. Claude). La massima qualità, il costo iniziale più basso.</p>
-        <dl><dt>Adatta a</dt><dd>Dati poco sensibili.</dd><dt>Limite</dt><dd>Le richieste escono dalla vostra rete.</dd></dl>
+        <h3>Modello in cloud</h3><span class="where">Elaborazione presso il fornitore</span>
+        <p>Modelli commerciali (ad esempio Claude) utilizzati tramite interfaccia di programmazione. Massima qualità e investimento iniziale contenuto.</p>
+        <dl><dt>Indicata per</dt><dd>Dati poco sensibili.</dd><dt>Limite</dt><dd>Le richieste lasciano la rete del cliente.</dd></dl>
       </div>
       <div class="card opt">
-        <h3>Server in sede + API</h3><span class="where">Documenti in sede</span>
-        <p>I documenti restano da voi, al modello va solo ciò che serve alla richiesta.</p>
-        <dl><dt>Adatta a</dt><dd>Dati sensibili con contratto adeguato.</dd><dt>Limite</dt><dd>Il testo delle richieste esce comunque.</dd></dl>
+        <h3>Archivio in sede, modello in cloud</h3><span class="where">Documenti presso il cliente</span>
+        <p>I documenti restano nell'infrastruttura del cliente; al modello viene inviato solo ciò che serve alla singola richiesta.</p>
+        <dl><dt>Indicata per</dt><dd>Dati sensibili, con contratto adeguato.</dd><dt>Limite</dt><dd>Il testo delle richieste viene comunque trasmesso.</dd></dl>
       </div>
       <div class="card opt">
-        <h3>Tutto locale</h3><span class="where">Tutto in sede</span>
-        <p>Modelli open-weight (Qwen, Mistral, Gemma) su hardware vostro. Nulla esce.</p>
-        <dl><dt>Adatta a</dt><dd>Minori, segreto professionale, requisiti interni.</dd><dt>Limite</dt><dd>Qualità inferiore sui compiti complessi; costo hardware.</dd></dl>
+        <h3>Elaborazione interamente in sede</h3><span class="where">Nulla lascia l'organizzazione</span>
+        <p>Modelli a pesi aperti (Qwen, Mistral, Gemma) eseguiti su infrastruttura del cliente.</p>
+        <dl><dt>Indicata per</dt><dd>Minori, segreto professionale, vincoli interni.</dd><dt>Limite</dt><dd>Qualità inferiore sui compiti complessi; investimento in hardware.</dd></dl>
       </div>
     </div>
-    <p class="note" style="margin-top:18px">Anche in locale restano a carico dell'azienda registro dei trattamenti, accessi e sicurezza di rete. Titolare del trattamento è il cliente; noi siamo responsabili con accordo scritto (art. 28 GDPR).</p>
+    <p class="note" style="margin-top:22px">Anche con elaborazione in sede restano in capo all'organizzazione il registro dei trattamenti, la gestione degli accessi e la sicurezza di rete. Titolare del trattamento è il cliente; il consulente opera come responsabile, sulla base di un accordo scritto (art. 28 GDPR).</p>
   </div>
 </section>
 
 <section id="hardware" class="dark">
   <div class="wrap">
-    <p class="eyebrow">Calcolatore</p>
-    <h2>Quanto costa far girare l'AI in sede, e quando conviene.</h2>
-    <p class="muted" style="max-width:680px">Dimensionamento dell'hardware, costi di acquisto e di esercizio, confronto con il modello via API e tempo di rientro. Tutte le ipotesi si possono cambiare.</p>
+    <p class="eyebrow">Dimensionamento</p>
+    <h2>Valutare l'opzione di elaborazione in sede.</h2>
+    <p class="muted" style="max-width:700px">Strumento di prima valutazione: dimensiona l'infrastruttura, stima i costi di acquisto e di esercizio, li confronta con l'uso di un modello in cloud e indica i tempi di rientro. Le ipotesi sono modificabili e vanno validate nella fase di analisi.</p>
     <div class="calc">
       <div class="card calc-in">
         <div class="field"><label for="c-ambito">Ambito</label>
@@ -248,22 +255,22 @@
           <select id="c-arch"><option value="10">Fino a 10 GB</option><option value="100" selected>Fino a 100 GB</option><option value="500">Fino a 500 GB</option><option value="2000">Fino a 2 TB</option></select></div>
         <div class="field checks">
           <label class="chk"><input id="c-ha" type="checkbox"> Alta disponibilità (due macchine)</label>
-          <label class="chk"><input id="c-ups" type="checkbox" checked> UPS e apparati di rete</label>
+          <label class="chk"><input id="c-ups" type="checkbox" checked> Gruppo di continuità e rete</label>
         </div>
         <details class="assump">
           <summary>Ipotesi modificabili</summary>
           <div class="agrid">
-            <label>Costo energia (€/kWh)<input id="a-kwh" type="number" step="0.01" value="0.30"></label>
+            <label>Costo dell'energia (€/kWh)<input id="a-kwh" type="number" step="0.01" value="0.30"></label>
             <label>Costo orario del personale (€/h)<input id="a-orario" type="number" step="1" value="28"></label>
-            <label>Minuti manuali per richiesta<input id="a-min" type="number" step="1" value="10"></label>
+            <label>Minuti di lavoro manuale per richiesta<input id="a-min" type="number" step="1" value="10"></label>
             <label>Quota automatizzata (%)<input id="a-aut" type="number" step="5" value="60"></label>
             <label>Token per richiesta<input id="a-tokreq" type="number" step="500" value="4000"></label>
-            <label>Prezzo modello API (€ per milione di token)<input id="a-token" type="number" step="0.5" value="6"></label>
+            <label>Prezzo del modello (€ per milione di token)<input id="a-token" type="number" step="0.5" value="6"></label>
             <label>Utenti contemporanei (%)<input id="a-cont" type="number" step="5" value="30"></label>
-            <label>Costo del progetto agenti (€)<input id="a-prog" type="number" step="500" value="15000"></label>
+            <label>Costo del progetto (€)<input id="a-prog" type="number" step="500" value="15000"></label>
             <label>Supporto software annuo (€)<input id="a-supp" type="number" step="100" value="600"></label>
           </div>
-          <p class="note">Valori di partenza indicativi, non sono un'offerta. Il prezzo dei token va verificato sul listino del fornitore scelto.</p>
+          <p class="note">Valori di partenza indicativi, non costituiscono un'offerta. Il prezzo dei token va verificato sul listino del fornitore scelto.</p>
         </details>
       </div>
       <div id="risultato" class="calc-out"></div>
@@ -271,48 +278,51 @@
   </div>
 </section>
 
-<section id="casi">
+<section id="casi" class="cases">
   <div class="wrap">
-    <p class="eyebrow">Casi</p>
-    <h2>Sei contesti, un metodo.</h2>
-    <p class="note"><span class="ph">Da confermare prima di pubblicare:</span> le cifre sono esempi illustrativi. Vanno sostituite con risultati misurati, con fonte e metodo, oppure restare marcate come stime.</p>
-    <div class="grid" style="margin-top:24px">
-      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Centro di formazione</h3><p>Segreteria e scheduling</p><div class="metric">−70%<small>chiamate ed email di routine</small></div></div>
-      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Materiale edile</h3><p>Preventivazione</p><div class="metric">25 → 3 min<small>per preventivo</small></div></div>
-      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Studio tecnico</h3><p>Bandi e computi</p><div class="metric">12 h → 20 min<small>per analisi</small></div></div>
-      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Studio legale e fiscale</h3><p>Triage PEC</p><div class="metric">2,5 h → 15 min<small>al giorno</small></div></div>
-      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Agenzia per il lavoro</h3><p>Screening CV, con selezionatore umano</p><div class="metric">21 → 6 gg<small>time-to-hire</small></div></div>
-      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Distribuzione</h3><p>Ordini cliente</p><div class="metric">8 min → 30 s<small>per ordine</small></div></div>
+    <p class="eyebrow">Esperienze</p>
+    <h2>Contesti in cui lavoriamo.</h2>
+    <p class="lead" style="max-width:640px">Per ciascun contesto indichiamo l'indicatore con cui si misura l'esito dell'intervento. I risultati vengono rilevati in fase di collaudo, non promessi in anticipo.</p>
+    <p class="note" style="margin-top:14px"><span class="ph">Da completare prima della pubblicazione:</span> sostituire con progetti reali, descritti con metodo di misura e risultato rilevato.</p>
+    <div class="grid" style="margin-top:36px">
+      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Centro di formazione</h3><p>Segreteria e pianificazione degli appuntamenti</p><div class="indic"><b>Indicatore</b>Quota di richieste ricorrenti gestite senza intervento dell'operatore</div></div>
+      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Commercio di materiale edile</h3><p>Predisposizione dei preventivi</p><div class="indic"><b>Indicatore</b>Tempo medio per preventivo e quota di bozze utilizzate senza correzioni sostanziali</div></div>
+      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Studio tecnico associato</h3><p>Analisi di bandi e computi</p><div class="indic"><b>Indicatore</b>Tempo di analisi per bando e correttezza di clausole e scadenze estratte</div></div>
+      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Studio legale e fiscale</h3><p>Smistamento della posta certificata</p><div class="indic"><b>Indicatore</b>Tempo giornaliero dedicato allo smistamento e scadenze non rilevate</div></div>
+      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Agenzia per il lavoro</h3><p>Preselezione dei curriculum, con valutazione affidata al selezionatore</p><div class="indic"><b>Indicatore</b>Tempo di preselezione e tempo di risposta ai candidati</div></div>
+      <div class="card"><span class="tag">Esempio illustrativo</span><h3>Distribuzione e logistica</h3><p>Inserimento degli ordini cliente</p><div class="indic"><b>Indicatore</b>Tempo per ordine ed errori di inserimento dati</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="chisiamo">
+  <div class="wrap">
+    <p class="eyebrow">Chi siamo</p>
+    <h2>Un percorso interdisciplinare: informatica, filosofia, processi.</h2>
+    <div class="grid" style="margin-top:36px">
+      <div class="card"><h3><span class="ph">Nome socio 1</span></h3><p>Perito capotecnico informatico, laureato in filosofia (tesi in area logico-antropologica), con vent'anni di esperienza tra formazione, docenza, coordinamento e sviluppo digitale. Si occupa di modelli linguistici nei flussi di lavoro, con criteri di qualità e punti di controllo umano.</p></div>
+      <div class="card"><h3><span class="ph">Nome socio 2</span></h3><p><span class="ph">Da scrivere.</span></p></div>
     </div>
   </div>
 </section>
 
 <section id="contatti" class="dark">
   <div class="wrap">
-    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px">
-      <div>
-        <p class="eyebrow">Chi siamo</p>
-        <h2>Un percorso strano sulla carta. Utile nella pratica.</h2>
-        <p class="muted"><span class="ph">Socio 1</span> Perito capotecnico informatico, laurea magistrale in filosofia, vent'anni tra formazione, consulenza IT e automazioni.</p>
-        <p class="muted"><span class="ph">Socio 2: da scrivere</span></p>
-      </div>
-      <div>
-        <p class="eyebrow">Contatti</p>
-        <h2>Un colloquio per capire il processo, non per vendere lo strumento.</h2>
-        <form id="contatto">
-          <div><label for="nome">Nome</label><input id="nome" name="nome" required></div>
-          <div><label for="azienda">Azienda o studio</label><input id="azienda" name="azienda"></div>
-          <div><label for="msg">Che lavoro vorreste alleggerire?</label><textarea id="msg" name="msg" rows="3"></textarea></div>
-          <button class="btn hot" type="submit">Prenota il colloquio</button>
-        </form>
-      </div>
-    </div>
+    <p class="eyebrow">Contatti</p>
+    <h2>Un incontro per comprendere il processo.</h2>
+    <p class="muted" style="max-width:620px">Il primo incontro serve a capire il lavoro, non a proporre uno strumento. Se emerge un margine di intervento, si prosegue con una mappatura e con un progetto pilota su un flusso reale, con criteri di verifica condivisi.</p>
+    <form id="contatto">
+      <div><label for="nome">Nome e cognome</label><input id="nome" name="nome" required></div>
+      <div><label for="azienda">Organizzazione</label><input id="azienda" name="azienda"></div>
+      <div><label for="msg">Il processo su cui vorreste intervenire</label><textarea id="msg" name="msg" rows="4"></textarea></div>
+      <button class="btn hot" type="submit">Invia la richiesta</button>
+    </form>
   </div>
 </section>
 </main>
 
 <footer>
-  <div class="wrap">[Nome] · <span class="ph">ragione sociale, sede, P.IVA</span> · Privacy · Cookie</div>
+  <div class="wrap">[Nome] · <span class="ph">ragione sociale, sede, partita IVA</span> · Informativa sulla privacy · Cookie</div>
 </footer>
 </body>
 </html>

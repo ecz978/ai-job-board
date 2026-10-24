@@ -8,7 +8,7 @@ const $ = (id) => document.getElementById(id);
 /* ───────── Demo ───────── */
 const DEMO = {
   acq: {
-    label: "Email in arrivo · cliente",
+    label: "Email in ingresso · cliente",
     text: "Buongiorno, servono 40 sacchi di cemento 32.5, 12 mq di lastre di cartongesso da 13 mm e 6 profili 48 per mercoledì in cantiere a Monza. Mi mandate il prezzo? Grazie, G. Rossi",
     out: `<table>
       <tr><th>Scritto</th><th>Articolo</th><th>Qtà</th><th>Giacenza</th><th>€/unità</th></tr>
@@ -17,10 +17,10 @@ const DEMO = {
       <tr><td>profili 48</td><td>Montante 48 · 3 m</td><td>6</td><td><span class="chip">Disponibile</span></td><td>3,20</td></tr>
     </table>
     <p><b>Margine stimato:</b> 22% · <b>Da ordinare al fornitore:</b> 2 lastre · <b>Prezzi:</b> listino cliente</p>`,
-    human: "Il commerciale sceglie i prezzi e invia"
+    human: "Il commerciale stabilisce i prezzi e invia"
   },
   seg: {
-    label: "Email in arrivo · candidato",
+    label: "Email in ingresso · candidato",
     text: "Buongiorno, vorrei sapere costo e date del corso per operatori socio sanitari, e se posso passare a parlarne giovedì pomeriggio. Grazie, M. Bianchi",
     out: `<p><b>Classificazione:</b> informazione + richiesta di colloquio</p>
     <p><b>Risposta (dalla scheda corso):</b> costo e date come da documentazione ufficiale; requisiti di accesso in allegato. <i>Fonte: scheda corso OSS, rev. 2026</i></p>
@@ -28,7 +28,7 @@ const DEMO = {
     human: "L'operatore verifica e conferma"
   },
   stu: {
-    label: "PEC in arrivo · studio",
+    label: "PEC in ingresso · studio",
     text: "OGGETTO: Notifica atto di citazione. Il Tribunale di Monza comunica che l'udienza di prima comparizione è fissata per il 14/03/2027. In allegato atto (PDF, 18 pp.).",
     out: `<p><b>Tipo:</b> atto giudiziario · notifica</p>
     <p><b>Estratto dal testo:</b> Tribunale di Monza · udienza 14/03/2027 · atto di citazione, 18 pp.</p>
@@ -55,7 +55,7 @@ function showDemo(k, done) {
   document.querySelectorAll(".tab").forEach((t) => t.setAttribute("aria-selected", t.dataset.d === k));
   $("in-label").textContent = DEMO[k].label;
   $("out-wrap").classList.add("hidden");
-  const run = $("run"); run.disabled = false; run.textContent = "Prepara la bozza →";
+  const run = $("run"); run.disabled = false; run.textContent = "Avvia l'esempio →";
   typeText($("in-text"), DEMO[k].text, done);
 }
 function runDemo(after) {
@@ -64,13 +64,13 @@ function runDemo(after) {
   $("out-wrap").classList.remove("hidden");
   out.innerHTML = '<div class="thinking">lettura del documento</div>';
   setTimeout(() => {
-    out.innerHTML = `${d.out}<div class="human" id="human"><span>Controllo umano · ${d.human}</span><button type="button" id="ok">Approva</button></div>`;
+    out.innerHTML = `${d.out}<div class="human" id="human"><span>Verifica umana · ${d.human}</span><button type="button" id="ok">Convalida</button></div>`;
     $("ok").addEventListener("click", () => {
       userTouched = true;
       const h = $("human"); h.classList.add("done");
-      h.innerHTML = "<span>Approvato dalla persona. Solo ora parte l'invio.</span>";
+      h.innerHTML = "<span>Convalidato dalla persona. Solo ora può avvenire l'invio.</span>";
     });
-    run.textContent = "Rigenera"; run.disabled = false;
+    run.textContent = "Ripeti"; run.disabled = false;
     after && after();
   }, 900);
 }
@@ -87,7 +87,7 @@ function autoplay() {
         auto = setTimeout(() => {
           if (userTouched) return;
           const h = $("human");
-          if (h) { h.classList.add("done"); h.innerHTML = "<span>Approvato dalla persona. Solo ora parte l'invio.</span>"; }
+          if (h) { h.classList.add("done"); h.innerHTML = "<span>Convalidato dalla persona. Solo ora può avvenire l'invio.</span>"; }
           auto = setTimeout(() => { idx = (idx + 1) % ORDER.length; cycle(); }, 2600);
         }, 2600);
       }), 700);
@@ -188,7 +188,7 @@ function chart(r) {
     <polyline points="${line(r.seat)}" fill="none" stroke="#b4bdcc" stroke-width="2" stroke-dasharray="2 5" stroke-linecap="round"/>
     <polyline points="${line(r.api)}" fill="none" stroke="#7b869a" stroke-width="2.4" stroke-dasharray="7 5"/>
     <polyline points="${line(r.loc)}" fill="none" stroke="#2748c8" stroke-width="3" stroke-linejoin="round"/>${mark}</svg>
-    <div class="legend"><span><i style="background:#2748c8"></i>Locale (acquisto + esercizio)</span><span><i style="background:#7b869a"></i>Modello via API a consumo</span><span><i style="background:#b4bdcc"></i>Abbonamento per utente</span></div>`;
+    <div class="legend"><span><i style="background:#2748c8"></i>In sede (acquisto + esercizio)</span><span><i style="background:#7b869a"></i>Modello in cloud a consumo</span><span><i style="background:#b4bdcc"></i>Abbonamento per utente</span></div>`;
 }
 
 const mesi = (m) => (!isFinite(m) ? "non rientra" : m < 1 ? "meno di un mese" : m > 120 ? "oltre 10 anni" : m < 24 ? `${Math.round(m)} mesi` : `${(m / 12).toFixed(1).replace(".", ",")} anni`);
@@ -200,10 +200,10 @@ function summary(r) {
     `Ambito: ${amb} · ${r.utenti} utenti · ${r.rich} richieste al giorno · dati ${dati}`,
     `Una tantum: ${rng(r.invest)} (hardware ${rng(r.hw)}, installazione ${rng(r.inst)})`,
     `Esercizio annuo: circa ${eur(r.esercizio)} (energia ${eur(r.energia)}, manutenzione e supporto ${eur(r.manut)})`,
-    `Modello via API: circa ${eur(r.cloudAnno)} all'anno`,
-    `Pareggio hardware locale vs API: ${isFinite(r.pareggio) ? r.pareggio.toFixed(1) + " anni" : "non raggiunto"}`,
+    `Modello in cloud: circa ${eur(r.cloudAnno)} all'anno`,
+    `Pareggio elaborazione in sede vs cloud: ${isFinite(r.pareggio) ? r.pareggio.toFixed(1) + " anni" : "non raggiunto"}`,
     `Risparmio operativo stimato: ${eur(r.valore)} all'anno (${Math.round(r.ore)} ore)`,
-    "Cifre indicative, IVA esclusa, non sono un'offerta.",
+    "Cifre indicative, IVA esclusa, non costituiscono un'offerta.",
   ].join("\n");
 }
 
@@ -212,29 +212,29 @@ function render() {
   $("o-rich").textContent = $("c-rich").value;
   const r = compute();
   const sens = {
-    alta: "Dati molto sensibili: consigliamo tutto locale, nulla esce dalla sede.",
-    media: "Valutate anche server in sede con richieste al modello via API e contratto adeguato.",
-    bassa: "Con dati poco sensibili il modello via API è di norma la scelta più semplice: confrontiamo i costi prima di proporvi hardware.",
+    alta: "Dati molto sensibili: consigliamo l'elaborazione interamente in sede: nulla lascia l'organizzazione.",
+    media: "Valutate anche archivio in sede con richieste al modello in cloud e contratto adeguato.",
+    bassa: "Con dati poco sensibili un modello in cloud è di norma la scelta più semplice: confrontiamo i costi prima di proporvi hardware.",
   }[dati];
   const apiVince = isFinite(r.pareggio) ? r.pareggio > 5 : true;
   const verdetto = dati === "bassa" && apiVince
-    ? "Solo sul costo conviene il modello via API. L'hardware locale ha senso se la riservatezza o il controllo contano più della spesa."
+    ? "Solo sul costo conviene il modello in cloud. L'elaborazione in sede ha senso se la riservatezza o il controllo contano più della spesa."
     : apiVince
-    ? `Solo sul costo, a questo volume il modello via API conviene (l'hardware si ripaga oltre i 5 anni, o non si ripaga). L'hardware locale si giustifica per riservatezza: dal volume di circa ${isFinite(r.richPareggio5) ? Math.round(r.richPareggio5).toLocaleString("it-IT") : "—"} richieste al giorno inizia a convenire anche sul costo.`
-    : `A questo volume l'hardware locale si ripaga in circa ${r.pareggio.toFixed(1).replace(".", ",")} anni rispetto al modello via API, e i dati restano in sede.`;
+    ? `Solo sul costo, a questo volume conviene il modello in cloud (l'hardware si ripaga oltre i cinque anni, o non si ripaga). L'elaborazione in sede si giustifica per riservatezza: dal volume di circa ${isFinite(r.richPareggio5) ? Math.round(r.richPareggio5).toLocaleString("it-IT") : "—"} richieste al giorno inizia a convenire anche sul costo.`
+    : `A questo volume l'elaborazione in sede si ripaga in circa ${r.pareggio.toFixed(1).replace(".", ",")} anni rispetto al modello in cloud, e i dati restano in sede.`;
   const gb = (v, bad) => (v < 24 && isFinite(v) ? "good" : !isFinite(v) || bad ? "bad" : "");
 
   $("risultato").innerHTML = `
     <div class="rs"><h3>Configurazione consigliata <small>${r.conc} richieste in parallelo</small></h3>
       <p class="big">${r.tier.nome}${r.ha ? " × 2" : ""}</p>
       <p>Esegue ${r.tier.modelli}. ${sens}</p>
-      <p class="note">I modelli locali open-weight sono meno capaci dei modelli commerciali sui compiti più complessi: lo verifichiamo con un collaudo sul vostro caso prima di decidere.</p></div>
+      <p class="note">I modelli a pesi aperti eseguiti in sede sono meno capaci dei modelli commerciali sui compiti più complessi: lo verifichiamo con una prova sul vostro caso prima di decidere.</p></div>
 
     <div class="rs"><h3>Costi <small>una tantum + annui</small></h3>
       <table>
         <tr><td>Hardware</td><td>${rng(r.hw)}</td></tr>
-        <tr><td>Archiviazione e backup (${r.arch >= 1000 ? r.arch / 1000 + " TB" : r.arch + " GB"})</td><td>${rng(r.storage)}</td></tr>
-        <tr><td>UPS e apparati di rete</td><td>${r.ups ? rng(r.upsRete) : "escluso"}</td></tr>
+        <tr><td>Archiviazione e copie di sicurezza (${r.arch >= 1000 ? r.arch / 1000 + " TB" : r.arch + " GB"})</td><td>${rng(r.storage)}</td></tr>
+        <tr><td>Gruppo di continuità e rete</td><td>${r.ups ? rng(r.upsRete) : "escluso"}</td></tr>
         <tr><td>Installazione e messa in opera</td><td>${rng(r.inst)}</td></tr>
         <tr class="tot"><td>Totale una tantum</td><td>${rng(r.invest)}</td></tr>
         <tr><td>Energia all'anno</td><td>${eur(r.energia)}</td></tr>
@@ -245,21 +245,21 @@ function render() {
     <div class="rs"><h3>Confronto in cinque anni <small>costo cumulato</small></h3>
       ${chart(r)}
       <div class="two" style="margin-top:14px">
-        <div class="box"><b>Locale a 3 anni</b><strong>${eur(r.loc(3))}</strong><span>acquisto più tre anni di esercizio</span></div>
-        <div class="box"><b>Via API a 3 anni</b><strong>${eur(r.api(3))}</strong><span>${eur(r.cloudAnno)} all'anno a questo volume</span></div>
+        <div class="box"><b>In sede a 3 anni</b><strong>${eur(r.loc(3))}</strong><span>acquisto più tre anni di esercizio</span></div>
+        <div class="box"><b>Cloud a 3 anni</b><strong>${eur(r.api(3))}</strong><span>${eur(r.cloudAnno)} all'anno a questo volume</span></div>
         <div class="box"><b>Abbonamento a 3 anni</b><strong>${eur(r.seat(3))}</strong><span>${r.utenti} utenti × ${SEAT_MESE} €/mese, solo chat</span></div>
       </div></div>
 
     <div class="rs"><h3>Rientro dell'investimento <small>risparmio di lavoro</small></h3>
       <p>Con ${r.rich} richieste al giorno, ${r.a.min} minuti manuali ciascuna e ${Math.round(r.a.aut * 100)}% automatizzato: circa <b>${Math.round(r.ore).toLocaleString("it-IT")} ore</b> all'anno, pari a <b>${eur(r.valore)}</b> a ${r.a.orario} €/h.</p>
       <div class="two">
-        <div class="box ${gb(r.rApi)}"><b>Con modello via API</b><strong>${mesi(r.rApi)}</strong><span>progetto ${eur(r.a.prog)} · esercizio ${eur(r.cloudAnno)}/anno</span></div>
-        <div class="box ${gb(r.rLoc)}"><b>Con hardware locale</b><strong>${mesi(r.rLoc)}</strong><span>progetto più hardware (${eur(r.investM)}) · esercizio ${eur(r.esercizio)}/anno</span></div>
+        <div class="box ${gb(r.rApi)}"><b>Con modello in cloud</b><strong>${mesi(r.rApi)}</strong><span>progetto ${eur(r.a.prog)} · esercizio ${eur(r.cloudAnno)}/anno</span></div>
+        <div class="box ${gb(r.rLoc)}"><b>Con elaborazione in sede</b><strong>${mesi(r.rLoc)}</strong><span>progetto più hardware (${eur(r.investM)}) · esercizio ${eur(r.esercizio)}/anno</span></div>
       </div>
-      <p class="note" style="margin-top:12px">Il risparmio è una stima basata sulle ipotesi a sinistra, non un risultato garantito. Si misura nel collaudo.</p></div>
+      <p class="note" style="margin-top:12px">Il risparmio è una stima basata sulle ipotesi indicate, non un risultato garantito: si misura nella fase di verifica.</p></div>
 
     <div class="verdict"><p>${verdetto}</p>
-      <div class="btns"><a class="btn hot" href="#contatti" id="prefill">Richiedi un preventivo con questi dati</a>
+      <div class="btns"><a class="btn hot" href="#contatti" id="prefill">Richiedi un incontro con questi dati</a>
       <button class="btn ghost" type="button" id="copy">Copia il riepilogo</button></div></div>`;
 
   const text = summary(r);
