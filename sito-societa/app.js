@@ -182,13 +182,13 @@ function chart(r) {
   let mark = "";
   if (isFinite(r.pareggio) && r.pareggio <= 5) {
     const px = x(r.pareggio), py = yy(r.loc(r.pareggio));
-    mark = `<circle cx="${px}" cy="${py}" r="5" fill="#fff" stroke="#2457ff" stroke-width="2"/><text x="${px}" y="${py - 11}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#2457ff">pareggio ${r.pareggio.toFixed(1).replace(".", ",")} anni</text>`;
+    mark = `<circle cx="${px}" cy="${py}" r="5" fill="#fff" stroke="#2748c8" stroke-width="2"/><text x="${px}" y="${py - 11}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#2748c8">pareggio ${r.pareggio.toFixed(1).replace(".", ",")} anni</text>`;
   }
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Costo cumulato in cinque anni">${grid}${xs}
     <polyline points="${line(r.seat)}" fill="none" stroke="#b4bdcc" stroke-width="2" stroke-dasharray="2 5" stroke-linecap="round"/>
     <polyline points="${line(r.api)}" fill="none" stroke="#7b869a" stroke-width="2.4" stroke-dasharray="7 5"/>
-    <polyline points="${line(r.loc)}" fill="none" stroke="#2457ff" stroke-width="3" stroke-linejoin="round"/>${mark}</svg>
-    <div class="legend"><span><i style="background:#2457ff"></i>Locale (acquisto + esercizio)</span><span><i style="background:#7b869a"></i>Modello via API a consumo</span><span><i style="background:#b4bdcc"></i>Abbonamento per utente</span></div>`;
+    <polyline points="${line(r.loc)}" fill="none" stroke="#2748c8" stroke-width="3" stroke-linejoin="round"/>${mark}</svg>
+    <div class="legend"><span><i style="background:#2748c8"></i>Locale (acquisto + esercizio)</span><span><i style="background:#7b869a"></i>Modello via API a consumo</span><span><i style="background:#b4bdcc"></i>Abbonamento per utente</span></div>`;
 }
 
 const mesi = (m) => (!isFinite(m) ? "non rientra" : m < 1 ? "meno di un mese" : m > 120 ? "oltre 10 anni" : m < 24 ? `${Math.round(m)} mesi` : `${(m / 12).toFixed(1).replace(".", ",")} anni`);
@@ -328,7 +328,7 @@ function initNet() {
     nodes.forEach((n) => { ctx.fillStyle = "rgba(36,60,110,.4)"; ctx.beginPath(); ctx.arc(n.x, n.y, 2.2, 0, 6.283); ctx.fill(); });
     pulses.forEach((p) => {
       const a = nodes[p.i], b = nodes[p.j], x = a.x + (b.x - a.x) * p.t, y = a.y + (b.y - a.y) * p.t;
-      ctx.fillStyle = `rgba(36,87,255,${Math.sin(p.t * Math.PI)})`;
+      ctx.fillStyle = `rgba(39,72,200,${Math.sin(p.t * Math.PI)})`;
       ctx.beginPath(); ctx.arc(x, y, 3, 0, 6.283); ctx.fill();
     });
     return es;
