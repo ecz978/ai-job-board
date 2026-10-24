@@ -12,6 +12,15 @@ const mid = (a) => (a[0] + a[1]) / 2;
 const num = (id) => parseFloat($(id).value) || 0;
 const dec = (x, d = 1) => x.toLocaleString("it-IT", { maximumFractionDigits: d });
 
+const prevTxt = {};
+function flashDiff(id) {
+  const root = $(id); if (!root || REDUCED) return;
+  const els = [...root.querySelectorAll(".big, .box strong, .rs td:last-child, .range-bar + .range-scale")];
+  const now = els.map((e) => e.textContent), prev = prevTxt[id];
+  if (prev && prev.length === now.length) els.forEach((e, i) => { if (prev[i] !== now[i]) e.classList.add("flash"); });
+  prevTxt[id] = now;
+}
+
 /* ═════════ Demo ═════════ */
 const DEMO = {
   acq: {
@@ -180,6 +189,7 @@ function mapOut() {
     <div class="rs"><h3>Ciò che resterebbe fuori <small>per scelta</small></h3>
       ${fuori.length ? `<table>${fuori.map((r) => `<tr><td><b>${r[0]}</b><br><span class="note">${r[3]}</span></td><td>${dec(mapState.ore[a + ATT[a].indexOf(r)])} h</td></tr>`).join("")}</table>` : "<p>Nessuna attività selezionata tra quelle da non automatizzare.</p>"}
       <p class="note" style="margin-top:12px">Quote di tempo recuperabile ipotizzate: 50-75% per le attività automatizzabili con verifica, 20-40% per quelle assistite. Sono stime di partenza, da validare nella fase di ascolto con chi svolge il lavoro.</p></div>`;
+  flashDiff("m-out");
 }
 
 /* ═════════ Strumento 2 · Verifica a campione ═════════ */
@@ -223,9 +233,10 @@ function verOut() {
       <p>${nn ? `Per dimostrare almeno ${pct(s)} con confidenza del ${conf}% servono circa <b>${nn} richieste consecutive</b>.` : "Con questa qualità reale, così vicina alla soglia, servono più di 1.500 richieste."}</p>
       <svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Limite inferiore al crescere del campione">${grid}${xs}
         <line x1="${L}" x2="${W - R}" y1="${y(s)}" y2="${y(s)}" stroke="#1d7a58" stroke-dasharray="5 5"/>
-        <polyline points="${pts.join(" ")}" fill="none" stroke="#2748c8" stroke-width="2.6"/>${mk}</svg>
+        <polyline class="draw" pathLength="1" points="${pts.join(" ")}" fill="none" stroke="#2748c8" stroke-width="2.6"/>${mk}</svg>
       <div class="legend"><span><i style="background:#2748c8"></i>Limite inferiore atteso</span><span><i style="background:#1d7a58"></i>Soglia da dimostrare</span></div>
       <p class="note">Un criterio di accettazione operativo (ad esempio 24 su 30) è una regola concordata tra le parti, non una prova statistica: i due piani vanno tenuti distinti. Intervallo di Wilson, valido per risultati esito sì/no su richieste indipendenti.</p></div>`;
+  flashDiff("v-out");
 }
 
 /* ═════════ Strumento 3 · Memoria dei modelli ═════════ */
@@ -260,6 +271,7 @@ function memOut() {
     <div class="rs"><h3>Quale macchina <small>${prima ? "la più piccola che basta: " + prima.n.split(" (")[0].toLowerCase() : "oltre le configurazioni standard"}</small></h3>
       <div class="fit">${rows}</div>
       <p class="note" style="margin-top:14px">Stime semplificate: la memoria di contesto varia con l'architettura del modello e i modelli a miscela di esperti hanno requisiti diversi. La velocità di risposta dipende dalla banda di memoria e non è stimata qui: la misureremo su macchine reali.</p></div>`;
+  flashDiff("mm-out");
 }
 
 /* ═════════ Calcolatore di dimensionamento ═════════ */
@@ -334,9 +346,9 @@ function chart(r) {
   let mark = "";
   if (isFinite(r.pareggio) && r.pareggio <= 60) { const px = x(r.pareggio / 12), py = yy(r.L[r.pareggio]); mark = `<circle cx="${px}" cy="${py}" r="5" fill="#fff" stroke="#2748c8" stroke-width="2"/><text x="${px}" y="${py - 11}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#2748c8">pareggio ${dec(r.pareggio / 12)} anni</text>`; }
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Costo cumulato in cinque anni">${grid}${xs}
-    <polyline points="${line(r.Se)}" fill="none" stroke="#b4bdcc" stroke-width="2" stroke-dasharray="2 5" stroke-linecap="round"/>
-    <polyline points="${line(r.Ac)}" fill="none" stroke="#7b869a" stroke-width="2.4" stroke-dasharray="7 5"/>
-    <polyline points="${line(r.L)}" fill="none" stroke="#2748c8" stroke-width="3" stroke-linejoin="round"/>${mark}</svg>
+    <polyline class="fadein" points="${line(r.Se)}" fill="none" stroke="#b4bdcc" stroke-width="2" stroke-dasharray="2 5" stroke-linecap="round"/>
+    <polyline class="fadein" points="${line(r.Ac)}" fill="none" stroke="#7b869a" stroke-width="2.4" stroke-dasharray="7 5"/>
+    <polyline class="draw" pathLength="1" points="${line(r.L)}" fill="none" stroke="#2748c8" stroke-width="3" stroke-linejoin="round"/>${mark}</svg>
     <div class="legend"><span><i style="background:#2748c8"></i>In sede (${r.nol ? "noleggio" : "acquisto"} + esercizio)</span><span><i style="background:#7b869a"></i>Modello in cloud a consumo</span><span><i style="background:#b4bdcc"></i>Abbonamento per utente</span></div>`;
 }
 
@@ -455,6 +467,7 @@ function render() {
     catch { const t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); b.textContent = "Copiato"; }
     setTimeout(() => (b.textContent = "Copia il riepilogo"), 1800);
   });
+  flashDiff("risultato");
 }
 
 /* ═════════ Comparsa allo scroll ═════════ */
@@ -480,8 +493,8 @@ function initNet() {
   const c = $("net");
   if (!c || !c.getContext) return;
   const ctx = c.getContext("2d");
-  let w = 0, h = 0, nodes = [], pulses = [], raf = 0, visible = true;
-  const LINK = 160;
+  let w = 0, h = 0, nodes = [], pulses = [], raf = 0, visible = true, mouse = null;
+  const LINK = 160, MR = 150;
   function size() {
     const r = c.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
     w = r.width; h = r.height; c.width = w * dpr; c.height = h * dpr;
@@ -508,6 +521,10 @@ function initNet() {
       ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke();
     });
     nodes.forEach((n) => { ctx.fillStyle = "rgba(36,60,110,.4)"; ctx.beginPath(); ctx.arc(n.x, n.y, 2.2, 0, 6.283); ctx.fill(); });
+    if (mouse) {
+      nodes.forEach((n) => { const d = Math.hypot(n.x - mouse.x, n.y - mouse.y); if (d < MR) { ctx.strokeStyle = `rgba(39,72,200,${0.4 * (1 - d / MR)})`; ctx.beginPath(); ctx.moveTo(mouse.x, mouse.y); ctx.lineTo(n.x, n.y); ctx.stroke(); } });
+      ctx.fillStyle = "rgba(39,72,200,.55)"; ctx.beginPath(); ctx.arc(mouse.x, mouse.y, 3, 0, 6.283); ctx.fill();
+    }
     pulses.forEach((p) => {
       const a = nodes[p.i], b = nodes[p.j], x = a.x + (b.x - a.x) * p.t, y = a.y + (b.y - a.y) * p.t;
       ctx.fillStyle = `rgba(39,72,200,${Math.sin(p.t * Math.PI)})`;
@@ -518,7 +535,7 @@ function initNet() {
   function step() {
     nodes.forEach((n) => { n.x += n.vx; n.y += n.vy; if (n.x < 0 || n.x > w) n.vx *= -1; if (n.y < 0 || n.y > h) n.vy *= -1; });
     const es = draw();
-    if (es.length && pulses.length < 6 && Math.random() < 0.03) { const e = es[Math.floor(Math.random() * es.length)]; pulses.push({ i: e[0], j: e[1], t: 0 }); }
+    if (es.length && pulses.length < 9 && Math.random() < 0.05) { const e = es[Math.floor(Math.random() * es.length)]; pulses.push({ i: e[0], j: e[1], t: 0 }); }
     pulses.forEach((p) => (p.t += 0.012));
     pulses = pulses.filter((p) => p.t < 1);
     if (visible) raf = requestAnimationFrame(step);
@@ -526,7 +543,54 @@ function initNet() {
   size(); draw();
   if (REDUCED) return;
   new IntersectionObserver((en) => { visible = en[0].isIntersecting; cancelAnimationFrame(raf); if (visible) raf = requestAnimationFrame(step); }).observe(c);
+  const hero = c.parentElement;
+  hero.addEventListener("pointermove", (e) => { const r = c.getBoundingClientRect(); mouse = { x: e.clientX - r.left, y: e.clientY - r.top }; });
+  hero.addEventListener("pointerleave", () => { mouse = null; });
   let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { size(); draw(); }, 150); });
+}
+
+/* ═════════ Titolo, scorrimento, grafici ═════════ */
+function splitHeadline() {
+  const h = document.querySelector(".hero h1");
+  if (!h || REDUCED) return;
+  let i = 0;
+  const wrap = (node) => [...node.childNodes].forEach((n) => {
+    if (n.nodeType === 3) {
+      const frag = document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach((t) => {
+        if (!t) return;
+        if (/^\s+$/.test(t)) { frag.appendChild(document.createTextNode(t)); return; }
+        const o = document.createElement("span"), s = document.createElement("span");
+        o.className = "w"; s.textContent = t; s.style.setProperty("--i", i++); o.appendChild(s); frag.appendChild(o);
+      });
+      n.replaceWith(frag);
+    } else if (n.nodeType === 1 && n.tagName !== "BR") wrap(n);
+  });
+  wrap(h);
+}
+function initScroll() {
+  const bar = $("progress"), top = document.querySelector(".top");
+  const on = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(1, scrollY / max) : 0})`;
+    top.classList.toggle("scrolled", scrollY > 8);
+  };
+  addEventListener("scroll", on, { passive: true }); on();
+  if (!("IntersectionObserver" in window)) return;
+  const links = [...document.querySelectorAll(".top nav a")];
+  const map = new Map(links.map((a) => [a.getAttribute("href").slice(1), a]));
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting) links.forEach((a) => a.classList.toggle("active", a === map.get(e.target.id)));
+  }), { rootMargin: "-45% 0px -50% 0px" });
+  map.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
+}
+function armLive() {
+  const ids = ["risultato", "m-out", "v-out", "mm-out"].map($);
+  if (REDUCED || !("IntersectionObserver" in window)) { ids.forEach((e) => e.classList.add("play", "done")); return; }
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting) { e.target.classList.add("play"); setTimeout(() => e.target.classList.add("done"), 2200); io.unobserve(e.target); }
+  }), { rootMargin: "0px 0px -15% 0px" });
+  ids.forEach((e) => io.observe(e));
 }
 
 /* ═════════ Avvio ═════════ */
@@ -537,6 +601,7 @@ function bindSeg(sel, attr, cb) {
   }));
 }
 document.addEventListener("DOMContentLoaded", () => {
+  splitHeadline();
   // demo
   document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { stopAuto(); showDemo(t.dataset.d); }));
   $("run").addEventListener("click", () => { stopAuto(); runDemo(); });
@@ -585,6 +650,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initReveal();
   initNet();
+  initScroll();
+  armLive();
 
   // contatti
   const form = $("contatto");

@@ -318,3 +318,80 @@ footer { padding: 34px 0 54px; font-size: 13px; color: var(--muted); border-top:
 .rs { overflow-x: auto; }
 .tool-in .act .ah { width: 68px; }
 .tool-in .act { margin: 0; }
+
+/* ───── logo raffinato ───── */
+.logo svg { width: 38px; height: 38px; overflow: visible; }
+.logo circle { transform-box: fill-box; transform-origin: center; }
+.logo .nn-edge { stroke: currentColor; stroke-width: .75; opacity: .5; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.3s var(--ease) forwards; animation-delay: calc(var(--i) * 70ms + 150ms); }
+.logo .nn-node { fill: currentColor; opacity: 0; animation: nodein .7s var(--ease) forwards; animation-delay: calc(var(--i) * 90ms + 300ms); }
+.logo .nn-hot { fill: var(--accent); opacity: 0; animation: nodein .7s var(--ease) 1.2s forwards; }
+.logo .nn-ring { fill: none; stroke: var(--accent); stroke-width: .7; opacity: 0; animation: ring 3.4s ease-out 1.8s infinite; }
+.logo:hover .nn-edge { opacity: .9; transition: opacity .4s; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes nodein { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: none; } }
+@keyframes ring { 0% { opacity: .75; transform: scale(.55); } 100% { opacity: 0; transform: scale(1.6); } }
+
+/* ───── avanzamento, intestazione, voce attiva ───── */
+#progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; z-index: 30; }
+.top { transition: box-shadow .4s; }
+.top .wrap { transition: height .35s var(--ease); }
+.top.scrolled { box-shadow: 0 10px 30px -22px rgba(11,20,38,.55); }
+.top.scrolled .wrap { height: 58px; }
+.top nav a.active { color: var(--ink); border-bottom-color: var(--accent); }
+
+/* ───── titolo che si compone ───── */
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .14em; margin-bottom: -.14em; }
+.w > span { display: inline-block; transform: translateY(108%); animation: wordin 1s var(--ease) forwards; animation-delay: calc(var(--i) * 90ms + 250ms); }
+@keyframes wordin { to { transform: none; } }
+h1 em { display: inline-block; position: relative; }
+h1 em::after { content: ""; position: absolute; left: 0; right: 0; bottom: -.04em; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; animation: underline 1.4s var(--ease) 1.5s forwards; }
+@keyframes underline { to { transform: none; } }
+
+/* ───── dettagli che si tracciano ───── */
+.eyebrow.reveal::after { width: 0; transition: width 1.1s var(--ease) .35s; }
+.eyebrow.in::after { width: 56px; }
+.step { border-top-color: transparent; }
+.step::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: rgba(255,255,255,.28); transform: scaleX(0); transform-origin: left; transition: transform 1.3s var(--ease) .15s; }
+.step.in::after { transform: none; }
+.step::before { opacity: 0; transition: opacity .5s .2s; } .step.in::before { opacity: 1; }
+.pipe::after { content: ""; position: absolute; left: -1px; top: 0; width: 1px; height: 70px; background: linear-gradient(transparent, var(--accent), transparent); animation: pipedown 5s linear infinite; }
+@keyframes pipedown { 0% { top: 0; opacity: 0; } 12% { opacity: 1; } 85% { opacity: 1; } 100% { top: calc(100% - 70px); opacity: 0; } }
+.ribbon::after { display: none; }
+.rb { position: relative; }
+.rb::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; animation: rbstep 7.5s var(--ease) infinite; }
+.rb.hum::before { background: #fff; }
+.rb:nth-child(1)::before { animation-delay: 0s; } .rb:nth-child(3)::before { animation-delay: 1.5s; } .rb:nth-child(5)::before { animation-delay: 3s; }
+.rb:nth-child(7)::before { animation-delay: 4.5s; } .rb:nth-child(9)::before { animation-delay: 6s; }
+@keyframes rbstep { 0% { transform: scaleX(0); } 7% { transform: scaleX(1); } 18% { transform: scaleX(1); opacity: 1; } 26% { transform: scaleX(1); opacity: 0; } 100% { transform: scaleX(1); opacity: 0; } }
+.btn { position: relative; overflow: hidden; }
+.btn::after { content: ""; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.22), transparent); transition: left .7s var(--ease); pointer-events: none; }
+.btn:hover::after { left: 120%; }
+.btn.ghost::after, .btn.sm::after { background: linear-gradient(100deg, transparent, rgba(11,20,38,.08), transparent); }
+.card { position: relative; }
+.card::before { content: ""; position: absolute; left: 0; top: 0; height: 1px; width: 0; background: var(--accent); transition: width .6s var(--ease); }
+.card:hover::before { width: 100%; }
+
+/* ───── grafici e barre dei calcolatori ───── */
+.draw { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.play:not(.done) .draw { animation: draw 1.7s var(--ease) forwards; }
+.done .draw { stroke-dashoffset: 0; }
+.fadein { opacity: 0; }
+.play:not(.done) .fadein { animation: fadeto 1.2s var(--ease) .5s forwards; }
+.done .fadein { opacity: 1; }
+@keyframes fadeto { to { opacity: 1; } }
+.stack i, .bar2 i, .fit .meter i, .bar i, .range-bar .iv { transform-origin: left; }
+.play:not(.done) .stack i, .play:not(.done) .bar2 i, .play:not(.done) .fit .meter i, .play:not(.done) .range-bar .iv { animation: grow 1.2s var(--ease) both; }
+@keyframes grow { from { transform: scaleX(0); } to { transform: none; } }
+.flash { animation: flash 1.1s ease-out; border-radius: 2px; }
+@keyframes flash { 0% { background: rgba(39,72,200,.18); } 100% { background: transparent; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .draw, .logo .nn-edge { stroke-dashoffset: 0 !important; }
+  .logo .nn-node, .logo .nn-hot, .fadein { opacity: 1 !important; }
+  .logo .nn-ring, .sig, #progress { display: none !important; }
+  .w > span { transform: none !important; }
+  h1 em::after, .step::after { transform: none !important; }
+  .eyebrow::after { width: 56px !important; }
+  .step::before { opacity: 1 !important; }
+  .rb::before, .pipe::after, .btn::after { display: none !important; }
+}

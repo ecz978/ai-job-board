@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg stroke='%230e1623' stroke-opacity='.4'%3E%3Cpath d='M6 11L16 6M6 11L16 16M6 21L16 16M6 21L16 26M16 6L26 11M16 16L26 21M16 26L26 21'/%3E%3C/g%3E%3Cg fill='%230e1623'%3E%3Ccircle cx='6' cy='11' r='2.4'/%3E%3Ccircle cx='6' cy='21' r='2.4'/%3E%3Ccircle cx='16' cy='6' r='2.4'/%3E%3Ccircle cx='16' cy='16' r='2.4'/%3E%3Ccircle cx='16' cy='26' r='2.4'/%3E%3Ccircle cx='26' cy='11' r='2.4'/%3E%3C/g%3E%3Ccircle cx='26' cy='21' r='2.8' fill='%232748c8'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg fill='none' stroke='%230b1426' stroke-opacity='.5' stroke-width='1.2'%3E%3Cpath d='M7 14C13.5 14 13.5 20 20 20M7 26C13.5 26 13.5 8 20 8M20 8C26.5 8 26.5 26 33 26M20 32C26.5 32 26.5 14 33 14M20 20C26.5 20 26.5 26 33 26M7 14C13.5 14 13.5 32 20 32'/%3E%3C/g%3E%3Cg fill='%230b1426'%3E%3Ccircle cx='7' cy='14' r='2.6'/%3E%3Ccircle cx='7' cy='26' r='2.6'/%3E%3Ccircle cx='20' cy='8' r='2.6'/%3E%3Ccircle cx='20' cy='20' r='2.6'/%3E%3Ccircle cx='20' cy='32' r='2.6'/%3E%3Ccircle cx='33' cy='14' r='2.6'/%3E%3C/g%3E%3Ccircle cx='33' cy='26' r='3.4' fill='%232748c8'/%3E%3C/svg%3E">
 <title>[Nome] · Consulenza sull'intelligenza artificiale nei processi</title>
 <meta name="description" content="Consulenza per introdurre l'intelligenza artificiale nei processi di segreterie, uffici acquisti e studi professionali: analisi, progettazione, verifica dei risultati e presidio nel tempo.">
 <style>
@@ -331,6 +331,83 @@ footer { padding: 34px 0 54px; font-size: 13px; color: var(--muted); border-top:
 .rs { overflow-x: auto; }
 .tool-in .act .ah { width: 68px; }
 .tool-in .act { margin: 0; }
+
+/* ───── logo raffinato ───── */
+.logo svg { width: 38px; height: 38px; overflow: visible; }
+.logo circle { transform-box: fill-box; transform-origin: center; }
+.logo .nn-edge { stroke: currentColor; stroke-width: .75; opacity: .5; stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.3s var(--ease) forwards; animation-delay: calc(var(--i) * 70ms + 150ms); }
+.logo .nn-node { fill: currentColor; opacity: 0; animation: nodein .7s var(--ease) forwards; animation-delay: calc(var(--i) * 90ms + 300ms); }
+.logo .nn-hot { fill: var(--accent); opacity: 0; animation: nodein .7s var(--ease) 1.2s forwards; }
+.logo .nn-ring { fill: none; stroke: var(--accent); stroke-width: .7; opacity: 0; animation: ring 3.4s ease-out 1.8s infinite; }
+.logo:hover .nn-edge { opacity: .9; transition: opacity .4s; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes nodein { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: none; } }
+@keyframes ring { 0% { opacity: .75; transform: scale(.55); } 100% { opacity: 0; transform: scale(1.6); } }
+
+/* ───── avanzamento, intestazione, voce attiva ───── */
+#progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; z-index: 30; }
+.top { transition: box-shadow .4s; }
+.top .wrap { transition: height .35s var(--ease); }
+.top.scrolled { box-shadow: 0 10px 30px -22px rgba(11,20,38,.55); }
+.top.scrolled .wrap { height: 58px; }
+.top nav a.active { color: var(--ink); border-bottom-color: var(--accent); }
+
+/* ───── titolo che si compone ───── */
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .14em; margin-bottom: -.14em; }
+.w > span { display: inline-block; transform: translateY(108%); animation: wordin 1s var(--ease) forwards; animation-delay: calc(var(--i) * 90ms + 250ms); }
+@keyframes wordin { to { transform: none; } }
+h1 em { display: inline-block; position: relative; }
+h1 em::after { content: ""; position: absolute; left: 0; right: 0; bottom: -.04em; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; animation: underline 1.4s var(--ease) 1.5s forwards; }
+@keyframes underline { to { transform: none; } }
+
+/* ───── dettagli che si tracciano ───── */
+.eyebrow.reveal::after { width: 0; transition: width 1.1s var(--ease) .35s; }
+.eyebrow.in::after { width: 56px; }
+.step { border-top-color: transparent; }
+.step::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: rgba(255,255,255,.28); transform: scaleX(0); transform-origin: left; transition: transform 1.3s var(--ease) .15s; }
+.step.in::after { transform: none; }
+.step::before { opacity: 0; transition: opacity .5s .2s; } .step.in::before { opacity: 1; }
+.pipe::after { content: ""; position: absolute; left: -1px; top: 0; width: 1px; height: 70px; background: linear-gradient(transparent, var(--accent), transparent); animation: pipedown 5s linear infinite; }
+@keyframes pipedown { 0% { top: 0; opacity: 0; } 12% { opacity: 1; } 85% { opacity: 1; } 100% { top: calc(100% - 70px); opacity: 0; } }
+.ribbon::after { display: none; }
+.rb { position: relative; }
+.rb::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; animation: rbstep 7.5s var(--ease) infinite; }
+.rb.hum::before { background: #fff; }
+.rb:nth-child(1)::before { animation-delay: 0s; } .rb:nth-child(3)::before { animation-delay: 1.5s; } .rb:nth-child(5)::before { animation-delay: 3s; }
+.rb:nth-child(7)::before { animation-delay: 4.5s; } .rb:nth-child(9)::before { animation-delay: 6s; }
+@keyframes rbstep { 0% { transform: scaleX(0); } 7% { transform: scaleX(1); } 18% { transform: scaleX(1); opacity: 1; } 26% { transform: scaleX(1); opacity: 0; } 100% { transform: scaleX(1); opacity: 0; } }
+.btn { position: relative; overflow: hidden; }
+.btn::after { content: ""; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.22), transparent); transition: left .7s var(--ease); pointer-events: none; }
+.btn:hover::after { left: 120%; }
+.btn.ghost::after, .btn.sm::after { background: linear-gradient(100deg, transparent, rgba(11,20,38,.08), transparent); }
+.card { position: relative; }
+.card::before { content: ""; position: absolute; left: 0; top: 0; height: 1px; width: 0; background: var(--accent); transition: width .6s var(--ease); }
+.card:hover::before { width: 100%; }
+
+/* ───── grafici e barre dei calcolatori ───── */
+.draw { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.play:not(.done) .draw { animation: draw 1.7s var(--ease) forwards; }
+.done .draw { stroke-dashoffset: 0; }
+.fadein { opacity: 0; }
+.play:not(.done) .fadein { animation: fadeto 1.2s var(--ease) .5s forwards; }
+.done .fadein { opacity: 1; }
+@keyframes fadeto { to { opacity: 1; } }
+.stack i, .bar2 i, .fit .meter i, .bar i, .range-bar .iv { transform-origin: left; }
+.play:not(.done) .stack i, .play:not(.done) .bar2 i, .play:not(.done) .fit .meter i, .play:not(.done) .range-bar .iv { animation: grow 1.2s var(--ease) both; }
+@keyframes grow { from { transform: scaleX(0); } to { transform: none; } }
+.flash { animation: flash 1.1s ease-out; border-radius: 2px; }
+@keyframes flash { 0% { background: rgba(39,72,200,.18); } 100% { background: transparent; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .draw, .logo .nn-edge { stroke-dashoffset: 0 !important; }
+  .logo .nn-node, .logo .nn-hot, .fadein { opacity: 1 !important; }
+  .logo .nn-ring, .sig, #progress { display: none !important; }
+  .w > span { transform: none !important; }
+  h1 em::after, .step::after { transform: none !important; }
+  .eyebrow::after { width: 56px !important; }
+  .step::before { opacity: 1 !important; }
+  .rb::before, .pipe::after, .btn::after { display: none !important; }
+}
 </style>
 <script>
 // Demo, schede, strumenti, calcolatore, animazioni. Tutti i dati della demo sono fittizi.
@@ -346,6 +423,15 @@ const rng = (a) => `${eur(a[0])} – ${eur(a[1])}`;
 const mid = (a) => (a[0] + a[1]) / 2;
 const num = (id) => parseFloat($(id).value) || 0;
 const dec = (x, d = 1) => x.toLocaleString("it-IT", { maximumFractionDigits: d });
+
+const prevTxt = {};
+function flashDiff(id) {
+  const root = $(id); if (!root || REDUCED) return;
+  const els = [...root.querySelectorAll(".big, .box strong, .rs td:last-child, .range-bar + .range-scale")];
+  const now = els.map((e) => e.textContent), prev = prevTxt[id];
+  if (prev && prev.length === now.length) els.forEach((e, i) => { if (prev[i] !== now[i]) e.classList.add("flash"); });
+  prevTxt[id] = now;
+}
 
 /* ═════════ Demo ═════════ */
 const DEMO = {
@@ -515,6 +601,7 @@ function mapOut() {
     <div class="rs"><h3>Ciò che resterebbe fuori <small>per scelta</small></h3>
       ${fuori.length ? `<table>${fuori.map((r) => `<tr><td><b>${r[0]}</b><br><span class="note">${r[3]}</span></td><td>${dec(mapState.ore[a + ATT[a].indexOf(r)])} h</td></tr>`).join("")}</table>` : "<p>Nessuna attività selezionata tra quelle da non automatizzare.</p>"}
       <p class="note" style="margin-top:12px">Quote di tempo recuperabile ipotizzate: 50-75% per le attività automatizzabili con verifica, 20-40% per quelle assistite. Sono stime di partenza, da validare nella fase di ascolto con chi svolge il lavoro.</p></div>`;
+  flashDiff("m-out");
 }
 
 /* ═════════ Strumento 2 · Verifica a campione ═════════ */
@@ -558,9 +645,10 @@ function verOut() {
       <p>${nn ? `Per dimostrare almeno ${pct(s)} con confidenza del ${conf}% servono circa <b>${nn} richieste consecutive</b>.` : "Con questa qualità reale, così vicina alla soglia, servono più di 1.500 richieste."}</p>
       <svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Limite inferiore al crescere del campione">${grid}${xs}
         <line x1="${L}" x2="${W - R}" y1="${y(s)}" y2="${y(s)}" stroke="#1d7a58" stroke-dasharray="5 5"/>
-        <polyline points="${pts.join(" ")}" fill="none" stroke="#2748c8" stroke-width="2.6"/>${mk}</svg>
+        <polyline class="draw" pathLength="1" points="${pts.join(" ")}" fill="none" stroke="#2748c8" stroke-width="2.6"/>${mk}</svg>
       <div class="legend"><span><i style="background:#2748c8"></i>Limite inferiore atteso</span><span><i style="background:#1d7a58"></i>Soglia da dimostrare</span></div>
       <p class="note">Un criterio di accettazione operativo (ad esempio 24 su 30) è una regola concordata tra le parti, non una prova statistica: i due piani vanno tenuti distinti. Intervallo di Wilson, valido per risultati esito sì/no su richieste indipendenti.</p></div>`;
+  flashDiff("v-out");
 }
 
 /* ═════════ Strumento 3 · Memoria dei modelli ═════════ */
@@ -595,6 +683,7 @@ function memOut() {
     <div class="rs"><h3>Quale macchina <small>${prima ? "la più piccola che basta: " + prima.n.split(" (")[0].toLowerCase() : "oltre le configurazioni standard"}</small></h3>
       <div class="fit">${rows}</div>
       <p class="note" style="margin-top:14px">Stime semplificate: la memoria di contesto varia con l'architettura del modello e i modelli a miscela di esperti hanno requisiti diversi. La velocità di risposta dipende dalla banda di memoria e non è stimata qui: la misureremo su macchine reali.</p></div>`;
+  flashDiff("mm-out");
 }
 
 /* ═════════ Calcolatore di dimensionamento ═════════ */
@@ -669,9 +758,9 @@ function chart(r) {
   let mark = "";
   if (isFinite(r.pareggio) && r.pareggio <= 60) { const px = x(r.pareggio / 12), py = yy(r.L[r.pareggio]); mark = `<circle cx="${px}" cy="${py}" r="5" fill="#fff" stroke="#2748c8" stroke-width="2"/><text x="${px}" y="${py - 11}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#2748c8">pareggio ${dec(r.pareggio / 12)} anni</text>`; }
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Costo cumulato in cinque anni">${grid}${xs}
-    <polyline points="${line(r.Se)}" fill="none" stroke="#b4bdcc" stroke-width="2" stroke-dasharray="2 5" stroke-linecap="round"/>
-    <polyline points="${line(r.Ac)}" fill="none" stroke="#7b869a" stroke-width="2.4" stroke-dasharray="7 5"/>
-    <polyline points="${line(r.L)}" fill="none" stroke="#2748c8" stroke-width="3" stroke-linejoin="round"/>${mark}</svg>
+    <polyline class="fadein" points="${line(r.Se)}" fill="none" stroke="#b4bdcc" stroke-width="2" stroke-dasharray="2 5" stroke-linecap="round"/>
+    <polyline class="fadein" points="${line(r.Ac)}" fill="none" stroke="#7b869a" stroke-width="2.4" stroke-dasharray="7 5"/>
+    <polyline class="draw" pathLength="1" points="${line(r.L)}" fill="none" stroke="#2748c8" stroke-width="3" stroke-linejoin="round"/>${mark}</svg>
     <div class="legend"><span><i style="background:#2748c8"></i>In sede (${r.nol ? "noleggio" : "acquisto"} + esercizio)</span><span><i style="background:#7b869a"></i>Modello in cloud a consumo</span><span><i style="background:#b4bdcc"></i>Abbonamento per utente</span></div>`;
 }
 
@@ -790,6 +879,7 @@ function render() {
     catch { const t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); b.textContent = "Copiato"; }
     setTimeout(() => (b.textContent = "Copia il riepilogo"), 1800);
   });
+  flashDiff("risultato");
 }
 
 /* ═════════ Comparsa allo scroll ═════════ */
@@ -815,8 +905,8 @@ function initNet() {
   const c = $("net");
   if (!c || !c.getContext) return;
   const ctx = c.getContext("2d");
-  let w = 0, h = 0, nodes = [], pulses = [], raf = 0, visible = true;
-  const LINK = 160;
+  let w = 0, h = 0, nodes = [], pulses = [], raf = 0, visible = true, mouse = null;
+  const LINK = 160, MR = 150;
   function size() {
     const r = c.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
     w = r.width; h = r.height; c.width = w * dpr; c.height = h * dpr;
@@ -843,6 +933,10 @@ function initNet() {
       ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke();
     });
     nodes.forEach((n) => { ctx.fillStyle = "rgba(36,60,110,.4)"; ctx.beginPath(); ctx.arc(n.x, n.y, 2.2, 0, 6.283); ctx.fill(); });
+    if (mouse) {
+      nodes.forEach((n) => { const d = Math.hypot(n.x - mouse.x, n.y - mouse.y); if (d < MR) { ctx.strokeStyle = `rgba(39,72,200,${0.4 * (1 - d / MR)})`; ctx.beginPath(); ctx.moveTo(mouse.x, mouse.y); ctx.lineTo(n.x, n.y); ctx.stroke(); } });
+      ctx.fillStyle = "rgba(39,72,200,.55)"; ctx.beginPath(); ctx.arc(mouse.x, mouse.y, 3, 0, 6.283); ctx.fill();
+    }
     pulses.forEach((p) => {
       const a = nodes[p.i], b = nodes[p.j], x = a.x + (b.x - a.x) * p.t, y = a.y + (b.y - a.y) * p.t;
       ctx.fillStyle = `rgba(39,72,200,${Math.sin(p.t * Math.PI)})`;
@@ -853,7 +947,7 @@ function initNet() {
   function step() {
     nodes.forEach((n) => { n.x += n.vx; n.y += n.vy; if (n.x < 0 || n.x > w) n.vx *= -1; if (n.y < 0 || n.y > h) n.vy *= -1; });
     const es = draw();
-    if (es.length && pulses.length < 6 && Math.random() < 0.03) { const e = es[Math.floor(Math.random() * es.length)]; pulses.push({ i: e[0], j: e[1], t: 0 }); }
+    if (es.length && pulses.length < 9 && Math.random() < 0.05) { const e = es[Math.floor(Math.random() * es.length)]; pulses.push({ i: e[0], j: e[1], t: 0 }); }
     pulses.forEach((p) => (p.t += 0.012));
     pulses = pulses.filter((p) => p.t < 1);
     if (visible) raf = requestAnimationFrame(step);
@@ -861,7 +955,54 @@ function initNet() {
   size(); draw();
   if (REDUCED) return;
   new IntersectionObserver((en) => { visible = en[0].isIntersecting; cancelAnimationFrame(raf); if (visible) raf = requestAnimationFrame(step); }).observe(c);
+  const hero = c.parentElement;
+  hero.addEventListener("pointermove", (e) => { const r = c.getBoundingClientRect(); mouse = { x: e.clientX - r.left, y: e.clientY - r.top }; });
+  hero.addEventListener("pointerleave", () => { mouse = null; });
   let rt; window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { size(); draw(); }, 150); });
+}
+
+/* ═════════ Titolo, scorrimento, grafici ═════════ */
+function splitHeadline() {
+  const h = document.querySelector(".hero h1");
+  if (!h || REDUCED) return;
+  let i = 0;
+  const wrap = (node) => [...node.childNodes].forEach((n) => {
+    if (n.nodeType === 3) {
+      const frag = document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach((t) => {
+        if (!t) return;
+        if (/^\s+$/.test(t)) { frag.appendChild(document.createTextNode(t)); return; }
+        const o = document.createElement("span"), s = document.createElement("span");
+        o.className = "w"; s.textContent = t; s.style.setProperty("--i", i++); o.appendChild(s); frag.appendChild(o);
+      });
+      n.replaceWith(frag);
+    } else if (n.nodeType === 1 && n.tagName !== "BR") wrap(n);
+  });
+  wrap(h);
+}
+function initScroll() {
+  const bar = $("progress"), top = document.querySelector(".top");
+  const on = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(1, scrollY / max) : 0})`;
+    top.classList.toggle("scrolled", scrollY > 8);
+  };
+  addEventListener("scroll", on, { passive: true }); on();
+  if (!("IntersectionObserver" in window)) return;
+  const links = [...document.querySelectorAll(".top nav a")];
+  const map = new Map(links.map((a) => [a.getAttribute("href").slice(1), a]));
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting) links.forEach((a) => a.classList.toggle("active", a === map.get(e.target.id)));
+  }), { rootMargin: "-45% 0px -50% 0px" });
+  map.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
+}
+function armLive() {
+  const ids = ["risultato", "m-out", "v-out", "mm-out"].map($);
+  if (REDUCED || !("IntersectionObserver" in window)) { ids.forEach((e) => e.classList.add("play", "done")); return; }
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (e.isIntersecting) { e.target.classList.add("play"); setTimeout(() => e.target.classList.add("done"), 2200); io.unobserve(e.target); }
+  }), { rootMargin: "0px 0px -15% 0px" });
+  ids.forEach((e) => io.observe(e));
 }
 
 /* ═════════ Avvio ═════════ */
@@ -872,6 +1013,7 @@ function bindSeg(sel, attr, cb) {
   }));
 }
 document.addEventListener("DOMContentLoaded", () => {
+  splitHeadline();
   // demo
   document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { stopAuto(); showDemo(t.dataset.d); }));
   $("run").addEventListener("click", () => { stopAuto(); runDemo(); });
@@ -920,6 +1062,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initReveal();
   initNet();
+  initScroll();
+  armLive();
 
   // contatti
   const form = $("contatto");
@@ -934,20 +1078,37 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 </head>
 <body>
+<div id="progress" aria-hidden="true"></div>
 
 <header class="top">
   <div class="wrap">
     <a class="logo" href="#" aria-label="[Nome]">
-      <svg viewBox="0 0 32 32" aria-hidden="true">
-        <g class="nn-edge-g">
-          <line class="nn-edge" x1="6" y1="11" x2="16" y2="6"/><line class="nn-edge" x1="6" y1="11" x2="16" y2="16"/><line class="nn-edge" x1="6" y1="11" x2="16" y2="26"/>
-          <line class="nn-edge" x1="6" y1="21" x2="16" y2="6"/><line class="nn-edge" x1="6" y1="21" x2="16" y2="16"/><line class="nn-edge" x1="6" y1="21" x2="16" y2="26"/>
-          <line class="nn-edge" x1="16" y1="6" x2="26" y2="11"/><line class="nn-edge" x1="16" y1="16" x2="26" y2="11"/><line class="nn-edge" x1="16" y1="26" x2="26" y2="11"/>
-          <line class="nn-edge" x1="16" y1="6" x2="26" y2="21"/><line class="nn-edge" x1="16" y1="16" x2="26" y2="21"/><line class="nn-edge" x1="16" y1="26" x2="26" y2="21"/>
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <g fill="none" stroke-linecap="round">
+          <path class="nn-edge" pathLength="1" style="--i:0" d="M7 14C13.5 14 13.5 8 20 8"/>
+          <path class="nn-edge" pathLength="1" style="--i:1" d="M7 14C13.5 14 13.5 20 20 20"/>
+          <path class="nn-edge" pathLength="1" style="--i:2" d="M7 14C13.5 14 13.5 32 20 32"/>
+          <path class="nn-edge" pathLength="1" style="--i:3" d="M7 26C13.5 26 13.5 8 20 8"/>
+          <path class="nn-edge" pathLength="1" style="--i:4" d="M7 26C13.5 26 13.5 20 20 20"/>
+          <path class="nn-edge" pathLength="1" style="--i:5" d="M7 26C13.5 26 13.5 32 20 32"/>
+          <path class="nn-edge" pathLength="1" style="--i:6" d="M20 8C26.5 8 26.5 14 33 14"/>
+          <path class="nn-edge" pathLength="1" style="--i:7" d="M20 8C26.5 8 26.5 26 33 26"/>
+          <path class="nn-edge" pathLength="1" style="--i:8" d="M20 20C26.5 20 26.5 14 33 14"/>
+          <path class="nn-edge" pathLength="1" style="--i:9" d="M20 20C26.5 20 26.5 26 33 26"/>
+          <path class="nn-edge" pathLength="1" style="--i:10" d="M20 32C26.5 32 26.5 14 33 14"/>
+          <path class="nn-edge" pathLength="1" style="--i:11" d="M20 32C26.5 32 26.5 26 33 26"/>
         </g>
-        <circle class="nn-node" cx="6" cy="11" r="2.2"/><circle class="nn-node" cx="6" cy="21" r="2.2"/>
-        <circle class="nn-node" cx="16" cy="6" r="2.2"/><circle class="nn-node" cx="16" cy="16" r="2.2"/><circle class="nn-node" cx="16" cy="26" r="2.2"/>
-        <circle class="nn-node" cx="26" cy="11" r="2.2"/><circle class="nn-node nn-hot pulse" cx="26" cy="21" r="2.6"/>
+        <g class="nn-nodes">
+          <circle class="nn-node" style="--i:0" cx="7" cy="14" r="1.8"/><circle class="nn-node" style="--i:1" cx="7" cy="26" r="1.8"/>
+          <circle class="nn-node" style="--i:2" cx="20" cy="8" r="1.8"/><circle class="nn-node" style="--i:3" cx="20" cy="20" r="1.8"/><circle class="nn-node" style="--i:4" cx="20" cy="32" r="1.8"/>
+          <circle class="nn-node" style="--i:5" cx="33" cy="14" r="1.8"/>
+        </g>
+        <circle class="nn-ring" cx="33" cy="26" r="4.6"/>
+        <circle class="nn-node nn-hot" cx="33" cy="26" r="2.3"/>
+        <circle class="sig" r="1.4" fill="#2748c8" opacity="0">
+          <animateMotion dur="4s" repeatCount="indefinite" begin="1.6s" path="M7 14C13.5 14 13.5 20 20 20C26.5 20 26.5 26 33 26"/>
+          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.88;1" dur="4s" repeatCount="indefinite" begin="1.6s"/>
+        </circle>
       </svg>
       <span>[Nome]</span>
     </a>
