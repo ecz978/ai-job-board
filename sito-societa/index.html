@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg fill='none' stroke='%230b1426' stroke-opacity='.5' stroke-width='1.2'%3E%3Cpath d='M7 14C13.5 14 13.5 20 20 20M7 26C13.5 26 13.5 8 20 8M20 8C26.5 8 26.5 26 33 26M20 32C26.5 32 26.5 14 33 14M20 20C26.5 20 26.5 26 33 26M7 14C13.5 14 13.5 32 20 32'/%3E%3C/g%3E%3Cg fill='%230b1426'%3E%3Ccircle cx='7' cy='14' r='2.6'/%3E%3Ccircle cx='7' cy='26' r='2.6'/%3E%3Ccircle cx='20' cy='8' r='2.6'/%3E%3Ccircle cx='20' cy='20' r='2.6'/%3E%3Ccircle cx='20' cy='32' r='2.6'/%3E%3Ccircle cx='33' cy='14' r='2.6'/%3E%3C/g%3E%3Ccircle cx='33' cy='26' r='3.4' fill='%232748c8'/%3E%3C/svg%3E">
+<title>[Nome] · Consulenza AI per PMI: si parte dai vostri dati</title>
+<meta name="description" content="Consulenza sull'intelligenza artificiale per PMI, segreterie, uffici acquisti e studi professionali: analizziamo la qualità dei dati esistenti e proponiamo l'approccio più adatto, che non è sempre un agente.">
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+<div id="progress" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#" aria-label="[Nome]">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <g fill="none" stroke-linecap="round">
+          <path class="nn-edge" pathLength="1" style="--i:0" d="M7 14C13.5 14 13.5 8 20 8"/>
+          <path class="nn-edge" pathLength="1" style="--i:1" d="M7 14C13.5 14 13.5 20 20 20"/>
+          <path class="nn-edge" pathLength="1" style="--i:2" d="M7 14C13.5 14 13.5 32 20 32"/>
+          <path class="nn-edge" pathLength="1" style="--i:3" d="M7 26C13.5 26 13.5 8 20 8"/>
+          <path class="nn-edge" pathLength="1" style="--i:4" d="M7 26C13.5 26 13.5 20 20 20"/>
+          <path class="nn-edge" pathLength="1" style="--i:5" d="M7 26C13.5 26 13.5 32 20 32"/>
+          <path class="nn-edge" pathLength="1" style="--i:6" d="M20 8C26.5 8 26.5 14 33 14"/>
+          <path class="nn-edge" pathLength="1" style="--i:7" d="M20 8C26.5 8 26.5 26 33 26"/>
+          <path class="nn-edge" pathLength="1" style="--i:8" d="M20 20C26.5 20 26.5 14 33 14"/>
+          <path class="nn-edge" pathLength="1" style="--i:9" d="M20 20C26.5 20 26.5 26 33 26"/>
+          <path class="nn-edge" pathLength="1" style="--i:10" d="M20 32C26.5 32 26.5 14 33 14"/>
+          <path class="nn-edge" pathLength="1" style="--i:11" d="M20 32C26.5 32 26.5 26 33 26"/>
+        </g>
+        <g class="nn-nodes">
+          <circle class="nn-node" style="--i:0" cx="7" cy="14" r="1.8"/><circle class="nn-node" style="--i:1" cx="7" cy="26" r="1.8"/>
+          <circle class="nn-node" style="--i:2" cx="20" cy="8" r="1.8"/><circle class="nn-node" style="--i:3" cx="20" cy="20" r="1.8"/><circle class="nn-node" style="--i:4" cx="20" cy="32" r="1.8"/>
+          <circle class="nn-node" style="--i:5" cx="33" cy="14" r="1.8"/>
+        </g>
+        <circle class="nn-ring" cx="33" cy="26" r="4.6"/>
+        <circle class="nn-node nn-hot" cx="33" cy="26" r="2.3"/>
+        <circle class="sig" r="1.4" fill="#2748c8" opacity="0">
+          <animateMotion dur="4s" repeatCount="indefinite" begin="1.6s" path="M7 14C13.5 14 13.5 20 20 20C26.5 20 26.5 26 33 26"/>
+          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.88;1" dur="4s" repeatCount="indefinite" begin="1.6s"/>
+        </circle>
+      </svg>
+      <span>[Nome]</span>
+    </a>
+    <nav>
+      <a href="#soluzioni">Ambiti</a>
+      <a href="#metodo">Approccio</a>
+      <a href="#/strumenti">Strumenti</a>
+      <a href="#chisiamo">Chi siamo</a>
+    </nav>
+    <a class="btn sm" href="#contatti">Contatti</a>
+  </div>
+</header>
+
+<main>
+<div class="page" id="p-home">
+<section class="hero">
+  <canvas id="net" aria-hidden="true"></canvas>
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Consulenza AI per PMI</p>
+      <h1>Prima i vostri dati.<br><em>Poi l'approccio giusto.</em></h1>
+      <p class="lead">Per PMI, segreterie, uffici acquisti e studi professionali. Analizziamo i dati che avete già, ne valutiamo la qualità e proponiamo l'approccio più adatto: un agente oppure un'altra soluzione. Non vendiamo uno strumento: valutiamo se serve. Non vendiamo la stessa cosa a tutti ma costruiamo la soluzione più adatta ad ogni esigenza.</p>
+      <div class="cta-row">
+        <a class="btn hot" href="#contatti">Richiedi un incontro</a>
+        <a class="btn ghost" href="#/strumenti/dati">Check-up dei dati</a>
+      </div>
+      <div class="stats">
+        <div><b>Dati prima</b><span>Partiamo da ciò che avete, non da uno strumento.</span></div>
+        <div><b>AI solo se serve</b><span>A volte la soluzione migliore è un'altra.</span></div>
+        <div><b>Decisione umana</b><span>Ogni documento è convalidato da una persona.</span></div>
+      </div>
+    </div>
+
+    <div class="deliv" id="deliv">
+      <div class="deliv-head"><span>Il percorso</span><span>quattro fasi, quattro documenti</span></div>
+      <ol class="deliv-list">
+        <li><i>01</i><div><small>Fase 1 · Analisi dei dati</small><b>Fotografia dei dati esistenti</b><p>Quali dati avete, dove sono, in che stato: completezza, coerenza, duplicati, formati.</p></div></li>
+        <li><i>02</i><div><small>Fase 2 · Valutazione</small><b>Opzioni e raccomandazione</b><p>Per ogni processo l'approccio più adatto, anche quando non è l'AI, con costi, benefici e rischi.</p></div></li>
+        <li><i>03</i><div><small>Fase 3 · Realizzazione</small><b>Vocabolario, regole e flusso</b><p>Solo ciò che la valutazione giustifica, con punti di controllo umano.</p></div></li>
+        <li><i>04</i><div><small>Fase 4 · Presidio</small><b>Registro e indicatori</b><p>Errori e richieste non gestite, verifiche a campione, relazione finale.</p></div></li>
+      </ol>
+      <div class="deliv-foot">Ogni fase si chiude con un documento e con un criterio di verifica concordato. Se i dati non sono adatti, lo diciamo prima di costruire qualsiasi cosa.</div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="ribbon" aria-label="Percorso del lavoro">
+      <div class="rb"><small>Partenza</small><b>I vostri dati esistenti</b></div><i></i>
+      <div class="rb"><small>Analisi</small><b>Qualità e stato dei dati</b></div><i></i>
+      <div class="rb"><small>Valutazione</small><b>L'approccio più adatto</b></div><i></i>
+      <div class="rb hum"><small>Persona</small><b>Verifica e decide</b></div><i></i>
+      <div class="rb"><small>Presidio</small><b>Misura nel tempo</b></div>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="wrap">
+    <div><b>I</b>Si parte dai dati esistenti e dal loro stato.</div>
+    <div><b>II</b>Si propone l'approccio più adatto, anche quando non è l'AI.</div>
+    <div><b>III</b>Lo strumento predispone, la persona decide.</div>
+    <div><b>IV</b>La qualità si misura su criteri stabiliti in anticipo.</div>
+  </div>
+</div>
+
+<section id="perche" class="statement">
+  <div class="wrap">
+    <p class="eyebrow">Perché serve un consulente</p>
+    <h2>Costruire un agente richiede pochi minuti. <em>Farlo funzionare sui vostri dati richiede professionalità.</em></h2>
+    <div class="vs">
+      <div class="vr vh"><span>Un agente generico</span><span>Un flusso progettato su di voi</span></div>
+      <div class="vr"><span>Si collega a un modello e risponde a tutto.</span><span>Parte dai vostri dati e ne valuta la qualità.</span></div>
+      <div class="vr"><span>Non conosce i vostri codici, i listini, le eccezioni.</span><span>Conosce il vostro vocabolario e le vostre regole, scritte e approvate.</span></div>
+      <div class="vr"><span>Quando non sa, risponde comunque.</span><span>Quando non sa, si ferma e passa la pratica a una persona.</span></div>
+      <div class="vr"><span>Nessuno misura se funziona.</span><span>Ha indicatori e un registro degli errori, verificati nel tempo.</span></div>
+    </div>
+    <p class="closer">Per questo ci vuole <span class="ph">[Nome]</span>.</p>
+  </div>
+</section>
+
+<section id="soluzioni">
+  <div class="wrap">
+    <p class="eyebrow">Ambiti di intervento</p>
+    <h2>Stessi dati, approcci diversi.</h2>
+    <p class="lead" style="max-width:700px">Pensato per le PMI: pochi dati, spesso sparsi, poco tempo per progetti lunghi. In ogni ambito si parte da ciò che c'è e si sceglie l'approccio in base allo stato dei dati, non il contrario.</p>
+    <div class="picker" role="tablist">
+      <button class="pick" role="tab" aria-selected="true" data-s="acq">Acquisti e ordini</button>
+      <button class="pick" role="tab" aria-selected="false" data-s="seg">Segreterie</button>
+      <button class="pick" role="tab" aria-selected="false" data-s="stu">Studi professionali</button>
+    </div>
+
+    <div class="panel" data-p="acq">
+      <div>
+        <h3>Uffici acquisti e commerciale</h3>
+        <p class="muted">Richieste in formati diversi, codici scritti a modo del cliente, tempo perso nei listini. Prima di pensare a un agente guardiamo i dati su cui dovrebbe lavorare.</p>
+        <h4>Cosa guardiamo nei vostri dati</h4>
+        <ul><li>Anagrafica articoli: codici, descrizioni, duplicati.</li><li>Listini e storico dei prezzi: dove sono e quanto sono coerenti.</li><li>Ordini, bolle e fatture: i collegamenti tra documenti.</li><li>Le email di richiesta: formati e varietà.</li></ul>
+        <h4>I limiti</h4>
+        <ul><li>Nessuna scrittura sul gestionale di produzione.</li><li>Prezzi, ordini e invii restano di competenza della persona.</li></ul>
+      </div>
+      <div class="dtable">
+        <div class="dh"><span>Se i dati sono…</span><span>Proponiamo…</span><span></span></div>
+          <div class="dr"><span class="dc">Anagrafica ordinata, codici coerenti</span><span class="da">Agente per preventivi e ordini, basato sul vocabolario aziendale</span><span class="ptag t-assist">Agente</span></div>
+          <div class="dr"><span class="dc">Codici duplicati o descrizioni non uniformi</span><span class="da">Prima la normalizzazione dell'anagrafica; l'agente dopo</span><span class="ptag t-first">Prima i dati</span></div>
+          <div class="dr"><span class="dc">Listini e storico prezzi in file sparsi</span><span class="da">Consolidamento dei dati e reportistica; nessun agente finché i prezzi non sono affidabili</span><span class="ptag t-first">Prima i dati</span></div>
+          <div class="dr"><span class="dc">Poche richieste, molto diverse tra loro</span><span class="da">Modelli di risposta e ricerca nei listini, senza automazione</span><span class="ptag t-no">Senza AI</span></div>
+      </div>
+    </div>
+
+    <div class="panel hidden" data-p="seg">
+      <div>
+        <h3>Segreterie di scuole e centri di formazione</h3>
+        <p class="muted">Nei periodi di iscrizione la segreteria dedica gran parte del tempo a risposte ricorrenti e appuntamenti. Un assistente funziona solo se la documentazione è affidabile.</p>
+        <h4>Cosa guardiamo nei vostri dati</h4>
+        <ul><li>Schede corso, regolamenti e modulistica: aggiornamento e versioni.</li><li>Storico delle richieste: quante sono ricorrenti e quante no.</li><li>Calendario e disponibilità: dove vengono gestiti.</li><li>Dati di studenti e minori: chi vi accede.</li></ul>
+        <h4>I limiti</h4>
+        <ul><li>Nessuna valutazione né selezione degli studenti.</li><li>Le richieste ambigue o delicate passano a un operatore.</li></ul>
+      </div>
+      <div class="dtable">
+        <div class="dh"><span>Se i dati sono…</span><span>Proponiamo…</span><span></span></div>
+          <div class="dr"><span class="dc">Regolamenti e schede corso aggiornati, in formato testo</span><span class="da">Assistente che risponde dalla documentazione, con la fonte</span><span class="ptag t-assist">Agente</span></div>
+          <div class="dr"><span class="dc">Documenti obsoleti o in versioni diverse</span><span class="da">Prima la revisione e l'unificazione dei documenti</span><span class="ptag t-first">Prima i dati</span></div>
+          <div class="dr"><span class="dc">Richieste già coperte da moduli o dal gestionale</span><span class="da">Moduli e risposte automatiche del gestionale</span><span class="ptag t-no">Senza AI</span></div>
+          <div class="dr"><span class="dc">Dati di minori coinvolti</span><span class="da">Elaborazione interamente in sede, con ambiti esclusi per scelta</span><span class="ptag t-auto">In sede</span></div>
+      </div>
+    </div>
+
+    <div class="panel hidden" data-p="stu">
+      <div>
+        <h3>Studi professionali</h3>
+        <p class="muted">Un flusso continuo di PEC e documenti, scadenze da presidiare, bandi da leggere. La riservatezza è un requisito: l'elaborazione può restare in studio.</p>
+        <h4>Cosa guardiamo nei vostri dati</h4>
+        <ul><li>Archivio delle pratiche: struttura e completezza.</li><li>PEC e allegati: formato, firme, leggibilità delle scansioni.</li><li>Scadenzario: in quanti strumenti è gestito.</li><li>Anagrafica dei clienti e collegamento alle pratiche.</li></ul>
+        <h4>I limiti</h4>
+        <ul><li>La lettura del testo originale resta al professionista.</li><li>Calcolo dei termini e responsabilità professionale non sono delegati.</li></ul>
+      </div>
+      <div class="dtable">
+        <div class="dh"><span>Se i dati sono…</span><span>Proponiamo…</span><span></span></div>
+          <div class="dr"><span class="dc">Pratiche con una struttura costante</span><span class="da">Smistamento e schede pratica automatici, con verifica</span><span class="ptag t-assist">Agente</span></div>
+          <div class="dr"><span class="dc">Archivio disordinato, scansioni di bassa qualità</span><span class="da">Riordino e riconoscimento del testo; poi la classificazione</span><span class="ptag t-first">Prima i dati</span></div>
+          <div class="dr"><span class="dc">Scadenze gestite a mano in più strumenti</span><span class="da">Uno scadenzario unico con regole; l'AI solo per estrarre le date, con controllo</span><span class="ptag t-no">Senza AI</span></div>
+          <div class="dr"><span class="dc">Documenti molto riservati</span><span class="da">Elaborazione interamente in sede</span><span class="ptag t-auto">In sede</span></div>
+      </div>
+    </div>
+    <div class="flow-block" id="flusso">
+      <h3 class="fb-title">Guardate un flusso, passo per passo.</h3>
+      <p class="muted" style="max-width:700px">Otto ambiti, diciannove casi. Ogni flusso parte dai dati: se sono adatti si vede cosa succede passo per passo; se non lo sono, il flusso si ferma o propone un approccio diverso. Alcuni casi si completano, altri si fermano per scelta di progetto, altri ancora portano a una soluzione senza agente.</p>
+      <div class="flow">
+      <div class="flow-in">
+        <div class="field"><label class="l">Ambito</label>
+          <div class="chips" id="f-ambito"><button type="button" aria-pressed="true" data-a="acq">Acquisti</button><button type="button" aria-pressed="false" data-a="seg">Segreteria</button><button type="button" aria-pressed="false" data-a="stu">Studio</button><button type="button" aria-pressed="false" data-a="amm">Amministrazione</button><button type="button" aria-pressed="false" data-a="hr">Risorse umane</button><button type="button" aria-pressed="false" data-a="log">Logistica</button><button type="button" aria-pressed="false" data-a="cli">Assistenza clienti</button><button type="button" aria-pressed="false" data-a="prod">Produzione</button></div></div>
+        <div class="field"><label class="l">Caso</label><div class="caselist" id="f-casi"></div></div>
+        <div class="field"><label class="l" id="f-label">Comunicazione in ingresso</label><div class="inbox" id="f-text"></div></div>
+        <div class="flow-btns"><button class="btn sm" id="f-run" type="button">Avvia il flusso →</button></div>
+        <p class="note" style="margin:14px 0 0">Esempi illustrativi con dati fittizi.</p>
+      </div>
+      <div class="flow-main">
+        <ol class="stepper" id="f-steps" aria-label="Passi del flusso"></ol>
+        <div class="flow-detail" id="f-detail"></div>
+        <div class="flow-log" id="f-log"></div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section id="metodo" class="dark">
+  <div class="wrap">
+    <p class="eyebrow">Approccio</p>
+    <h2>Prima si guardano i dati, poi si sceglie l'approccio. A volte la risposta migliore non è l'AI.</h2>
+    <div class="steps">
+      <div class="step"><small>Fase 1</small><h3>Analisi dei dati</h3><p>Quali dati avete, dove sono, in che stato: completezza, coerenza, duplicati, formati, riservatezza.</p></div>
+      <div class="step"><small>Fase 2</small><h3>Valutazione</h3><p>Per ogni processo l'approccio più adatto, anche quando non è l'AI, con costi, benefici e rischi.</p></div>
+      <div class="step"><small>Fase 3</small><h3>Realizzazione</h3><p>Solo ciò che la valutazione giustifica: vocabolario, regole, flusso con punti di controllo umano.</p></div>
+      <div class="step"><small>Fase 4</small><h3>Presidio</h3><p>Errori e richieste non gestite, verifiche a campione, indicatori nel tempo.</p></div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h3>Valutazione della qualità dei dati</h3>
+        <p>Per ogni fonte misuriamo sei aspetti:</p>
+        <p>— Completezza.<br>— Coerenza di codici e nomi.<br>— Duplicati e versioni diverse.<br>— Aggiornamento.<br>— Formato dei documenti.<br>— Riservatezza.</p>
+        <p class="note">L'esito è una relazione con una raccomandazione per ogni processo: un agente, la sistemazione dei dati prima, una soluzione senza AI, oppure l'elaborazione in sede. Provate il <a href="#/strumenti/dati" style="text-decoration:underline">check-up dei dati</a>.</p>
+      </div>
+      <div class="card">
+        <h3>Verifica dei risultati</h3>
+        <p>Prima dell'avvio si concorda con il cliente come si misura l'esito. A titolo di esempio: su 30 richieste consecutive, almeno 24 bozze utilizzate senza modifiche sostanziali. È un criterio di accettazione concordato; la dimensione del campione si valuta con lo strumento <a href="#/strumenti/verifica" style="text-decoration:underline">«Verifica a campione»</a>.</p>
+        <div class="cells" id="cells"></div>
+        <p class="note">Se la soglia non è raggiunta, le cause sono documentate per iscritto e l'affiancamento prosegue. Dopo la consegna è previsto un periodo di affiancamento di 90 giorni, con incontro settimanale e verifica finale scritta.</p>
+      </div>
+      <div class="card">
+        <h3>Ciò che non affidiamo all'AI</h3>
+        <p>— Valutazioni su persone: crediti, disabilità, minori, finanziamenti individuali.</p>
+        <p>— Importi, scadenze e requisiti formali senza verifica umana sul testo originale.</p>
+        <p>— Procedure che investono la responsabilità professionale.</p>
+        <p>— Qualunque esito privo di un punto di escalation definito.</p>
+      </div>
+    </div>
+    <p class="note" style="margin-top:28px;max-width:760px">Condizioni di collaborazione: progetti dimensionati per le PMI, articolati per fasi, con oggetto, tempi e criteri di verifica scritti prima dell'avvio. Costi del modello e dell'infrastruttura intestati al cliente; dati e vocabolario di proprietà del cliente. <span class="ph">Compensi: da definire</span></p>
+  </div>
+</section>
+
+<section id="dati">
+  <div class="wrap">
+    <p class="eyebrow">Dati e infrastruttura</p>
+    <h2>Dove risiedono i dati, e con quale infrastruttura.</h2>
+    <p class="lead" style="max-width:640px">Non esiste una soluzione unica. La scelta dipende dalla natura dei dati trattati, dagli obblighi del cliente e dal livello di qualità richiesto.</p>
+    <div class="grid" style="margin-top:44px">
+      <div class="card opt">
+        <h3>Modello in cloud</h3><span class="where">Elaborazione presso il fornitore</span>
+        <p>Modelli commerciali (ad esempio Claude) utilizzati tramite interfaccia di programmazione. Massima qualità e investimento iniziale contenuto.</p>
+        <dl><dt>Indicata per</dt><dd>Dati poco sensibili.</dd><dt>Limite</dt><dd>Le richieste lasciano la rete del cliente.</dd></dl>
+      </div>
+      <div class="card opt">
+        <h3>Archivio in sede, modello in cloud</h3><span class="where">Documenti presso il cliente</span>
+        <p>I documenti restano nell'infrastruttura del cliente; al modello viene inviato solo ciò che serve alla singola richiesta.</p>
+        <dl><dt>Indicata per</dt><dd>Dati sensibili, con contratto adeguato.</dd><dt>Limite</dt><dd>Il testo delle richieste viene comunque trasmesso.</dd></dl>
+      </div>
+      <div class="card opt">
+        <h3>Elaborazione interamente in sede</h3><span class="where">Nulla lascia l'organizzazione</span>
+        <p>Modelli a pesi aperti (Qwen, Mistral, Gemma) eseguiti su infrastruttura del cliente.</p>
+        <dl><dt>Indicata per</dt><dd>Minori, segreto professionale, vincoli interni.</dd><dt>Limite</dt><dd>Qualità inferiore sui compiti complessi; investimento in hardware.</dd></dl>
+      </div>
+    </div>
+    <p class="note" style="margin-top:22px">Anche con elaborazione in sede restano in capo all'organizzazione il registro dei trattamenti, la gestione degli accessi e la sicurezza di rete. Titolare del trattamento è il cliente; il consulente opera come responsabile, sulla base di un accordo scritto (art. 28 GDPR).</p>
+    <div class="hw-cta">
+      <p class="lead" style="max-width:640px">Forniamo anche l'infrastruttura: dimensionamento, fornitura e installazione dell'hardware per l'elaborazione in sede, con una stima di costi e tempi di rientro prima di ogni decisione.</p>
+      <div class="cta-row"><a class="btn hot" href="#/strumenti/dimensionamento">Dimensionamento dell'hardware</a><a class="btn ghost" href="#contatti">Richiedi un incontro</a></div>
+    </div>
+  </div>
+</section>
+
+<section id="chisiamo">
+  <div class="wrap">
+    <p class="eyebrow">Chi siamo</p>
+    <h2>Un percorso interdisciplinare: informatica, filosofia, processi.</h2>
+    <div class="grid" style="margin-top:36px">
+      <div class="card"><h3><span class="ph">Nome socio 1</span></h3><p>Perito capotecnico informatico, laureato in filosofia (tesi in area logico-antropologica), con vent'anni di esperienza tra formazione, docenza, coordinamento e sviluppo digitale. Si occupa di modelli linguistici nei flussi di lavoro, con criteri di qualità e punti di controllo umano.</p></div>
+      <div class="card"><h3><span class="ph">Nome socio 2</span></h3><p><span class="ph">Da scrivere.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contatti" class="dark">
+  <div class="wrap">
+    <p class="eyebrow">Contatti</p>
+    <h2>Un incontro per comprendere il processo.</h2>
+    <p class="muted" style="max-width:620px">Il primo incontro serve a capire il lavoro, non a proporre uno strumento. Se emerge un margine di intervento, si prosegue con una mappatura e con un progetto pilota su un flusso reale, con criteri di verifica condivisi.</p>
+    <form id="contatto">
+      <div><label for="nome">Nome e cognome</label><input id="nome" name="nome" required></div>
+      <div><label for="azienda">Organizzazione</label><input id="azienda" name="azienda"></div>
+      <div><label for="msg">Il processo su cui vorreste intervenire</label><textarea id="msg" name="msg" rows="4"></textarea></div>
+      <button class="btn hot" type="submit">Invia la richiesta</button>
+    </form>
+  </div>
+</section>
+</div>
+
+<div class="page hidden" id="p-strumenti">
+<section id="strumenti">
+  <div class="wrap">
+    <p class="eyebrow tools-head">Strumenti</p>
+    <h2 class="tools-head">Strumenti per ragionare sul vostro caso, a partire dai dati.</h2>
+    <p class="lead tools-head" style="max-width:680px">Non sono preventivi: servono a impostare il confronto con numeri e criteri chiari. I risultati sono stime, da validare nella fase di analisi.</p>
+    <div class="picker tools-head" id="tool-picker" role="tablist">
+      <button class="pick" role="tab" aria-selected="true" data-t="chk" data-slug="dati">Check-up dei dati</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="map" data-slug="mappa">Mappa delle attività</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="camp" data-slug="verifica">Verifica a campione</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="mem" data-slug="memoria">Memoria dei modelli</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="dim" data-slug="dimensionamento">Dimensionamento</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="casi" data-slug="contesti">Contesti</button>
+    </div>
+
+    <div class="tool" data-tool="chk">
+      <div class="tool-grid">
+        <div class="tool-in" id="chk-in"></div>
+        <div class="tool-out" id="chk-out"></div>
+      </div>
+    </div>
+
+    <div class="tool hidden" data-tool="map">
+      <div class="tool-grid">
+        <div class="tool-in">
+          <div class="field"><label class="l">Ambito</label>
+            <div class="seg light" id="m-ambito"><button type="button" aria-pressed="true" data-a="acq">Acquisti</button><button type="button" aria-pressed="false" data-a="seg">Segreteria</button><button type="button" aria-pressed="false" data-a="stu">Studio</button></div></div>
+          <div class="field"><label class="l">Attività e ore a settimana</label><div class="acts" id="m-list"></div></div>
+          <div class="field"><label class="l" for="m-orario">Costo orario del personale (€/h)</label><input id="m-orario" type="number" step="1" value="28"></div>
+        </div>
+        <div class="tool-out" id="m-out"></div>
+      </div>
+    </div>
+
+    <div class="tool hidden" data-tool="camp">
+      <div class="tool-grid">
+        <div class="tool-in">
+          <div class="field"><label class="l" for="v-n">Richieste verificate <output id="o-vn">30</output></label><input id="v-n" type="range" min="10" max="200" value="30"></div>
+          <div class="field"><label class="l" for="v-k">Bozze utilizzabili <output id="o-vk">24</output></label><input id="v-k" type="range" min="0" max="30" value="24"></div>
+          <div class="field"><label class="l" for="v-s">Soglia da dimostrare <output id="o-vs">80%</output></label><input id="v-s" type="range" min="50" max="99" value="80"></div>
+          <div class="field"><label class="l">Confidenza</label>
+            <div class="seg light two" id="v-conf"><button type="button" aria-pressed="false" data-z="1.645">90%</button><button type="button" aria-pressed="true" data-z="1.96">95%</button></div></div>
+          <div class="field"><label class="l" for="v-p">Qualità reale ipotizzata <output id="o-vp">92%</output></label><input id="v-p" type="range" min="80" max="99" value="92"></div>
+        </div>
+        <div class="tool-out" id="v-out"></div>
+      </div>
+    </div>
+
+    <div class="tool hidden" data-tool="mem">
+      <div class="tool-grid">
+        <div class="tool-in">
+          <div class="field"><label class="l" for="mm-par">Dimensione del modello</label>
+            <select id="mm-par"><option value="7">Circa 7 miliardi di parametri</option><option value="24">Circa 24 miliardi</option><option value="30" >Circa 30 miliardi</option><option value="70" selected>Circa 70 miliardi</option><option value="120">Circa 120 miliardi</option></select></div>
+          <div class="field"><label class="l">Precisione dei pesi</label>
+            <div class="seg light" id="mm-bits"><button type="button" aria-pressed="true" data-b="4">4 bit</button><button type="button" aria-pressed="false" data-b="8">8 bit</button><button type="button" aria-pressed="false" data-b="16">16 bit</button></div></div>
+          <div class="field"><label class="l" for="mm-ctx">Lunghezza del contesto</label>
+            <select id="mm-ctx"><option value="8192">8 mila token</option><option value="32768" selected>32 mila token</option><option value="131072">128 mila token</option></select></div>
+          <div class="field"><label class="l" for="mm-users">Utenti in parallelo <output id="o-mu">4</output></label><input id="mm-users" type="range" min="1" max="12" value="4"></div>
+        </div>
+        <div class="tool-out" id="mm-out"></div>
+      </div>
+    </div>
+
+    <div class="tool calc-wrap dark hidden" data-tool="dim" id="hardware">
+      <h3 class="fb-title" style="color:#f3f6fb">Valutare l'opzione di elaborazione in sede.</h3>
+      <p class="muted" style="max-width:700px">Strumento di prima valutazione: dimensiona l'infrastruttura, stima i costi di acquisto e di esercizio, li confronta con l'uso di un modello in cloud e indica i tempi di rientro. Le ipotesi sono modificabili e vanno validate nella fase di analisi.</p>
+      <div class="calc">
+      <div class="card calc-in">
+        <div class="field"><label for="c-ambito">Ambito</label>
+          <select id="c-ambito">
+            <option value="seg">Segreteria (scuole, formazione)</option>
+            <option value="acq" selected>Acquisti e ordini</option>
+            <option value="stu">Studio professionale</option>
+            <option value="mix">Più ambiti</option>
+          </select></div>
+        <div class="field"><label for="c-utenti">Utenti <output id="o-utenti">8</output></label><input id="c-utenti" type="range" min="1" max="80" value="8"></div>
+        <div class="field"><label for="c-rich">Richieste al giorno <output id="o-rich">150</output></label><input id="c-rich" type="range" min="10" max="2000" step="10" value="150"></div>
+        <div class="field"><label>Sensibilità dei dati</label>
+          <div class="seg" id="c-dati"><button type="button" aria-pressed="true" data-v="alta">Alta</button><button type="button" aria-pressed="false" data-v="media">Media</button><button type="button" aria-pressed="false" data-v="bassa">Bassa</button></div></div>
+        <div class="field"><label for="c-arch">Archivio da indicizzare</label>
+          <select id="c-arch"><option value="10">Fino a 10 GB</option><option value="100" selected>Fino a 100 GB</option><option value="500">Fino a 500 GB</option><option value="2000">Fino a 2 TB</option></select></div>
+        <div class="field"><label>Formula</label>
+          <div class="seg two" id="c-formula"><button type="button" aria-pressed="true" data-f="acq">Acquisto</button><button type="button" aria-pressed="false" data-f="nol">Noleggio 36 mesi</button></div></div>
+        <div class="field checks">
+          <label class="chk"><input id="c-ha" type="checkbox"> Alta disponibilità (due macchine)</label>
+          <label class="chk"><input id="c-ups" type="checkbox" checked> Gruppo di continuità e rete</label>
+        </div>
+        <details class="assump">
+          <summary>Ipotesi modificabili</summary>
+          <div class="agrid">
+            <label>Costo dell'energia (€/kWh)<input id="a-kwh" type="number" step="0.01" value="0.30"></label>
+            <label>Costo orario del personale (€/h)<input id="a-orario" type="number" step="1" value="28"></label>
+            <label>Minuti di lavoro manuale per richiesta<input id="a-min" type="number" step="1" value="10"></label>
+            <label>Quota automatizzata (%)<input id="a-aut" type="number" step="5" value="60"></label>
+            <label>Token per richiesta<input id="a-tokreq" type="number" step="500" value="4000"></label>
+            <label>Prezzo del modello (€ per milione di token)<input id="a-token" type="number" step="0.5" value="6"></label>
+            <label>Crescita annua del volume (%)<input id="a-g" type="number" step="1" value="5"></label>
+            <label>Canone mensile del noleggio (% del valore)<input id="a-rent" type="number" step="0.1" value="3.2"></label>
+            <label>Utenti contemporanei (%)<input id="a-cont" type="number" step="5" value="30"></label>
+            <label>Costo del progetto (€)<input id="a-prog" type="number" step="500" value="15000"></label>
+            <label>Supporto software annuo (€)<input id="a-supp" type="number" step="100" value="600"></label>
+          </div>
+          <p class="note">Valori di partenza indicativi, non costituiscono un'offerta. Il prezzo dei token va verificato sul listino del fornitore scelto.</p>
+        </details>
+      </div>
+      <div id="risultato" class="calc-out"></div>
+    </div>
+    </div>
+
+    <div class="tool hidden" data-tool="casi">
+      <h3 class="fb-title">Dodici contesti in cui il metodo si applica.</h3>
+      <p class="muted" style="max-width:660px">Per ciascun contesto indichiamo l'indicatore con cui si misura l'esito dell'intervento. I risultati vengono rilevati in fase di verifica, non promessi in anticipo.</p>
+      <p class="note" style="margin-top:14px"><span class="ph">Da completare prima della pubblicazione:</span> sono esempi di applicazione, non riferimenti. Sostituire o affiancare con progetti reali, descritti con metodo di misura e risultato rilevato.</p>
+      <div class="picker" id="casi-filtro" role="tablist" style="margin-top:28px">
+      <button class="pick" role="tab" aria-selected="true" data-f="all">Tutti · 12</button>
+      <button class="pick" role="tab" aria-selected="false" data-f="acq">Acquisti e ordini</button>
+      <button class="pick" role="tab" aria-selected="false" data-f="seg">Segreterie</button>
+      <button class="pick" role="tab" aria-selected="false" data-f="stu">Studi professionali</button>
+      <button class="pick" role="tab" aria-selected="false" data-f="alt">Altri contesti</button>
+    </div>
+    <div class="grid" id="casi-grid" style="margin-top:36px">
+      <div class="card" data-a="seg"><span class="tag">Esempio illustrativo</span><h3>Centro di formazione</h3><p>Segreteria e pianificazione degli appuntamenti</p><div class="indic"><b>Indicatore</b>Quota di richieste ricorrenti gestite senza intervento dell'operatore</div></div>
+      <div class="card" data-a="acq"><span class="tag">Esempio illustrativo</span><h3>Commercio di materiale edile</h3><p>Predisposizione dei preventivi</p><div class="indic"><b>Indicatore</b>Tempo medio per preventivo e quota di bozze utilizzate senza correzioni sostanziali</div></div>
+      <div class="card" data-a="stu"><span class="tag">Esempio illustrativo</span><h3>Studio tecnico associato</h3><p>Analisi di bandi e computi</p><div class="indic"><b>Indicatore</b>Tempo di analisi per bando e correttezza di clausole e scadenze estratte</div></div>
+      <div class="card" data-a="stu"><span class="tag">Esempio illustrativo</span><h3>Studio legale e fiscale</h3><p>Smistamento della posta certificata</p><div class="indic"><b>Indicatore</b>Tempo giornaliero dedicato allo smistamento e scadenze non rilevate</div></div>
+      <div class="card" data-a="alt"><span class="tag">Esempio illustrativo</span><h3>Agenzia per il lavoro</h3><p>Preselezione dei curriculum, con valutazione affidata al selezionatore</p><div class="indic"><b>Indicatore</b>Tempo di preselezione e tempo di risposta ai candidati</div></div>
+      <div class="card" data-a="acq"><span class="tag">Esempio illustrativo</span><h3>Distribuzione e logistica</h3><p>Inserimento degli ordini cliente</p><div class="indic"><b>Indicatore</b>Tempo per ordine ed errori di inserimento dati</div></div>
+      <div class="card" data-a="stu"><span class="tag">Esempio illustrativo</span><h3>Studio di commercialisti</h3><p>Raccolta e controllo dei documenti contabili dei clienti</p><div class="indic"><b>Indicatore</b>Tempo di registrazione per documento e quota di documenti con dati mancanti rilevati in anticipo</div></div>
+      <div class="card" data-a="acq"><span class="tag">Esempio illustrativo</span><h3>Azienda manifatturiera</h3><p>Riconciliazione tra ordine, bolla e fattura</p><div class="indic"><b>Indicatore</b>Tempo per ciclo di controllo e discrepanze individuate prima del pagamento</div></div>
+      <div class="card" data-a="seg"><span class="tag">Esempio illustrativo</span><h3>Scuola paritaria</h3><p>Segreteria didattica: comunicazioni e modulistica</p><div class="indic"><b>Indicatore</b>Quota di richieste delle famiglie gestite con risposta verificata e tempo di risposta</div></div>
+      <div class="card" data-a="seg"><span class="tag">Esempio illustrativo</span><h3>Ente di formazione accreditato</h3><p>Rendicontazione dei corsi finanziati</p><div class="indic"><b>Indicatore</b>Tempo di preparazione del rendiconto ed errori formali individuati prima della consegna</div></div>
+      <div class="card" data-a="stu"><span class="tag">Esempio illustrativo</span><h3>Studio di consulenza del lavoro</h3><p>Smistamento delle richieste e bozze di risposta ai dipendenti</p><div class="indic"><b>Indicatore</b>Tempo di smistamento e tempo di preparazione delle bozze</div></div>
+      <div class="card" data-a="acq"><span class="tag">Esempio illustrativo</span><h3>Impresa di impiantistica</h3><p>Richieste di offerta ai fornitori</p><div class="indic"><b>Indicatore</b>Tempo per richiesta e completezza dei dati nelle richieste inviate</div></div>
+    </div>
+    </div>
+  </div>
+</section>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">[Nome] · <span class="ph">ragione sociale, sede, partita IVA</span> · Informativa sulla privacy · Cookie</div>
+</footer>
+</body>
+</html>
