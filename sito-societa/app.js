@@ -22,7 +22,7 @@ function flashDiff(id) {
 }
 
 /* ═════════ Flusso passo per passo ═════════ */
-const STEPS = ["Lettura", "Riconoscimento", "Regole", "Bozza", "Verifica"];
+const STEPS = ["Dati", "Lettura", "Riconoscimento", "Regole", "Bozza", "Verifica"];
 const OK = (t) => `<span class="chip">${t}</span>`, WN = (t) => `<span class="chip warn">${t}</span>`, KO = (t) => `<span class="chip stop">${t}</span>`;
 const CASI = {
   acq: [
@@ -93,6 +93,17 @@ const CASI = {
       verifica: { esito: "stop", chi: "Il professionista, senza scheda né sintesi", motivo: "Allegato illeggibile e pratica non determinabile.", sugg: "Chiedere al mittente un nuovo invio dell'allegato." }, registro: "escalation · allegato illeggibile · nessuna scheda" },
   ],
 };
+const DATI = {
+  "Richiesta di preventivo": { esito: "ok", f: [["Anagrafica articoli", "98% di codici univoci · 2% di descrizioni incomplete", "ok"], ["Listino del cliente", "Aggiornato 12 giorni fa", "ok"], ["Giacenze", "Sincronizzate ogni notte", "ok"]], raccom: "Dati adatti: un agente può basarsi su queste fonti." },
+  "Conferma d'ordine": { esito: "warn", f: [["Preventivi accettati", "Collegabili all'ordine tramite il numero", "ok"], ["Indirizzi di consegna", "11% diversi dall'ultimo ordine", "warn"], ["Giacenze", "Sincronizzate ogni notte", "ok"]], raccom: "Dati adatti, con un controllo sugli indirizzi di consegna." },
+  "Richiesta ambigua": { esito: "ko", f: [["Anagrafica clienti", "4 clienti con lo stesso cognome, nessun codice nell'email", "ko"], ["Storico ordini", "Non collegabile senza un riferimento", "ko"], ["Listini", "3 file con prezzi diversi per lo stesso articolo", "ko"]], raccom: "Con questi dati un agente darebbe risposte non affidabili. Prima: normalizzare anagrafica e listini." },
+  "Informazioni su un corso": { esito: "ok", f: [["Schede corso", "Aggiornate, in formato testo, rev. 2026", "ok"], ["Calendario", "Orari e fasce disponibili", "ok"], ["Storico richieste", "812 richieste, la maggior parte classificabili", "ok"]], raccom: "Dati adatti: l'assistente può rispondere dalla documentazione." },
+  "Certificato per una famiglia": { esito: "warn", f: [["Modulistica", "Modulo M-12 aggiornato", "ok"], ["Anagrafica studenti", "Accessibile solo all'operatore", "warn"], ["Regolamento", "Procedura scritta e aggiornata", "ok"]], raccom: "Dati adatti, con minimizzazione dei dati personali e verifica dell'identità." },
+  "Comunicazione delicata": { esito: "ko", f: [["Procedure di gestione", "Nessuna procedura scritta per le segnalazioni", "ko"], ["Dati coinvolti", "Minore, situazione delicata", "ko"], ["Storico", "Non rilevante per questo caso", "warn"]], raccom: "Non è un caso da automatizzare, indipendentemente dalla qualità dei dati: serve un referente." },
+  "Atto notificato via PEC": { esito: "ok", f: [["Archivio pratiche", "Struttura costante, 94% con parti e riferimenti", "ok"], ["PEC e allegati", "Firma verificata, PDF leggibile", "ok"], ["Assegnazione", "Un professionista di riferimento per pratica", "ok"]], raccom: "Dati adatti: smistamento e scheda possono essere automatici, con verifica." },
+  "Fattura da registrare": { esito: "ok", f: [["Fatture elettroniche", "XML con campi strutturati, aliquota presente nel file", "ok"], ["Anagrafica fornitori", "88% già presenti, 12% da creare", "warn"], ["Scadenzario", "Unico e aggiornato", "ok"]], raccom: "Dati adatti. Conviene leggere l'XML allegato invece del testo della PEC." },
+  "Documento non classificabile": { esito: "ko", f: [["Allegato", "Scansione illeggibile, 2 pagine", "ko"], ["Archivio", "3 pratiche aperte dello stesso mittente", "warn"], ["Qualità delle scansioni dello studio", "41% sotto la soglia di lettura", "ko"]], raccom: "Prima di classificare servono scansioni leggibili: conviene sistemare l'acquisizione dei documenti." },
+};
 const AUTO = [["acq", 0], ["acq", 2], ["seg", 1], ["seg", 2], ["stu", 1], ["stu", 2]];
 const F = { a: "acq", i: 0, reached: -1, shown: -1, timers: [], touched: false, auto: null, started: false };
 let typeTimer = null;
@@ -111,17 +122,21 @@ function fClear() { F.timers.forEach(clearTimeout); F.timers = []; F.reached = -
 function fRenderSteps() {
   const c = fCase();
   $("f-steps").innerHTML = STEPS.map((s, k) => {
-    const st = k <= F.reached ? ((c.limite && k >= 3) ? "stop" : "done") : "";
+    const st = k <= F.reached ? ((c.limite && k >= 4) ? "stop" : "done") : "";
     return `<li><button type="button" class="${st} ${k === F.shown ? "on" : ""}" data-k="${k}" ${k > F.reached ? "disabled" : ""}><span class="n">${k + 1}</span><span class="t">${s}</span></button></li>`;
   }).join("");
   $("f-steps").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => { fTouch(); fShow(parseInt(b.dataset.k, 10)); }));
 }
 function fDetail(k) {
   const c = fCase();
-  if (k === 0) return `<div class="out"><table>${c.lettura.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")}</table></div><p class="note">Il testo viene normalizzato e classificato. Nessun contenuto esce dal flusso.</p>`;
-  if (k === 1) return `<div class="out"><table><tr><th>Scritto</th><th>Riconosciuto</th><th>Regola</th><th>Esito</th></tr>${c.ric.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="mono">${r[2]}</td><td>${r[3] === "ok" ? OK("ok") : r[3] === "warn" ? WN("da verificare") : KO("non riconosciuto")}</td></tr>`).join("")}</table></div><p class="note">Il vocabolario aziendale traduce le parole di clienti e colleghi nei codici del gestionale, una volta sola per tutti.</p>`;
-  if (k === 2) return `<ul class="rules">${c.regole.map((r) => `<li class="${r[0]}"><i>${r[0] === "ok" ? "✓" : r[0] === "warn" ? "!" : "×"}</i><span>${r[1]}</span><em>${r[2]}</em></li>`).join("")}</ul><p class="note">Regole scritte e approvate dal cliente. Ogni esito rimanda a una regola.</p>`;
-  if (k === 3) return c.bozza ? c.bozza : `<div class="stopbox"><b>Nessuna bozza.</b> ${c.motivo}</div>`;
+  if (k === 0) {
+    const d = DATI[c.titolo];
+    return `<div class="out"><table><tr><th>Fonte</th><th>Stato rilevato</th><th>Esito</th></tr>${d.f.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2] === "ok" ? OK("adatti") : r[2] === "warn" ? WN("con riserva") : KO("non adatti")}</td></tr>`).join("")}</table></div><div class="reco ${d.esito}"><b>Raccomandazione</b>${d.raccom}</div><p class="note">Prima di ogni flusso si valuta la qualità dei dati su cui si appoggia. Se non sono adatti, il flusso non parte.</p>`;
+  }
+  if (k === 1) return `<div class="out"><table>${c.lettura.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")}</table></div><p class="note">Il testo viene normalizzato e classificato. Nessun contenuto esce dal flusso.</p>`;
+  if (k === 2) return `<div class="out"><table><tr><th>Scritto</th><th>Riconosciuto</th><th>Regola</th><th>Esito</th></tr>${c.ric.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="mono">${r[2]}</td><td>${r[3] === "ok" ? OK("ok") : r[3] === "warn" ? WN("da verificare") : KO("non riconosciuto")}</td></tr>`).join("")}</table></div><p class="note">Il vocabolario aziendale traduce le parole di clienti e colleghi nei codici del gestionale, una volta sola per tutti.</p>`;
+  if (k === 3) return `<ul class="rules">${c.regole.map((r) => `<li class="${r[0]}"><i>${r[0] === "ok" ? "✓" : r[0] === "warn" ? "!" : "×"}</i><span>${r[1]}</span><em>${r[2]}</em></li>`).join("")}</ul><p class="note">Regole scritte e approvate dal cliente. Ogni esito rimanda a una regola.</p>`;
+  if (k === 4) return c.bozza ? c.bozza : `<div class="stopbox"><b>Nessuna bozza.</b> ${c.motivo}</div>`;
   const v = c.verifica;
   return v.esito === "ok"
     ? `<div class="human" id="f-human"><span>Verifica umana · ${v.chi}</span><button type="button" id="f-ok">Convalida</button></div><p class="note">L'invio avviene solo dopo la convalida della persona.</p>`
@@ -157,8 +172,8 @@ function fSelect(a, i) {
 function fRun(done) {
   fClear(); $("f-run").disabled = true; $("f-log").innerHTML = "";
   const finish = () => { $("f-run").textContent = "Ripeti"; $("f-run").disabled = false; fLog(); done && done(); };
-  if (REDUCED) { F.reached = 4; fShow(4); finish(); return; }
-  STEPS.forEach((_, k) => F.timers.push(setTimeout(() => { F.reached = k; fShow(k); if (k === 4) finish(); }, 350 + k * 1250)));
+  if (REDUCED) { F.reached = 5; fShow(5); finish(); return; }
+  STEPS.forEach((_, k) => F.timers.push(setTimeout(() => { F.reached = k; fShow(k); if (k === 5) finish(); }, 350 + k * 1250)));
 }
 function fTouch() { if (F.touched) return; F.touched = true; clearTimeout(F.auto); F.afterType = null; }
 function fAutoplay() {
@@ -181,6 +196,54 @@ function flowInit() {
     const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting && !F.started) { F.started = true; io.disconnect(); if (!F.touched) fAutoplay(); } }), { threshold: 0.35 });
     io.observe(sec);
   }
+}
+
+/* ═════════ Strumento · Check-up dei dati ═════════ */
+const CHK_Q = [
+  ["Dove si trovano i dati principali?", ["Un gestionale o un archivio unico", "Pochi file e sistemi diversi", "Sparsi tra email, file e carta"], "q"],
+  ["Quanto sono uniformi codici e nomi?", ["Uniformi", "Con alcune varianti", "Molto variabili"], "q"],
+  ["Quanto sono aggiornati?", ["Aggiornati con regolarità", "Non sempre", "Spesso obsoleti"], "q"],
+  ["In che formato sono i documenti?", ["Digitali e strutturati", "Misti (PDF, Word)", "Scansioni o carta"], "q"],
+  ["Ci sono duplicati o versioni diverse dello stesso dato?", ["Raramente", "Alcuni", "Spesso"], "q"],
+  ["Esistono regole scritte per i casi ricorrenti?", ["Sì", "In parte", "No, le conoscono le persone"], "p"],
+  ["Quante richieste simili arrivano?", ["Molte e ripetitive", "Un numero medio", "Poche e molto diverse"], "p"],
+  ["Quanto sono sensibili i dati?", ["Poco", "Mediamente", "Molto (minori, segreto professionale)"], "r"],
+];
+const chkVal = CHK_Q.map(() => 1);
+function chkInit() {
+  $("chk-in").innerHTML = CHK_Q.map((q, i) => `<div class="field"><label class="l" for="cq${i}">${i + 1}. ${q[0]}</label><select id="cq${i}">${q[1].map((o, k) => `<option value="${k}" ${k === 1 ? "selected" : ""}>${o}</option>`).join("")}</select></div>`).join("") + '<p class="note">Otto domande, nessun dato viene inviato. Il risultato è un orientamento, non una valutazione: quella si fa sui dati veri.</p>';
+  CHK_Q.forEach((_, i) => $("cq" + i).addEventListener("change", () => { chkVal[i] = parseInt($("cq" + i).value, 10); chkOut(); }));
+  chkOut();
+}
+function chkOut() {
+  const sc = (i) => 2 - chkVal[i];
+  const qual = [0, 1, 2, 3, 4].reduce((s, i) => s + sc(i), 0), proc = sc(5) + sc(6), risc = chkVal[7];
+  let tit, txt, passi, tipo;
+  if (qual >= 8 && proc >= 3) { tipo = "t-assist"; tit = "Un agente è una buona ipotesi"; txt = "I dati sono in buono stato e il processo è ripetitivo e regolato. Si può partire con un progetto pilota su un perimetro ristretto."; passi = ["Mappare il processo con chi lo svolge", "Verificare la qualità dei dati su un campione", "Avviare un pilota breve, con criteri di verifica concordati"]; }
+  else if (qual >= 8) { tipo = "t-no"; tit = "Dati buoni, ma l'agente avrebbe poco da fare"; txt = "Il processo è poco ripetitivo o poco regolato: un agente farebbe risparmiare poco tempo. Spesso conviene una ricerca nei documenti o dei modelli di risposta."; passi = ["Scrivere le regole dei casi ricorrenti", "Valutare ricerca nei documenti e modelli di risposta", "Riconsiderare l'agente se i volumi crescono"]; }
+  else if (qual >= 5) { tipo = "t-first"; tit = "Prima sistemare i dati, poi un agente su un perimetro ristretto"; txt = "I dati sono utilizzabili ma con problemi che un agente amplificherebbe: codici diversi, duplicati, versioni non allineate. Meglio intervenire prima."; passi = ["Normalizzare codici e anagrafiche", "Eliminare i duplicati e allineare le versioni", "Avviare l'agente su un solo flusso"]; }
+  else { tipo = "t-first"; tit = "Oggi un agente darebbe risultati non affidabili"; txt = "Con dati sparsi o disomogenei l'AI produce risposte plausibili ma sbagliate. La mossa migliore è ordinare i dati: può bastare questo a ridurre il lavoro."; passi = ["Censire dove si trovano i dati", "Definire un vocabolario e un archivio unico", "Valutare l'AI quando i dati sono ordinati"]; }
+  if (chkVal[6] === 2 && qual >= 5) passi.push("Con volumi bassi e variabili, valutare prima soluzioni senza AI");
+  const extra = risc === 2 ? '<p class="note"><b>Riservatezza alta:</b> valutate l\'elaborazione interamente in sede (strumento «Dimensionamento»).</p>' : "";
+  const lbl = ["Alta", "Media", "Bassa"];
+  const bar = (v, m) => `<div class="meterx"><i style="width:${(v / m) * 100}%"></i></div>`;
+  const summary = CHK_Q.map((q, i) => `${i + 1}. ${q[0]} ${q[1][chkVal[i]]}`).join("\n");
+  $("chk-out").innerHTML = `
+    <div class="rs"><h3>Il vostro punto di partenza <small>orientamento</small></h3>
+      <div class="gauges">
+        <div><b>Qualità dei dati</b><strong>${qual}<em>/10</em></strong>${bar(qual, 10)}</div>
+        <div><b>Ripetitività e regole</b><strong>${proc}<em>/4</em></strong>${bar(proc, 4)}</div>
+        <div><b>Riservatezza</b><strong>${["Bassa", "Media", "Alta"][risc]}</strong>${bar(risc + 1, 3)}</div>
+      </div></div>
+    <div class="rs"><h3>Approccio suggerito <small>da verificare sui dati veri</small></h3>
+      <p class="big">${tit}</p>
+      <p>${txt}</p>
+      <p><span class="ptag ${tipo}">${tipo === "t-assist" ? "Agente" : tipo === "t-no" ? "Senza AI" : "Prima i dati"}</span></p>
+      <div class="two" style="grid-template-columns:1fr;border-top:1px solid var(--line);margin-top:14px"><div class="box" style="padding-left:0;border-left:0"><b>Prossimi passi</b><ol class="next">${passi.map((x) => `<li>${x}</li>`).join("")}</ol></div></div>
+      ${extra}
+      <div style="margin-top:14px"><a class="btn hot" href="#contatti" id="chk-go">Richiedi una valutazione dei dati</a></div></div>`;
+  $("chk-go").addEventListener("click", () => { $("msg").value = "Check-up dei dati (orientamento)\n" + summary + "\n\nEsito: " + tit; });
+  flashDiff("chk-out");
 }
 
 /* ═════════ Strumento 1 · Mappa delle attività ═════════ */
@@ -656,7 +719,7 @@ function initScroll() {
   map.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
 }
 function armLive() {
-  const ids = ["risultato", "m-out", "v-out", "mm-out"].map($);
+  const ids = ["risultato", "m-out", "v-out", "mm-out", "chk-out"].map($);
   if (REDUCED || !("IntersectionObserver" in window)) { ids.forEach((e) => e.classList.add("play", "done")); return; }
   const io = new IntersectionObserver((es) => es.forEach((e) => {
     if (e.isIntersecting) { e.target.classList.add("play"); setTimeout(() => e.target.classList.add("done"), 2200); io.unobserve(e.target); }
@@ -665,8 +728,8 @@ function armLive() {
 }
 
 /* ═════════ Pagine: home e strumenti ═════════ */
-const TOOLSLUG = { mappa: "map", verifica: "camp", memoria: "mem", dimensionamento: "dim", contesti: "casi" };
-let currentTool = "map";
+const TOOLSLUG = { dati: "chk", mappa: "map", verifica: "camp", memoria: "mem", dimensionamento: "dim", contesti: "casi" };
+let currentTool = "chk";
 function selectTool(t) {
   currentTool = t;
   document.querySelectorAll("#tool-picker .pick").forEach((x) => x.setAttribute("aria-selected", x.dataset.t === t));
@@ -717,7 +780,8 @@ document.addEventListener("DOMContentLoaded", () => {
     selectTool(b.dataset.t);
     history.replaceState(null, "", "#/strumenti/" + b.dataset.slug);
   }));
-  // mappa
+  // check-up e mappa
+  chkInit();
   mapInit(); mapRender();
   bindSeg("#m-ambito", "a", (a) => { mapState.ambito = a; mapRender(); });
   $("m-orario").addEventListener("input", mapOut);
