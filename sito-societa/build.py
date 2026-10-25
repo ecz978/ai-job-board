@@ -24,7 +24,7 @@ PAGES = {
     "infrastruttura": ("Dati e infrastruttura · " + SUFFIX,
                        "Modello in cloud, archivio in sede o elaborazione interamente in sede: come scegliere, e fornitura dell'hardware.",
                        ["dati"]),
-    "chi-siamo": ("Chi siamo · " + SUFFIX, "Le persone dietro la consulenza.", ["chisiamo"]),
+    "chi-siamo": ("Chi siamo · " + SUFFIX, "I due cofounder di Stadera: un percorso informatico e filosofico, uno ingegneristico aerospaziale.", ["chisiamo"]),
     "privacy": ("Informativa sulla privacy · " + SUFFIX, "Come trattiamo i dati personali.", ["privacy"]),
     "cookie": ("Cookie policy · " + SUFFIX, "Il sito non utilizza cookie né strumenti di tracciamento.", ["cookie"]),
     "contatti": ("Contatti · " + SUFFIX, "Richiedi un primo incontro per capire il processo.", ["contatti"]),
