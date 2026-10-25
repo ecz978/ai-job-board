@@ -578,3 +578,7 @@ p.ph { display: inline-block; padding: 6px 10px; }
 .person p { color: var(--muted); }
 .tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 24px 0 0; }
 .tags li { border: 1px solid var(--line); background: var(--bg); padding: 7px 12px; font: 500 10.5px var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border-radius: 2px; }
+
+#ambiti-home .card { display: flex; flex-direction: column; }
+#ambiti-home .card p { margin-bottom: 18px; }
+#ambiti-home .card .more { margin-top: auto; align-self: flex-start; }

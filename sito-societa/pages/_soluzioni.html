@@ -12,6 +12,7 @@
       <button class="pick" role="tab" aria-selected="false" data-s="log">Logistica</button>
       <button class="pick" role="tab" aria-selected="false" data-s="cli">Assistenza clienti</button>
       <button class="pick" role="tab" aria-selected="false" data-s="prod">Produzione</button>
+      <button class="pick" role="tab" aria-selected="false" data-s="dir">Direzione</button>
     </div>
 
     <div class="panel" data-p="acq">
@@ -157,13 +158,31 @@
       </div>
     </div>
 
+    <div class="panel hidden" data-p="dir">
+      <div>
+        <h3>Direzione e controllo di gestione</h3>
+        <p class="muted">Margini per commessa, scostamenti dal budget, indicatori. I numeri stanno già nel gestionale: il lavoro è renderli leggibili e affidabili, e spesso la risposta è un cruscotto, non un agente.</p>
+        <h4>Cosa guardiamo nei vostri dati</h4>
+        <ul><li>Commesse e centri di costo: codifica e coerenza tra le fonti.</li><li>Ricavi e costi: dove sono registrati e con quale ritardo.</li><li>Budget e consuntivi: se usano le stesse voci.</li><li>Indicatori già in uso: come vengono calcolati e da chi.</li></ul>
+        <h4>I limiti</h4>
+        <ul><li>L'AI non calcola i numeri: li calcola il gestionale, l'AI li spiega.</li><li>Decisioni e comunicazioni a terzi (banche, soci) restano alla direzione.</li></ul>
+      </div>
+      <div class="dtable">
+        <div class="dh"><span>Se i dati sono…</span><span>Proponiamo…</span><span></span></div>
+          <div class="dr"><span class="dc">Commesse codificate, costi e ricavi per commessa nel gestionale</span><span class="da">Risposte alle domande sui numeri, calcolate dal gestionale e verificate dal controllo di gestione</span><span class="ptag t-assist">Agente</span></div>
+          <div class="dr"><span class="dc">Budget e consuntivo con voci diverse</span><span class="da">Prima l'allineamento delle voci; poi il report</span><span class="ptag t-first">Prima i dati</span></div>
+          <div class="dr"><span class="dc">Indicatori standard: fatturato, ordini aperti, incassi</span><span class="da">Un cruscotto con interrogazioni sul gestionale: nessuna AI</span><span class="ptag t-no">Senza AI</span></div>
+          <div class="dr"><span class="dc">Dati riservati su margini e compensi</span><span class="da">Elaborazione interamente in sede</span><span class="ptag t-auto">In sede</span></div>
+      </div>
+    </div>
+
     <div class="flow-block" id="flusso">
       <h3 class="fb-title">Guardate un flusso, passo per passo.</h3>
-      <p class="muted" style="max-width:700px">Otto ambiti, diciannove casi. Ogni flusso parte dai dati: se sono adatti si vede cosa succede passo per passo; se non lo sono, il flusso si ferma o propone un approccio diverso. Alcuni casi si completano, altri si fermano per scelta di progetto, altri ancora portano a una soluzione senza agente.</p>
+      <p class="muted" style="max-width:700px">Nove ambiti, ventuno casi. Ogni flusso parte dai dati: se sono adatti si vede cosa succede passo per passo; se non lo sono, il flusso si ferma o propone un approccio diverso. Alcuni casi si completano, altri si fermano per scelta di progetto, altri ancora portano a una soluzione senza agente.</p>
       <div class="flow">
       <div class="flow-in">
         <div class="field"><label class="l">Ambito</label>
-          <div class="chips" id="f-ambito"><button type="button" aria-pressed="true" data-a="acq">Acquisti</button><button type="button" aria-pressed="false" data-a="seg">Segreteria</button><button type="button" aria-pressed="false" data-a="stu">Studio</button><button type="button" aria-pressed="false" data-a="amm">Amministrazione</button><button type="button" aria-pressed="false" data-a="hr">Risorse umane</button><button type="button" aria-pressed="false" data-a="log">Logistica</button><button type="button" aria-pressed="false" data-a="cli">Assistenza clienti</button><button type="button" aria-pressed="false" data-a="prod">Produzione</button></div></div>
+          <div class="chips" id="f-ambito"><button type="button" aria-pressed="true" data-a="acq">Acquisti</button><button type="button" aria-pressed="false" data-a="seg">Segreteria</button><button type="button" aria-pressed="false" data-a="stu">Studio</button><button type="button" aria-pressed="false" data-a="amm">Amministrazione</button><button type="button" aria-pressed="false" data-a="hr">Risorse umane</button><button type="button" aria-pressed="false" data-a="log">Logistica</button><button type="button" aria-pressed="false" data-a="cli">Assistenza clienti</button><button type="button" aria-pressed="false" data-a="prod">Produzione</button><button type="button" aria-pressed="false" data-a="dir">Direzione</button></div></div>
         <div class="field"><label class="l">Caso</label><div class="caselist" id="f-casi"></div></div>
         <div class="field"><label class="l" id="f-label">Comunicazione in ingresso</label><div class="inbox" id="f-text"></div></div>
         <div class="flow-btns"><button class="btn sm" id="f-run" type="button">Avvia il flusso →</button><button class="btn sm ghost" id="f-next" type="button">Passo successivo</button></div>

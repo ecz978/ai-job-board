@@ -188,7 +188,25 @@ Object.assign(DATI, {
   "Non conformità di un lotto": { esito: "warn", f: [["Catalogo dei difetti", "Codificato e in uso", "ok"], ["Lotti e tracciabilità", "Collegati a linea e turno", "ok"], ["Storico delle non conformità", "In un foglio, poco strutturato", "warn"]], raccom: "Dati adatti, con riserva sullo storico delle non conformità." },
   "Previsione dei guasti": { esito: "ko", f: [["Interventi di manutenzione", "Registrati a mano, descrizioni libere", "ko"], ["Sensori delle macchine", "Assenti sulla maggior parte", "ko"], ["Fermi macchina", "Tracciati solo in parte", "warn"]], raccom: "Oggi non esistono i dati per prevedere i guasti: si parte dalla raccolta." },
 });
-const AUTO = [["acq", 0], ["amm", 1], ["seg", 2], ["hr", 1], ["stu", 1], ["log", 1], ["cli", 0], ["prod", 1], ["stu", 2], ["cli", 1], ["acq", 2], ["prod", 0]];
+CASI.dir = [
+  { titolo: "Domanda sui numeri", canale: "Richiesta interna · direzione", text: "Qual è stato il margine sulle commesse di settembre rispetto ad agosto? Mi serve per la riunione di domani.",
+    lettura: [["Canale", "Richiesta interna"], ["Richiesta", "Confronto di margini tra due mesi"], ["Periodo", "Agosto e settembre"], ["Scadenza", "Domani"]],
+    ric: [["commesse di settembre", "42 commesse con data di chiusura nel mese", "Commesse C-01", "ok"], ["margine", "Ricavi meno costi diretti, per commessa", "Definizioni M-02", "ok"], ["rispetto ad agosto", "Confronto con 38 commesse del mese precedente", "Periodi P-03", "ok"]],
+    regole: [["ok", "I numeri sono calcolati dal gestionale: l'AI non fa conti, li spiega", "K-01"], ["warn", "Tre commesse con costi non ancora registrati: segnalarle", "K-04"], ["ok", "La risposta indica sempre la definizione di margine usata", "K-02"]],
+    bozza: `<div class="out"><table><tr><td>Margine settembre</td><td>18,4%</td></tr><tr><td>Margine agosto</td><td>20,1%</td></tr><tr><td>Differenza</td><td>-1,7 punti</td></tr><tr><td>Commesse da completare</td><td>${WN("3 con costi mancanti")}</td></tr></table><p><b>Nota:</b> cifre calcolate dal gestionale; margine = ricavi meno costi diretti. I valori sono fittizi.</p></div>`,
+    verifica: { esito: "ok", chi: "Il controllo di gestione verifica i numeri prima della riunione" }, registro: "risposta predisposta · 3 commesse con costi mancanti segnalate" },
+  { titolo: "Cruscotto degli indicatori", canale: "Richiesta interna · titolare", text: "Vorremmo usare l'AI per vedere ogni mattina fatturato, ordini aperti e incassi del giorno.",
+    lettura: [["Canale", "Richiesta interna"], ["Richiesta", "Indicatori giornalieri"], ["Fonte", "Gestionale"], ["Frequenza", "Ogni giorno"]],
+    ric: [["fatturato", "Somma delle fatture emesse", "Indicatori I-01", "ok"], ["ordini aperti", "Ordini non ancora consegnati", "Indicatori I-02", "ok"], ["incassi del giorno", "Movimenti registrati in banca", "Indicatori I-03", "ok"]],
+    regole: [["ok", "Gli indicatori sono definiti e calcolabili dal gestionale", "K-05"], ["ok", "Un calcolo ripetuto è una regola, non un compito per un modello", "A-07"], ["warn", "Un modello introdurrebbe errori dove oggi non ce ne sono", "A-09"]],
+    bozza: null, motivo: "Non serve l'AI: serve un cruscotto che interroga il gestionale.",
+    verifica: { esito: "alt", tipo: "noai", titolo: "Un cruscotto sul gestionale, senza AI", passi: ["Fissare per iscritto la definizione di ciascun indicatore", "Configurare il cruscotto sulle interrogazioni del gestionale", "Valutare l'AI solo per commentare gli scostamenti, se serve"] }, registro: "alternativa · cruscotto sul gestionale, nessuna AI" },
+];
+Object.assign(DATI, {
+  "Domanda sui numeri": { esito: "warn", f: [["Commesse e centri di costo", "Codificati in modo coerente tra le fonti", "ok"], ["Costi diretti", "Registrati con 5-10 giorni di ritardo", "warn"], ["Definizione di margine", "Scritta e condivisa", "ok"]], raccom: "Dati adatti, con riserva sul ritardo con cui si registrano i costi." },
+  "Cruscotto degli indicatori": { esito: "ok", f: [["Fatture", "Campi strutturati e completi", "ok"], ["Ordini", "Stato aggiornato in tempo reale", "ok"], ["Movimenti bancari", "Importati ogni giorno", "ok"]], raccom: "I dati sono buoni, ed è per questo che basta un cruscotto sul gestionale: l'AI non serve." },
+});
+const AUTO = [["acq", 0], ["amm", 1], ["seg", 2], ["hr", 1], ["stu", 1], ["log", 1], ["cli", 0], ["prod", 1], ["stu", 2], ["cli", 1], ["acq", 2], ["prod", 0], ["dir", 0], ["dir", 1]];
 const F = { a: "acq", i: 0, reached: -1, shown: -1, timers: [], touched: false, auto: null, started: false };
 let typeTimer = null;
 function typeText(el, text, done) {
@@ -829,7 +847,7 @@ function armLive() {
 }
 
 /* ═════════ Pagine: schede selezionabili da indirizzo ═════════ */
-const AMBITI = ["acq", "seg", "stu", "amm", "hr", "log", "cli", "prod"];
+const AMBITI = ["acq", "seg", "stu", "amm", "hr", "log", "cli", "prod", "dir"];
 const TOOLSLUG = { dati: "chk", mappa: "map", verifica: "camp", memoria: "mem", dimensionamento: "dim", contesti: "casi" };
 function selectTool(t) {
   document.querySelectorAll("#tool-picker .pick").forEach((x) => x.setAttribute("aria-selected", x.dataset.t === t));
