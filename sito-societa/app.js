@@ -700,12 +700,12 @@ function initReveal() {
     el.style.setProperty("--d", Math.min(sibs.indexOf(el), 6) * 90 + "ms");
   });
   const cells = $("cells");
-  if (REDUCED || !("IntersectionObserver" in window)) { els.forEach((el) => el.classList.add("in")); cells.classList.add("in"); return; }
+  if (REDUCED || !("IntersectionObserver" in window)) { els.forEach((el) => el.classList.add("in")); if (cells) cells.classList.add("in"); return; }
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
   }, { threshold: 0.1 });
   els.forEach((el) => io.observe(el));
-  io.observe(cells);
+  if (cells) io.observe(cells);
 }
 
 /* ═════════ Rete neurale di sfondo ═════════ */
@@ -796,16 +796,9 @@ function initScroll() {
     top.classList.toggle("scrolled", scrollY > 8);
   };
   addEventListener("scroll", on, { passive: true }); on();
-  if (!("IntersectionObserver" in window)) return;
-  const links = [...document.querySelectorAll(".top nav a")];
-  const map = new Map(links.map((a) => [a.getAttribute("href").slice(1), a]));
-  const io = new IntersectionObserver((es) => es.forEach((e) => {
-    if (e.isIntersecting) links.forEach((a) => a.classList.toggle("active", a === map.get(e.target.id)));
-  }), { rootMargin: "-45% 0px -50% 0px" });
-  map.forEach((_, id) => { const s = document.getElementById(id); if (s) io.observe(s); });
 }
 function armLive() {
-  const ids = ["risultato", "m-out", "v-out", "mm-out", "chk-out"].map($);
+  const ids = ["risultato", "m-out", "v-out", "mm-out", "chk-out"].map($).filter(Boolean);
   if (REDUCED || !("IntersectionObserver" in window)) { ids.forEach((e) => e.classList.add("play", "done")); return; }
   const io = new IntersectionObserver((es) => es.forEach((e) => {
     if (e.isIntersecting) { e.target.classList.add("play"); setTimeout(() => e.target.classList.add("done"), 2200); io.unobserve(e.target); }
@@ -813,26 +806,36 @@ function armLive() {
   ids.forEach((e) => io.observe(e));
 }
 
-/* ═════════ Pagine: home e strumenti ═════════ */
+/* ═════════ Pagine: schede selezionabili da indirizzo ═════════ */
 const TOOLSLUG = { dati: "chk", mappa: "map", verifica: "camp", memoria: "mem", dimensionamento: "dim", contesti: "casi" };
-let currentTool = "chk";
 function selectTool(t) {
-  currentTool = t;
   document.querySelectorAll("#tool-picker .pick").forEach((x) => x.setAttribute("aria-selected", x.dataset.t === t));
   document.querySelectorAll("#strumenti .tool").forEach((p) => p.classList.toggle("hidden", p.dataset.tool !== t));
 }
+function selectAmbito(s) {
+  document.querySelectorAll("#soluzioni .pick").forEach((x) => x.setAttribute("aria-selected", x.dataset.s === s));
+  document.querySelectorAll("#soluzioni .panel").forEach((p) => p.classList.toggle("hidden", p.dataset.p !== s));
+}
 function route(first) {
-  const h = location.hash || "", tools = h.startsWith("#/strumenti");
-  $("p-home").classList.toggle("hidden", tools);
-  $("p-strumenti").classList.toggle("hidden", !tools);
-  document.querySelectorAll(".top nav a").forEach((a) => { if (a.getAttribute("href") === "#/strumenti") a.classList.toggle("active", tools); else if (tools) a.classList.remove("active"); });
-  if (tools) {
-    selectTool(TOOLSLUG[h.split("/")[2]] || currentTool);
+  const id = location.hash.slice(1);
+  if ($("tool-picker")) {
+    selectTool(TOOLSLUG[id] || "chk");
     if (!first) scrollTo({ top: 0, behavior: "instant" });
-  } else if (h.length > 1 && !h.startsWith("#/")) {
-    const el = document.getElementById(h.slice(1));
-    if (el) requestAnimationFrame(() => el.scrollIntoView());
-  } else if (!first) scrollTo({ top: 0, behavior: "instant" });
+  }
+  if ($("soluzioni") && ["acq", "seg", "stu"].includes(id)) {
+    selectAmbito(id);
+    if (!first) scrollTo({ top: 0, behavior: "instant" });
+  }
+}
+
+/* ═════════ Menu su schermi stretti ═════════ */
+function initMenu() {
+  const btn = document.querySelector(".menu-btn"), top = document.querySelector(".top");
+  if (!btn) return;
+  const set = (open) => { top.classList.toggle("open", open); btn.setAttribute("aria-expanded", open); btn.setAttribute("aria-label", open ? "Chiudi il menu" : "Apri il menu"); };
+  btn.addEventListener("click", () => set(!top.classList.contains("open")));
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") set(false); });
+  document.querySelectorAll("#menu a").forEach((a) => a.addEventListener("click", () => set(false)));
 }
 
 /* ═════════ Avvio ═════════ */
@@ -842,51 +845,40 @@ function bindSeg(sel, attr, cb) {
     cb(b.dataset[attr]);
   }));
 }
-document.addEventListener("DOMContentLoaded", () => {
-  splitHeadline();
-  // flusso
-  flowInit();
-
-  // schede degli ambiti
-  document.querySelectorAll("#soluzioni .pick").forEach((b) => b.addEventListener("click", () => {
-    document.querySelectorAll("#soluzioni .pick").forEach((x) => x.setAttribute("aria-selected", x === b));
-    document.querySelectorAll("#soluzioni .panel").forEach((p) => p.classList.toggle("hidden", p.dataset.p !== b.dataset.s));
-  }));
-
-  // filtro dei contesti
-  document.querySelectorAll("#casi-filtro .pick").forEach((b) => b.addEventListener("click", () => {
-    document.querySelectorAll("#casi-filtro .pick").forEach((x) => x.setAttribute("aria-selected", x === b));
-    document.querySelectorAll("#casi-grid .card").forEach((c) => c.classList.toggle("hidden", b.dataset.f !== "all" && c.dataset.a !== b.dataset.f));
-  }));
-
-  $("cells").innerHTML = Array.from({ length: 30 }, (_, i) => `<i class="${i < 24 ? "" : "o"}" style="--k:${i}"></i>`).join("");
-
-  // schede degli strumenti
+function toolsInit() {
   document.querySelectorAll("#tool-picker .pick").forEach((b) => b.addEventListener("click", () => {
     selectTool(b.dataset.t);
-    history.replaceState(null, "", "#/strumenti/" + b.dataset.slug);
+    history.replaceState(null, "", "#" + b.dataset.slug);
   }));
-  // check-up e mappa
   chkInit();
   mapInit(); mapRender();
   bindSeg("#m-ambito", "a", (a) => { mapState.ambito = a; mapRender(); });
   $("m-orario").addEventListener("input", mapOut);
-  // verifica
   ["v-n", "v-s", "v-p"].forEach((id) => $(id).addEventListener("input", verOut));
   $("v-k").addEventListener("input", () => { vRatio = parseInt($("v-k").value, 10) / parseInt($("v-n").value, 10); verOut(); });
   bindSeg("#v-conf", "z", (z) => { vz = parseFloat(z); verOut(); });
   verOut();
-  // memoria
   ["mm-par", "mm-ctx", "mm-users"].forEach((id) => $(id).addEventListener("input", memOut));
   bindSeg("#mm-bits", "b", (b) => { mmBits = parseInt(b, 10); memOut(); });
   memOut();
-
-  // calcolatore
   ["c-ambito", "c-utenti", "c-rich", "c-arch", "c-ha", "c-ups", "a-kwh", "a-orario", "a-min", "a-aut", "a-tokreq", "a-token", "a-cont", "a-prog", "a-supp", "a-g", "a-rent"]
     .forEach((id) => $(id).addEventListener("input", render));
   bindSeg("#c-dati", "v", (v) => { dati = v; render(); });
   bindSeg("#c-formula", "f", (f) => { formula = f; render(); });
   render();
+  document.querySelectorAll("#casi-filtro .pick").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll("#casi-filtro .pick").forEach((x) => x.setAttribute("aria-selected", x === b));
+    document.querySelectorAll("#casi-grid .card").forEach((c) => c.classList.toggle("hidden", b.dataset.f !== "all" && c.dataset.a !== b.dataset.f));
+  }));
+}
+document.addEventListener("DOMContentLoaded", () => {
+  splitHeadline();
+  initMenu();
+
+  if ($("f-run")) flowInit();
+  if ($("soluzioni")) document.querySelectorAll("#soluzioni .pick").forEach((b) => b.addEventListener("click", () => selectAmbito(b.dataset.s)));
+  if ($("cells")) $("cells").innerHTML = Array.from({ length: 30 }, (_, i) => `<i class="${i < 24 ? "" : "o"}" style="--k:${i}"></i>`).join("");
+  if ($("tool-picker")) toolsInit();
 
   initReveal();
   initNet();
@@ -896,9 +888,8 @@ document.addEventListener("DOMContentLoaded", () => {
   addEventListener("hashchange", () => route(false));
   route(true);
 
-  // contatti
   const form = $("contatto");
-  form.addEventListener("submit", (e) => {
+  if (form) form.addEventListener("submit", (e) => {
     e.preventDefault();
     const d = new FormData(form);
     const body = `Nome: ${d.get("nome")}\nOrganizzazione: ${d.get("azienda")}\n\n${d.get("msg")}`;
