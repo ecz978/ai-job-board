@@ -7,9 +7,9 @@ rd = lambda f: (R / f).read_text(encoding="utf-8")
 
 NAV = [("ambiti", "Ambiti"), ("approccio", "Approccio"), ("strumenti", "Strumenti"),
        ("infrastruttura", "Infrastruttura"), ("chi-siamo", "Chi siamo")]
-SUFFIX = "[Nome] · Consulenza AI per PMI"
+SUFFIX = "Livella · Consulenza AI per PMI"
 PAGES = {
-    "index": ("[Nome] · Consulenza AI per PMI: si parte dai vostri dati",
+    "index": ("Livella · Consulenza AI per PMI: si parte dai vostri dati",
               "Consulenza sull'intelligenza artificiale per PMI, segreterie, uffici acquisti e studi professionali: analizziamo la qualità dei dati esistenti e proponiamo l'approccio più adatto, che non è sempre un agente.",
               ["hero", "perche", "home-ambiti", "home-cta"]),
     "ambiti": ("Ambiti di intervento · " + SUFFIX,
