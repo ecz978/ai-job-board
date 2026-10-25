@@ -544,3 +544,14 @@ h1 em::after { content: ""; position: absolute; left: 0; right: 0; bottom: -.04e
 .human.alt { background: var(--accent); }
 .flow-detail .next { margin: 8px 0 12px; }
 .case .lim { position: static; justify-self: start; margin-top: 6px; }
+
+/* pagine legali */
+.legal .wrap { max-width: 780px; }
+.legal h2 { font-size: clamp(30px, 4vw, 44px); margin-bottom: 18px; }
+.legal h3 { font-size: 21px; margin: 40px 0 10px; }
+.legal p, .legal li { font-size: 16px; line-height: 1.7; color: var(--ink); }
+.legal .muted { color: var(--muted); }
+.legal ul { padding-left: 20px; margin: 10px 0; }
+.legal li { margin: 8px 0; }
+.legal a { color: var(--accent); }
+p.ph { display: inline-block; padding: 6px 10px; }

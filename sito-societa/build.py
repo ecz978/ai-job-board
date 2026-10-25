@@ -25,6 +25,8 @@ PAGES = {
                        "Modello in cloud, archivio in sede o elaborazione interamente in sede: come scegliere, e fornitura dell'hardware.",
                        ["dati"]),
     "chi-siamo": ("Chi siamo · " + SUFFIX, "Le persone dietro la consulenza.", ["chisiamo"]),
+    "privacy": ("Informativa sulla privacy · " + SUFFIX, "Come trattiamo i dati personali.", ["privacy"]),
+    "cookie": ("Cookie policy · " + SUFFIX, "Il sito non utilizza cookie né strumenti di tracciamento.", ["cookie"]),
     "contatti": ("Contatti · " + SUFFIX, "Richiedi un primo incontro per capire il processo.", ["contatti"]),
 }
 PAGE_FILE = {k: k + ".html" for k in PAGES}
@@ -39,7 +41,7 @@ OUT.mkdir()
 for slug, (title, desc, parts) in PAGES.items():
     body = "".join(rd("pages/_%s.html" % p) for p in parts)
     foot = " · ".join('<a href="%s.html">%s</a>' % (s, t) for s, t in NAV + [("contatti", "Contatti")])
-    foot += ' · <span class="ph">Privacy · Cookie</span>'
+    foot += " · " + " · ".join('<a href="%s.html">%s</a>' % (s, t) for s, t in [("privacy", "Privacy"), ("cookie", "Cookie")])
     html = (layout.replace("{{title}}", title).replace("{{desc}}", desc).replace("{{page}}", slug)
             .replace("{{nav}}", nav(slug)).replace("{{footnav}}", foot).replace("{{body}}", body))
     (OUT / (slug + ".html")).write_text(html, encoding="utf-8")
