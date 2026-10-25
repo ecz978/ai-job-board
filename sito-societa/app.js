@@ -210,7 +210,7 @@ function fRenderSteps() {
     const st = k <= F.reached ? (((c.limite || c.verifica.esito !== "ok") && k >= 4) ? "stop" : "done") : "";
     return `<li><button type="button" class="${st} ${k === F.shown ? "on" : ""}" data-k="${k}" ${k > F.reached ? "disabled" : ""}><span class="n">${k + 1}</span><span class="t">${s}</span></button></li>`;
   }).join("");
-  $("f-steps").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => { fTouch(); fShow(parseInt(b.dataset.k, 10)); }));
+  $("f-steps").querySelectorAll("button").forEach((b) => b.addEventListener("click", () => { fTouch(); fHold(); fShow(parseInt(b.dataset.k, 10)); }));
 }
 function fDetail(k) {
   const c = fCase();
@@ -259,7 +259,28 @@ function fRun(done) {
   fClear(); $("f-run").disabled = true; $("f-log").innerHTML = "";
   const finish = () => { $("f-run").textContent = "Ripeti"; $("f-run").disabled = false; fLog(); done && done(); };
   if (REDUCED) { F.reached = 5; fShow(5); finish(); return; }
-  STEPS.forEach((_, k) => F.timers.push(setTimeout(() => { F.reached = k; fShow(k); if (k === 5) finish(); }, 350 + k * 1250)));
+  const go = (k) => {
+    F.reached = k; fShow(k);
+    if (k === 5) { finish(); return; }
+    F.timers = [setTimeout(() => go(k + 1), fReadTime(k))];
+  };
+  F.timers = [setTimeout(() => go(0), 400)];
+}
+// Tempo per leggere un passo: base fissa più una quota per la lunghezza del testo.
+function fReadTime(k) {
+  const len = fDetail(k).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").length;
+  return Math.min(8000, Math.max(4000, 1800 + len * 14));
+}
+// Fermo l'avanzamento automatico: da qui in poi decide chi legge.
+function fHold() {
+  F.timers.forEach(clearTimeout); F.timers = [];
+  const run = $("f-run"); run.disabled = false; run.textContent = "Ripeti";
+}
+function fNext() {
+  fTouch(); fHold();
+  if (F.reached >= 5) return;
+  F.reached += 1; fShow(F.reached);
+  if (F.reached === 5) fLog();
 }
 function fTouch() { if (F.touched) return; F.touched = true; clearTimeout(F.auto); F.afterType = null; }
 function fAutoplay() {
@@ -268,7 +289,7 @@ function fAutoplay() {
   const next = () => {
     if (F.touched) return;
     const [a, i] = AUTO[n % AUTO.length]; n++;
-    F.afterType = () => { F.auto = setTimeout(() => fRun(() => { F.auto = setTimeout(() => { if (F.touched) return; if (fCase().verifica.esito === "ok") fConvalida(); F.auto = setTimeout(next, 2800); }, 3200); }), 600); };
+    F.afterType = () => { F.auto = setTimeout(() => fRun(() => { F.auto = setTimeout(() => { if (F.touched) return; if (fCase().verifica.esito === "ok") fConvalida(); F.auto = setTimeout(next, 5000); }, 6000); }), 900); };
     fSelect(a, i);
   };
   next();
@@ -276,6 +297,7 @@ function fAutoplay() {
 function flowInit() {
   bindSeg("#f-ambito", "a", (a) => { fTouch(); fSelect(a, 0); });
   $("f-run").addEventListener("click", () => { fTouch(); fRun(); });
+  $("f-next").addEventListener("click", fNext);
   fSelect("acq", 0);
   const sec = $("flusso");
   if (!REDUCED && "IntersectionObserver" in window) {
@@ -327,8 +349,8 @@ function chkOut() {
       <p><span class="ptag ${tipo}">${tipo === "t-assist" ? "Agente" : tipo === "t-no" ? "Senza AI" : "Prima i dati"}</span></p>
       <div class="two" style="grid-template-columns:1fr;border-top:1px solid var(--line);margin-top:14px"><div class="box" style="padding-left:0;border-left:0"><b>Prossimi passi</b><ol class="next">${passi.map((x) => `<li>${x}</li>`).join("")}</ol></div></div>
       ${extra}
-      <div style="margin-top:14px"><a class="btn hot" href="#contatti" id="chk-go">Richiedi una valutazione dei dati</a></div></div>`;
-  $("chk-go").addEventListener("click", () => { $("msg").value = "Check-up dei dati (orientamento)\n" + summary + "\n\nEsito: " + tit; });
+      <div style="margin-top:14px"><a class="btn hot" href="contatti.html" id="chk-go">Richiedi una valutazione dei dati</a></div></div>`;
+  $("chk-go").href = "contatti.html?msg=" + encodeURIComponent("Check-up dei dati (orientamento)\n" + summary + "\n\nEsito: " + tit);
   flashDiff("chk-out");
 }
 
@@ -671,11 +693,11 @@ function render() {
       ${tornado(I, A, tier)}</div>
 
     <div class="verdict"><p>${verdetto}</p>
-      <div class="btns"><a class="btn hot" href="#contatti" id="prefill">Richiedi un incontro con questi dati</a>
+      <div class="btns"><a class="btn hot" href="contatti.html" id="prefill">Richiedi un incontro con questi dati</a>
       <button class="btn ghost" type="button" id="copy">Copia il riepilogo</button>
       <button class="btn ghost" type="button" id="print">Stampa o salva in PDF</button></div></div>`;
 
-  $("prefill").addEventListener("click", () => { $("msg").value = text; });
+  $("prefill").href = "contatti.html?msg=" + encodeURIComponent(text);
   $("print").addEventListener("click", () => {
     document.body.classList.add("printing");
     const off = () => { document.body.classList.remove("printing"); window.removeEventListener("afterprint", off); };
@@ -807,6 +829,7 @@ function armLive() {
 }
 
 /* ═════════ Pagine: schede selezionabili da indirizzo ═════════ */
+const AMBITI = ["acq", "seg", "stu", "amm", "hr", "log", "cli", "prod"];
 const TOOLSLUG = { dati: "chk", mappa: "map", verifica: "camp", memoria: "mem", dimensionamento: "dim", contesti: "casi" };
 function selectTool(t) {
   document.querySelectorAll("#tool-picker .pick").forEach((x) => x.setAttribute("aria-selected", x.dataset.t === t));
@@ -822,7 +845,7 @@ function route(first) {
     selectTool(TOOLSLUG[id] || "chk");
     if (!first) scrollTo({ top: 0, behavior: "instant" });
   }
-  if ($("soluzioni") && ["acq", "seg", "stu"].includes(id)) {
+  if ($("soluzioni") && AMBITI.includes(id)) {
     selectAmbito(id);
     if (!first) scrollTo({ top: 0, behavior: "instant" });
   }
@@ -889,6 +912,8 @@ document.addEventListener("DOMContentLoaded", () => {
   route(true);
 
   const form = $("contatto");
+  const pre = new URLSearchParams(location.search).get("msg");
+  if (form && pre) $("msg").value = pre;
   if (form) form.addEventListener("submit", (e) => {
     e.preventDefault();
     const d = new FormData(form);

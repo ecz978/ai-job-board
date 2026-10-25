@@ -3,10 +3,15 @@
     <p class="eyebrow">Ambiti di intervento</p>
     <h2>Stessi dati, approcci diversi.</h2>
     <p class="lead" style="max-width:700px">Pensato per le PMI: pochi dati, spesso sparsi, poco tempo per progetti lunghi. In ogni ambito si parte da ciò che c'è e si sceglie l'approccio in base allo stato dei dati, non il contrario.</p>
-    <div class="picker" role="tablist">
+    <div class="picker many" role="tablist">
       <button class="pick" role="tab" aria-selected="true" data-s="acq">Acquisti e ordini</button>
       <button class="pick" role="tab" aria-selected="false" data-s="seg">Segreterie</button>
       <button class="pick" role="tab" aria-selected="false" data-s="stu">Studi professionali</button>
+      <button class="pick" role="tab" aria-selected="false" data-s="amm">Amministrazione</button>
+      <button class="pick" role="tab" aria-selected="false" data-s="hr">Risorse umane</button>
+      <button class="pick" role="tab" aria-selected="false" data-s="log">Logistica</button>
+      <button class="pick" role="tab" aria-selected="false" data-s="cli">Assistenza clienti</button>
+      <button class="pick" role="tab" aria-selected="false" data-s="prod">Produzione</button>
     </div>
 
     <div class="panel" data-p="acq">
@@ -62,6 +67,96 @@
           <div class="dr"><span class="dc">Documenti molto riservati</span><span class="da">Elaborazione interamente in sede</span><span class="ptag t-auto">In sede</span></div>
       </div>
     </div>
+    <div class="panel hidden" data-p="amm">
+      <div>
+        <h3>Amministrazione e contabilità</h3>
+        <p class="muted">Solleciti, fatture, scadenze, previsioni di cassa. Molto di ciò che pesa sull'amministrazione sta già in dati strutturati: spesso serve una regola, non un modello.</p>
+        <h4>Cosa guardiamo nei vostri dati</h4>
+        <ul><li>Fatture attive e passive: numerazione, XML e collegamento a clienti e fornitori.</li><li>Movimenti bancari: causali e riconciliazione con le fatture.</li><li>Scadenzari: quanti sono, in quali formati, quanto sono aggiornati.</li><li>Anagrafica clienti e fornitori: duplicati e dati mancanti.</li></ul>
+        <h4>I limiti</h4>
+        <ul><li>Nessuna chiusura di solleciti né registrazione definitiva senza verifica dell'amministrazione.</li><li>Importi, scadenze e adempimenti fiscali restano di competenza di una persona.</li></ul>
+      </div>
+      <div class="dtable">
+        <div class="dh"><span>Se i dati sono…</span><span>Proponiamo…</span><span></span></div>
+          <div class="dr"><span class="dc">Fatture elettroniche in XML, con campi completi</span><span class="da">Lettura dei dati dall'XML e proposta di registrazione, con verifica</span><span class="ptag t-assist">Agente</span></div>
+          <div class="dr"><span class="dc">Bonifici con causale libera, difficili da collegare</span><span class="da">Prima regole di riconciliazione; l'AI solo per i casi dubbi</span><span class="ptag t-first">Prima i dati</span></div>
+          <div class="dr"><span class="dc">Scadenzari in file e formati diversi</span><span class="da">Uno scadenzario unico e un report calcolato con regole: nessun agente</span><span class="ptag t-no">Senza AI</span></div>
+          <div class="dr"><span class="dc">Documenti contabili con dati di terzi</span><span class="da">Elaborazione interamente in sede, con accessi limitati</span><span class="ptag t-auto">In sede</span></div>
+      </div>
+    </div>
+
+    <div class="panel hidden" data-p="hr">
+      <div>
+        <h3>Risorse umane</h3>
+        <p class="muted">Candidature, domande dei dipendenti, documentazione del personale. È l'ambito in cui i limiti contano di più: quando si tratta di persone, l'AI al massimo assiste.</p>
+        <h4>Cosa guardiamo nei vostri dati</h4>
+        <ul><li>Archivio delle candidature: formati e leggibilità dei CV.</li><li>Posizioni aperte e requisiti: se sono scritti e coerenti.</li><li>Regolamenti interni e modulistica: versioni e aggiornamento.</li><li>Dati personali: dove sono, chi vi accede, per quanto tempo restano.</li></ul>
+        <h4>I limiti</h4>
+        <ul><li>Nessuna selezione, graduatoria o esclusione automatica di persone.</li><li>Conformità normativa (GDPR, AI Act per l'ambito del lavoro): da valutare con un legale prima di qualsiasi uso.</li></ul>
+      </div>
+      <div class="dtable">
+        <div class="dh"><span>Se i dati sono…</span><span>Proponiamo…</span><span></span></div>
+          <div class="dr"><span class="dc">Regolamenti aggiornati, domande ricorrenti dei dipendenti</span><span class="da">Risposte dal regolamento, con inoltro all'ufficio per i casi personali</span><span class="ptag t-assist">Agente</span></div>
+          <div class="dr"><span class="dc">Candidature con CV leggibili e posizioni definite</span><span class="da">Schede uniformi per il selezionatore, senza punteggi né esclusioni</span><span class="ptag t-assist">Agente</span></div>
+          <div class="dr"><span class="dc">Requisiti delle posizioni non scritti</span><span class="da">Prima la definizione scritta dei profili; poi, se serve, un'assistenza</span><span class="ptag t-first">Prima i dati</span></div>
+          <div class="dr"><span class="dc">Richiesta di scartare i CV in automatico</span><span class="da">Non la proponiamo: la scelta resta al selezionatore</span><span class="ptag t-no">Senza AI</span></div>
+      </div>
+    </div>
+
+    <div class="panel hidden" data-p="log">
+      <div>
+        <h3>Logistica e magazzino</h3>
+        <p class="muted">Ordini ai fornitori, ritardi, spedizioni, scorte. I dati sono quasi sempre già strutturati nel gestionale: prima di un agente conviene chiedersi se basta configurare ciò che c'è.</p>
+        <h4>Cosa guardiamo nei vostri dati</h4>
+        <ul><li>Ordini ai fornitori e conferme: numerazione e collegamento agli articoli.</li><li>Giacenze e coperture di magazzino: frequenza di aggiornamento.</li><li>Tempi di consegna storici per fornitore.</li><li>Documenti di trasporto e bolle: da dove nascono.</li></ul>
+        <h4>I limiti</h4>
+        <ul><li>Nessuna modifica automatica di ordini di clienti o di fornitori.</li><li>Alternative e riassortimenti restano decisioni dell'ufficio acquisti.</li></ul>
+      </div>
+      <div class="dtable">
+        <div class="dh"><span>Se i dati sono…</span><span>Proponiamo…</span><span></span></div>
+          <div class="dr"><span class="dc">Comunicazioni dei fornitori in testo libero</span><span class="da">Lettura, collegamento all'ordine e avviso predisposto per gli acquisti</span><span class="ptag t-assist">Agente</span></div>
+          <div class="dr"><span class="dc">Dati già strutturati nel gestionale, come le bolle</span><span class="da">Configurazione del gestionale: nessuna AI</span><span class="ptag t-no">Senza AI</span></div>
+          <div class="dr"><span class="dc">Tempi di consegna storici solo per alcuni fornitori</span><span class="da">Prima la raccolta sistematica; poi, se serve, le previsioni</span><span class="ptag t-first">Prima i dati</span></div>
+          <div class="dr"><span class="dc">Dati logistici soggetti a vincoli contrattuali</span><span class="da">Elaborazione interamente in sede</span><span class="ptag t-auto">In sede</span></div>
+      </div>
+    </div>
+
+    <div class="panel hidden" data-p="cli">
+      <div>
+        <h3>Assistenza clienti</h3>
+        <p class="muted">Richieste di intervento, garanzie, reclami. Le risposte ricorrenti si possono preparare; i reclami e i casi delicati no.</p>
+        <h4>Cosa guardiamo nei vostri dati</h4>
+        <ul><li>Anagrafica di impianti o prodotti venduti, con le garanzie.</li><li>Catalogo dei guasti e procedure note.</li><li>Storico di richieste e reclami.</li><li>Planning dei tecnici: dove vive e chi lo aggiorna.</li></ul>
+        <h4>I limiti</h4>
+        <ul><li>Nessuna data di intervento promessa senza il planning dei tecnici.</li><li>I reclami con possibile contenzioso passano a una persona, senza bozza.</li></ul>
+      </div>
+      <div class="dtable">
+        <div class="dh"><span>Se i dati sono…</span><span>Proponiamo…</span><span></span></div>
+          <div class="dr"><span class="dc">Impianti collegati ai clienti, guasti con procedure note</span><span class="da">Risposta con primo controllo e scheda per il tecnico, con conferma dell'assistenza</span><span class="ptag t-assist">Agente</span></div>
+          <div class="dr"><span class="dc">Procedure per i reclami non scritte</span><span class="da">Prima la procedura scritta; nessuna automazione</span><span class="ptag t-first">Prima i dati</span></div>
+          <div class="dr"><span class="dc">Richieste ripetitive sullo stato dell'ordine</span><span class="da">Risposta direttamente dal gestionale, senza AI</span><span class="ptag t-no">Senza AI</span></div>
+          <div class="dr"><span class="dc">Clienti con contratti riservati</span><span class="da">Elaborazione interamente in sede</span><span class="ptag t-auto">In sede</span></div>
+      </div>
+    </div>
+
+    <div class="panel hidden" data-p="prod">
+      <div>
+        <h3>Produzione e qualità</h3>
+        <p class="muted">Non conformità, lotti, fermi macchina. Qui contano i numeri più delle parole: senza dati sistematici non c'è modello che tenga.</p>
+        <h4>Cosa guardiamo nei vostri dati</h4>
+        <ul><li>Catalogo dei difetti: se è codificato e in uso.</li><li>Lotti e tracciabilità: collegamento a linea, turno e articolo.</li><li>Storico delle non conformità: struttura e completezza.</li><li>Manutenzione e fermi macchina: come vengono registrati.</li></ul>
+        <h4>I limiti</h4>
+        <ul><li>Il blocco di un lotto e le decisioni di qualità restano al responsabile.</li><li>Nessuna previsione dei guasti senza dati storici sistematici.</li></ul>
+      </div>
+      <div class="dtable">
+        <div class="dh"><span>Se i dati sono…</span><span>Proponiamo…</span><span></span></div>
+          <div class="dr"><span class="dc">Difetti codificati e lotti tracciabili</span><span class="da">Scheda di non conformità dalla segnalazione, con firma del responsabile</span><span class="ptag t-assist">Agente</span></div>
+          <div class="dr"><span class="dc">Interventi di manutenzione registrati a mano</span><span class="da">Prima la registrazione strutturata; la previsione dopo</span><span class="ptag t-first">Prima i dati</span></div>
+          <div class="dr"><span class="dc">Controlli già misurati da sensori e software</span><span class="da">Soglie e allarmi con regole del sistema, senza AI</span><span class="ptag t-no">Senza AI</span></div>
+          <div class="dr"><span class="dc">Dati di processo e ricette riservate</span><span class="da">Elaborazione interamente in sede</span><span class="ptag t-auto">In sede</span></div>
+      </div>
+    </div>
+
     <div class="flow-block" id="flusso">
       <h3 class="fb-title">Guardate un flusso, passo per passo.</h3>
       <p class="muted" style="max-width:700px">Otto ambiti, diciannove casi. Ogni flusso parte dai dati: se sono adatti si vede cosa succede passo per passo; se non lo sono, il flusso si ferma o propone un approccio diverso. Alcuni casi si completano, altri si fermano per scelta di progetto, altri ancora portano a una soluzione senza agente.</p>
@@ -71,7 +166,7 @@
           <div class="chips" id="f-ambito"><button type="button" aria-pressed="true" data-a="acq">Acquisti</button><button type="button" aria-pressed="false" data-a="seg">Segreteria</button><button type="button" aria-pressed="false" data-a="stu">Studio</button><button type="button" aria-pressed="false" data-a="amm">Amministrazione</button><button type="button" aria-pressed="false" data-a="hr">Risorse umane</button><button type="button" aria-pressed="false" data-a="log">Logistica</button><button type="button" aria-pressed="false" data-a="cli">Assistenza clienti</button><button type="button" aria-pressed="false" data-a="prod">Produzione</button></div></div>
         <div class="field"><label class="l">Caso</label><div class="caselist" id="f-casi"></div></div>
         <div class="field"><label class="l" id="f-label">Comunicazione in ingresso</label><div class="inbox" id="f-text"></div></div>
-        <div class="flow-btns"><button class="btn sm" id="f-run" type="button">Avvia il flusso →</button></div>
+        <div class="flow-btns"><button class="btn sm" id="f-run" type="button">Avvia il flusso →</button><button class="btn sm ghost" id="f-next" type="button">Passo successivo</button></div>
         <p class="note" style="margin:14px 0 0">Esempi illustrativi con dati fittizi.</p>
       </div>
       <div class="flow-main">
