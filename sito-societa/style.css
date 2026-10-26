@@ -571,8 +571,8 @@ p.ph { display: inline-block; padding: 6px 10px; }
 @media (min-width: 900px) { .people { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .person { background: var(--card); border: 1px solid var(--line); border-radius: 2px; padding: 36px 34px 34px; transition: border-color .3s, box-shadow .4s; }
 .person:hover { border-color: #aeb8c8; box-shadow: 0 24px 50px -36px rgba(11,20,38,.4); }
-.mono-badge { width: 60px; height: 60px; border-radius: 50%; border: 1px solid var(--ink); display: grid; place-items: center; font: 400 20px var(--display); letter-spacing: .08em; position: relative; margin-bottom: 22px; }
-.mono-badge::after { content: ""; position: absolute; right: -3px; bottom: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
+.mono-badge { width: 96px; height: 96px; border-radius: 50%; border: 1px solid var(--ink); display: grid; place-items: center; font: 400 30px var(--display); letter-spacing: .08em; position: relative; margin-bottom: 24px; }
+.mono-badge::after { content: ""; position: absolute; right: 2px; bottom: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); }
 .person h3 { font-size: 28px; }
 .person .role { font: 500 11px var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--accent); margin: 6px 0 20px; }
 .person p { color: var(--muted); }
@@ -582,3 +582,4 @@ p.ph { display: inline-block; padding: 6px 10px; }
 #ambiti-home .card { display: flex; flex-direction: column; }
 #ambiti-home .card p { margin-bottom: 18px; }
 #ambiti-home .card .more { margin-top: auto; align-self: flex-start; }
+.mono-badge img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }

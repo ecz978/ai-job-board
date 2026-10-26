@@ -47,8 +47,11 @@ for slug, (title, desc, parts) in PAGES.items():
     (OUT / (slug + ".html")).write_text(html, encoding="utf-8")
 for f in ("style.css", "fonts.css", "app.js"):
     shutil.copy(R / f, OUT / f)
+if (R / "img").exists():
+    shutil.copytree(R / "img", OUT / "img")
 
 with zipfile.ZipFile(R / "sito.zip", "w", zipfile.ZIP_DEFLATED) as z:
-    for p in sorted(OUT.iterdir()):
-        z.write(p, "sito/" + p.name)
-print("ok:", ", ".join(sorted(p.name for p in OUT.iterdir())))
+    for p in sorted(OUT.rglob("*")):
+        if p.is_file():
+            z.write(p, "sito/" + p.relative_to(OUT).as_posix())
+print("ok:", ", ".join(sorted(str(p.relative_to(OUT)) for p in OUT.rglob("*") if p.is_file())))
