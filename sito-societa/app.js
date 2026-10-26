@@ -930,13 +930,14 @@ document.addEventListener("DOMContentLoaded", () => {
   route(true);
 
   const form = $("contatto");
+  // Destinatari composti qui, non scritti per esteso nella pagina.
+  const TO = ["cotizelati.emanuele", "matteomarchi.1988"].map((u) => u + "@gmail.com").join(",");
   const pre = new URLSearchParams(location.search).get("msg");
   if (form && pre) $("msg").value = pre;
   if (form) form.addEventListener("submit", (e) => {
     e.preventDefault();
     const d = new FormData(form);
     const body = `Nome: ${d.get("nome")}\nOrganizzazione: ${d.get("azienda")}\n\n${d.get("msg")}`;
-    // Segnaposto: sostituire con un endpoint reale.
-    location.href = `mailto:info@example.invalid?subject=${encodeURIComponent("Richiesta di incontro")}&body=${encodeURIComponent(body)}`;
+    location.href = `mailto:${TO}?subject=${encodeURIComponent("Richiesta di incontro")}&body=${encodeURIComponent(body)}`;
   });
 });
