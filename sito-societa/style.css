@@ -583,3 +583,21 @@ p.ph { display: inline-block; padding: 6px 10px; }
 #ambiti-home .card p { margin-bottom: 18px; }
 #ambiti-home .card .more { margin-top: auto; align-self: flex-start; }
 .mono-badge img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+
+/* barra dei cookie */
+.cookiebar { position: fixed; z-index: 40; left: 16px; right: 16px; bottom: 16px; max-width: 880px; margin: 0 auto; background: #fff; border: 1px solid var(--ink); box-shadow: 0 24px 60px -24px rgba(11,20,38,.45); padding: 20px 22px; border-radius: 2px; animation: cbin .5s var(--ease) both; }
+.cookiebar[hidden] { display: none; }
+.cb-main { display: flex; gap: 22px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.cb-main[hidden], .cb-prefs[hidden] { display: none; }
+.cookiebar p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink); flex: 1 1 320px; min-width: 0; }
+.cookiebar a { color: var(--accent); }
+.cb-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+.cb-btns .btn { padding: 11px 18px; }
+.cb-prefs { display: grid; gap: 4px; }
+.cb-row { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 12px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+.cb-row small { display: block; color: var(--muted); font-size: 12.5px; margin-top: 3px; }
+.cb-row input { width: 20px; height: 20px; accent-color: var(--accent); flex: none; }
+.cb-prefs .cb-btns { margin-top: 16px; }
+@keyframes cbin { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .cookiebar { animation: none; } }
+@media (max-width: 560px) { .cb-btns { width: 100%; } .cb-btns .btn { flex: 1 1 auto; } }

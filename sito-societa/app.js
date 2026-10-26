@@ -879,6 +879,69 @@ function initMenu() {
   document.querySelectorAll("#menu a").forEach((a) => a.addEventListener("click", () => set(false)));
 }
 
+/* ═════════ Barra dei cookie ═════════
+   Oggi il sito non usa cookie né strumenti non tecnici, quindi la barra è SPENTA (enabled: false):
+   non serve e, senza nulla da scegliere, sarebbe solo rumore. Per accenderla quando si aggiunge
+   uno strumento di statistica: 1) enabled: true; 2) mettere in ANALYTICS la funzione che carica lo
+   strumento (parte solo dopo il consenso); 3) aggiornare cookie.html (strumenti, durata, fornitori)
+   e l'informativa privacy. La scelta è conservata nel browser (localStorage, chiave tecnica).
+   Anteprima senza accenderla: aprire una pagina con #cookiebar-demo (non salva nulla). */
+const COOKIE_BAR = { enabled: false, days: 180, key: "stadera-consenso" };
+const ANALYTICS = [];
+function initCookieBar() {
+  const demo = location.hash === "#cookiebar-demo";
+  if (!COOKIE_BAR.enabled && !demo) return;
+  const read = () => {
+    try {
+      const c = JSON.parse(localStorage.getItem(COOKIE_BAR.key) || "null");
+      return c && Date.now() - c.ts < COOKIE_BAR.days * 864e5 ? c : null;
+    } catch (e) { return null; }
+  };
+  const save = (stats) => {
+    if (demo) return;
+    try { localStorage.setItem(COOKIE_BAR.key, JSON.stringify({ stats, ts: Date.now() })); } catch (e) {}
+  };
+  const apply = (c) => { if (c && c.stats) ANALYTICS.forEach((f) => { try { f(); } catch (e) {} }); };
+  const bar = document.createElement("div");
+  bar.className = "cookiebar"; bar.setAttribute("role", "dialog"); bar.setAttribute("aria-label", "Preferenze sui cookie"); bar.hidden = true;
+  bar.innerHTML = `
+    <div class="cb-main">
+      <p><b>Cookie e strumenti di terze parti.</b> Usiamo strumenti necessari al funzionamento del sito. Quelli di statistica restano spenti finché non li accettate. Potete cambiare scelta in qualsiasi momento. <a href="cookie.html">Cookie policy</a></p>
+      <div class="cb-btns">
+        <button type="button" class="btn sm ghost" data-a="no">Rifiuta</button>
+        <button type="button" class="btn sm ghost" data-a="prefs">Preferenze</button>
+        <button type="button" class="btn sm ghost" data-a="yes">Accetta</button>
+      </div>
+    </div>
+    <div class="cb-prefs" hidden>
+      <label class="cb-row"><span><b>Necessari</b><small>Servono al funzionamento del sito. Sempre attivi.</small></span><input type="checkbox" checked disabled></label>
+      <label class="cb-row"><span><b>Statistiche</b><small>Ci aiutano a capire come viene usato il sito. Spenti per impostazione.</small></span><input type="checkbox" id="cb-stats"></label>
+      <div class="cb-btns"><button type="button" class="btn sm ghost" data-a="no">Rifiuta tutto</button><button type="button" class="btn sm ghost" data-a="save">Salva le preferenze</button></div>
+    </div>`;
+  document.body.appendChild(bar);
+  const stats = bar.querySelector("#cb-stats"), prefs = bar.querySelector(".cb-prefs"), main = bar.querySelector(".cb-main");
+  const close = () => { bar.hidden = true; };
+  const open = (showPrefs) => {
+    const c = read(); stats.checked = !!(c && c.stats);
+    prefs.hidden = !showPrefs; main.hidden = showPrefs; bar.hidden = false;
+    (showPrefs ? stats : bar.querySelector('[data-a="yes"]')).focus({ preventScroll: true });
+  };
+  const choose = (v) => { save(v); apply({ stats: v }); close(); };
+  bar.addEventListener("click", (e) => {
+    const a = e.target.closest("button") && e.target.closest("button").dataset.a;
+    if (a === "yes") choose(true); else if (a === "no") choose(false);
+    else if (a === "prefs") open(true); else if (a === "save") choose(stats.checked);
+  });
+  const foot = document.querySelector(".foot-nav");
+  if (foot) {
+    const l = document.createElement("a"); l.href = "#cookie-preferenze"; l.textContent = "Preferenze cookie";
+    l.addEventListener("click", (e) => { e.preventDefault(); open(true); });
+    foot.append(" · ", l);
+  }
+  const c = read();
+  if (c) apply(c); else open(false);
+}
+
 /* ═════════ Avvio ═════════ */
 function bindSeg(sel, attr, cb) {
   document.querySelectorAll(sel + " button").forEach((b) => b.addEventListener("click", () => {
@@ -915,6 +978,7 @@ function toolsInit() {
 document.addEventListener("DOMContentLoaded", () => {
   splitHeadline();
   initMenu();
+  initCookieBar();
 
   if ($("f-run")) flowInit();
   if ($("soluzioni")) document.querySelectorAll("#soluzioni .pick").forEach((b) => b.addEventListener("click", () => selectAmbito(b.dataset.s)));
