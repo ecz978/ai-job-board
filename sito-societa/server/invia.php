@@ -1,9 +1,9 @@
 <?php
-// Modulo contatti di Stadera: riceve il messaggio e lo inoltra per email ai due soci.
+// Modulo contatti di Stadera: riceve il messaggio e lo inoltra per email a info@ e ai due soci.
 // Prima dell'uso: creare la casella MITTENTE sul dominio (es. info@stadera.tech) dal pannello Aruba.
 declare(strict_types=1);
 
-const DESTINATARI = ['cotizelati.emanuele@gmail.com', 'matteomarchi.1988@gmail.com'];
+const DESTINATARI = ['info@stadera.tech', 'cotizelati.emanuele@gmail.com', 'matteomarchi.1988@gmail.com'];
 const MITTENTE    = 'info@stadera.tech';   // deve essere una casella del dominio
 const OGGETTO     = 'Richiesta di incontro dal sito Stadera';
 const MAX_ORARIE  = 5;                     // richieste per indirizzo IP in un'ora
