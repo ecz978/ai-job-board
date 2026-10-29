@@ -27,6 +27,7 @@ PAGES = {
     "chi-siamo": ("Chi siamo · " + SUFFIX, "I due cofounder di Stadera: un percorso informatico e filosofico, uno ingegneristico aerospaziale.", ["chisiamo"]),
     "privacy": ("Informativa sulla privacy · " + SUFFIX, "Come trattiamo i dati personali.", ["privacy"]),
     "cookie": ("Cookie policy · " + SUFFIX, "Il sito non utilizza cookie né strumenti di tracciamento.", ["cookie"]),
+    "404": ("Pagina non trovata · " + SUFFIX, "La pagina cercata non esiste.", ["404"]),
     "contatti": ("Contatti · " + SUFFIX, "Richiedi un primo incontro per capire il processo.", ["contatti"]),
 }
 PAGE_FILE = {k: k + ".html" for k in PAGES}
@@ -47,6 +48,8 @@ for slug, (title, desc, parts) in PAGES.items():
     (OUT / (slug + ".html")).write_text(html, encoding="utf-8")
 for f in ("style.css", "fonts.css", "app.js"):
     shutil.copy(R / f, OUT / f)
+for f in (R / "server").glob("*"):
+    shutil.copy(f, OUT / f.name)
 if (R / "img").exists():
     shutil.copytree(R / "img", OUT / "img")
 

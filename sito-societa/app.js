@@ -994,14 +994,27 @@ document.addEventListener("DOMContentLoaded", () => {
   route(true);
 
   const form = $("contatto");
-  // Destinatari composti qui, non scritti per esteso nella pagina.
+  // Destinatari per il ripiego via programma di posta, composti qui e non scritti per esteso nella pagina.
   const TO = ["cotizelati.emanuele", "matteomarchi.1988"].map((u) => u + "@gmail.com").join(",");
   const pre = new URLSearchParams(location.search).get("msg");
   if (form && pre) $("msg").value = pre;
-  if (form) form.addEventListener("submit", (e) => {
+  const t0 = Date.now();
+  if (form) form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const d = new FormData(form);
-    const body = `Nome: ${d.get("nome")}\nOrganizzazione: ${d.get("azienda")}\n\n${d.get("msg")}`;
-    location.href = `mailto:${TO}?subject=${encodeURIComponent("Richiesta di incontro")}&body=${encodeURIComponent(body)}`;
+    const esito = $("esito"), btn = form.querySelector("button[type=submit]"), d = new FormData(form);
+    d.append("t", String(t0));
+    btn.disabled = true; esito.textContent = "Invio in corso…";
+    try {
+      const r = await fetch("invia.php", { method: "POST", body: d });
+      const j = await r.json();
+      esito.textContent = j.messaggio;
+      if (j.ok) form.reset();
+    } catch (err) {
+      // Il server non risponde (o la pagina non è sul sito vero): apro il programma di posta.
+      const body = `Nome: ${d.get("nome")}\nEmail: ${d.get("email")}\nOrganizzazione: ${d.get("azienda")}\n\n${d.get("msg")}`;
+      esito.textContent = "Si apre il vostro programma di posta per completare l'invio.";
+      location.href = `mailto:${TO}?subject=${encodeURIComponent("Richiesta di incontro")}&body=${encodeURIComponent(body)}`;
+    }
+    btn.disabled = false;
   });
 });
