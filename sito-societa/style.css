@@ -605,3 +605,9 @@ p.ph { display: inline-block; padding: 6px 10px; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 #esito:empty { display: none; }
 #esito { margin-top: 14px; font-size: 14px; }
+
+.consenso { display: flex; gap: 12px; align-items: flex-start; margin: 4px 0 18px; font-size: 14px; line-height: 1.5; cursor: pointer; }
+.consenso input { width: 20px; height: 20px; margin: 2px 0 0; flex: none; accent-color: var(--accent); }
+.consenso a { text-decoration: underline; }
+#contatto label.consenso { display: flex; text-transform: none; letter-spacing: 0; font: 400 14px/1.5 var(--sans); color: #c9d3e6; margin: 4px 0 20px; }
+#contatto label.consenso a { color: #fff; }

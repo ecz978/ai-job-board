@@ -45,6 +45,7 @@ $email   = riga(pulisci((string)($_POST['email'] ?? ''), 160));
 $azienda = riga(pulisci((string)($_POST['azienda'] ?? ''), 160));
 $msg     = pulisci((string)($_POST['msg'] ?? ''), 4000);
 
+if (($_POST['privacy'] ?? '') !== '1') esito(false, 'Per inviare la richiesta serve confermare di aver letto l\'informativa sulla privacy.', 422);
 if ($nome === '') esito(false, 'Indicate nome e cognome.', 422);
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) esito(false, 'Indicate un indirizzo email valido per la risposta.', 422);
 
