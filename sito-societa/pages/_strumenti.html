@@ -1,0 +1,136 @@
+<section id="strumenti">
+  <div class="wrap">
+    <p class="eyebrow tools-head">Strumenti</p>
+    <h2 class="tools-head">Strumenti per ragionare sul vostro caso, a partire dai dati.</h2>
+    <p class="lead tools-head" style="max-width:680px">Non sono preventivi: servono a impostare il confronto con numeri e criteri chiari. I risultati sono stime, da validare nella fase di analisi.</p>
+    <div class="picker tools-head" id="tool-picker" role="tablist">
+      <button class="pick" role="tab" aria-selected="true" data-t="chk" data-slug="dati">Check-up dei dati</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="map" data-slug="mappa">Mappa delle attività</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="camp" data-slug="verifica">Verifica a campione</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="mem" data-slug="memoria">Memoria dei modelli</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="dim" data-slug="dimensionamento">Dimensionamento</button>
+      <button class="pick" role="tab" aria-selected="false" data-t="casi" data-slug="contesti">Contesti</button>
+    </div>
+
+    <div class="tool" data-tool="chk">
+      <div class="tool-grid">
+        <div class="tool-in" id="chk-in"></div>
+        <div class="tool-out" id="chk-out"></div>
+      </div>
+    </div>
+
+    <div class="tool hidden" data-tool="map">
+      <div class="tool-grid">
+        <div class="tool-in">
+          <div class="field"><label class="l">Ambito</label>
+            <div class="seg light" id="m-ambito"><button type="button" aria-pressed="true" data-a="acq">Acquisti</button><button type="button" aria-pressed="false" data-a="seg">Segreteria</button><button type="button" aria-pressed="false" data-a="stu">Studio</button></div></div>
+          <div class="field"><label class="l">Attività e ore a settimana</label><div class="acts" id="m-list"></div></div>
+          <div class="field"><label class="l" for="m-orario">Costo orario del personale (€/h)</label><input id="m-orario" type="number" step="1" value="28"></div>
+        </div>
+        <div class="tool-out" id="m-out"></div>
+      </div>
+    </div>
+
+    <div class="tool hidden" data-tool="camp">
+      <div class="tool-grid">
+        <div class="tool-in">
+          <div class="field"><label class="l" for="v-n">Richieste verificate <output id="o-vn">30</output></label><input id="v-n" type="range" min="10" max="200" value="30"></div>
+          <div class="field"><label class="l" for="v-k">Bozze utilizzabili <output id="o-vk">24</output></label><input id="v-k" type="range" min="0" max="30" value="24"></div>
+          <div class="field"><label class="l" for="v-s">Soglia da dimostrare <output id="o-vs">80%</output></label><input id="v-s" type="range" min="50" max="99" value="80"></div>
+          <div class="field"><label class="l">Confidenza</label>
+            <div class="seg light two" id="v-conf"><button type="button" aria-pressed="false" data-z="1.645">90%</button><button type="button" aria-pressed="true" data-z="1.96">95%</button></div></div>
+          <div class="field"><label class="l" for="v-p">Qualità reale ipotizzata <output id="o-vp">92%</output></label><input id="v-p" type="range" min="80" max="99" value="92"></div>
+        </div>
+        <div class="tool-out" id="v-out"></div>
+      </div>
+    </div>
+
+    <div class="tool hidden" data-tool="mem">
+      <div class="tool-grid">
+        <div class="tool-in">
+          <div class="field"><label class="l" for="mm-par">Dimensione del modello</label>
+            <select id="mm-par"><option value="7">Circa 7 miliardi di parametri</option><option value="24">Circa 24 miliardi</option><option value="30" >Circa 30 miliardi</option><option value="70" selected>Circa 70 miliardi</option><option value="120">Circa 120 miliardi</option></select></div>
+          <div class="field"><label class="l">Precisione dei pesi</label>
+            <div class="seg light" id="mm-bits"><button type="button" aria-pressed="true" data-b="4">4 bit</button><button type="button" aria-pressed="false" data-b="8">8 bit</button><button type="button" aria-pressed="false" data-b="16">16 bit</button></div></div>
+          <div class="field"><label class="l" for="mm-ctx">Lunghezza del contesto</label>
+            <select id="mm-ctx"><option value="8192">8 mila token</option><option value="32768" selected>32 mila token</option><option value="131072">128 mila token</option></select></div>
+          <div class="field"><label class="l" for="mm-users">Utenti in parallelo <output id="o-mu">4</output></label><input id="mm-users" type="range" min="1" max="12" value="4"></div>
+        </div>
+        <div class="tool-out" id="mm-out"></div>
+      </div>
+    </div>
+
+    <div class="tool calc-wrap dark hidden" data-tool="dim" id="hardware">
+      <h3 class="fb-title" style="color:#f3f6fb">Valutare l'opzione di elaborazione in sede.</h3>
+      <p class="muted" style="max-width:700px">Strumento di prima valutazione: dimensiona l'infrastruttura, stima i costi di acquisto e di esercizio, li confronta con l'uso di un modello in cloud e indica i tempi di rientro. Le ipotesi sono modificabili e vanno validate nella fase di analisi.</p>
+      <div class="calc">
+      <div class="card calc-in">
+        <div class="field"><label for="c-ambito">Ambito</label>
+          <select id="c-ambito">
+            <option value="seg">Segreteria (scuole, formazione)</option>
+            <option value="acq" selected>Acquisti e ordini</option>
+            <option value="stu">Studio professionale</option>
+            <option value="mix">Più ambiti</option>
+          </select></div>
+        <div class="field"><label for="c-utenti">Utenti <output id="o-utenti">8</output></label><input id="c-utenti" type="range" min="1" max="80" value="8"></div>
+        <div class="field"><label for="c-rich">Richieste al giorno <output id="o-rich">150</output></label><input id="c-rich" type="range" min="10" max="2000" step="10" value="150"></div>
+        <div class="field"><label>Sensibilità dei dati</label>
+          <div class="seg" id="c-dati"><button type="button" aria-pressed="true" data-v="alta">Alta</button><button type="button" aria-pressed="false" data-v="media">Media</button><button type="button" aria-pressed="false" data-v="bassa">Bassa</button></div></div>
+        <div class="field"><label for="c-arch">Archivio da indicizzare</label>
+          <select id="c-arch"><option value="10">Fino a 10 GB</option><option value="100" selected>Fino a 100 GB</option><option value="500">Fino a 500 GB</option><option value="2000">Fino a 2 TB</option></select></div>
+        <div class="field"><label>Formula</label>
+          <div class="seg two" id="c-formula"><button type="button" aria-pressed="true" data-f="acq">Acquisto</button><button type="button" aria-pressed="false" data-f="nol">Noleggio 36 mesi</button></div></div>
+        <div class="field checks">
+          <label class="chk"><input id="c-ha" type="checkbox"> Alta disponibilità (due macchine)</label>
+          <label class="chk"><input id="c-ups" type="checkbox" checked> Gruppo di continuità e rete</label>
+        </div>
+        <details class="assump">
+          <summary>Ipotesi modificabili</summary>
+          <div class="agrid">
+            <label>Costo dell'energia (€/kWh)<input id="a-kwh" type="number" step="0.01" value="0.30"></label>
+            <label>Costo orario del personale (€/h)<input id="a-orario" type="number" step="1" value="28"></label>
+            <label>Minuti di lavoro manuale per richiesta<input id="a-min" type="number" step="1" value="10"></label>
+            <label>Quota automatizzata (%)<input id="a-aut" type="number" step="5" value="60"></label>
+            <label>Token per richiesta<input id="a-tokreq" type="number" step="500" value="4000"></label>
+            <label>Prezzo del modello (€ per milione di token)<input id="a-token" type="number" step="0.5" value="6"></label>
+            <label>Crescita annua del volume (%)<input id="a-g" type="number" step="1" value="5"></label>
+            <label>Canone mensile del noleggio (% del valore)<input id="a-rent" type="number" step="0.1" value="3.2"></label>
+            <label>Utenti contemporanei (%)<input id="a-cont" type="number" step="5" value="30"></label>
+            <label>Costo del progetto (€)<input id="a-prog" type="number" step="500" value="15000"></label>
+            <label>Supporto software annuo (€)<input id="a-supp" type="number" step="100" value="600"></label>
+          </div>
+          <p class="note">Valori di partenza indicativi, non costituiscono un'offerta. Il prezzo dei token va verificato sul listino del fornitore scelto.</p>
+        </details>
+      </div>
+      <div id="risultato" class="calc-out"></div>
+    </div>
+    </div>
+
+    <div class="tool hidden" data-tool="casi">
+      <h3 class="fb-title">Dodici contesti in cui il metodo si applica.</h3>
+      <p class="muted" style="max-width:660px">Per ciascun contesto indichiamo l'indicatore con cui si misura l'esito dell'intervento. I risultati vengono rilevati in fase di verifica, non promessi in anticipo.</p>
+      <p class="note" style="margin-top:14px"><span class="ph">Da completare prima della pubblicazione:</span> sono esempi di applicazione, non riferimenti. Sostituire o affiancare con progetti reali, descritti con metodo di misura e risultato rilevato.</p>
+      <div class="picker" id="casi-filtro" role="tablist" style="margin-top:28px">
+      <button class="pick" role="tab" aria-selected="true" data-f="all">Tutti · 12</button>
+      <button class="pick" role="tab" aria-selected="false" data-f="acq">Acquisti e ordini</button>
+      <button class="pick" role="tab" aria-selected="false" data-f="seg">Segreterie</button>
+      <button class="pick" role="tab" aria-selected="false" data-f="stu">Studi professionali</button>
+      <button class="pick" role="tab" aria-selected="false" data-f="alt">Altri contesti</button>
+    </div>
+    <div class="grid" id="casi-grid" style="margin-top:36px">
+      <div class="card" data-a="seg"><span class="tag">Esempio illustrativo</span><h3>Centro di formazione</h3><p>Segreteria e pianificazione degli appuntamenti</p><div class="indic"><b>Indicatore</b>Quota di richieste ricorrenti gestite senza intervento dell'operatore</div></div>
+      <div class="card" data-a="acq"><span class="tag">Esempio illustrativo</span><h3>Commercio di materiale edile</h3><p>Predisposizione dei preventivi</p><div class="indic"><b>Indicatore</b>Tempo medio per preventivo e quota di bozze utilizzate senza correzioni sostanziali</div></div>
+      <div class="card" data-a="stu"><span class="tag">Esempio illustrativo</span><h3>Studio tecnico associato</h3><p>Analisi di bandi e computi</p><div class="indic"><b>Indicatore</b>Tempo di analisi per bando e correttezza di clausole e scadenze estratte</div></div>
+      <div class="card" data-a="stu"><span class="tag">Esempio illustrativo</span><h3>Studio legale e fiscale</h3><p>Smistamento della posta certificata</p><div class="indic"><b>Indicatore</b>Tempo giornaliero dedicato allo smistamento e scadenze non rilevate</div></div>
+      <div class="card" data-a="alt"><span class="tag">Esempio illustrativo</span><h3>Agenzia per il lavoro</h3><p>Preselezione dei curriculum, con valutazione affidata al selezionatore</p><div class="indic"><b>Indicatore</b>Tempo di preselezione e tempo di risposta ai candidati</div></div>
+      <div class="card" data-a="acq"><span class="tag">Esempio illustrativo</span><h3>Distribuzione e logistica</h3><p>Inserimento degli ordini cliente</p><div class="indic"><b>Indicatore</b>Tempo per ordine ed errori di inserimento dati</div></div>
+      <div class="card" data-a="stu"><span class="tag">Esempio illustrativo</span><h3>Studio di commercialisti</h3><p>Raccolta e controllo dei documenti contabili dei clienti</p><div class="indic"><b>Indicatore</b>Tempo di registrazione per documento e quota di documenti con dati mancanti rilevati in anticipo</div></div>
+      <div class="card" data-a="acq"><span class="tag">Esempio illustrativo</span><h3>Azienda manifatturiera</h3><p>Riconciliazione tra ordine, bolla e fattura</p><div class="indic"><b>Indicatore</b>Tempo per ciclo di controllo e discrepanze individuate prima del pagamento</div></div>
+      <div class="card" data-a="seg"><span class="tag">Esempio illustrativo</span><h3>Scuola paritaria</h3><p>Segreteria didattica: comunicazioni e modulistica</p><div class="indic"><b>Indicatore</b>Quota di richieste delle famiglie gestite con risposta verificata e tempo di risposta</div></div>
+      <div class="card" data-a="seg"><span class="tag">Esempio illustrativo</span><h3>Ente di formazione accreditato</h3><p>Rendicontazione dei corsi finanziati</p><div class="indic"><b>Indicatore</b>Tempo di preparazione del rendiconto ed errori formali individuati prima della consegna</div></div>
+      <div class="card" data-a="stu"><span class="tag">Esempio illustrativo</span><h3>Studio di consulenza del lavoro</h3><p>Smistamento delle richieste e bozze di risposta ai dipendenti</p><div class="indic"><b>Indicatore</b>Tempo di smistamento e tempo di preparazione delle bozze</div></div>
+      <div class="card" data-a="acq"><span class="tag">Esempio illustrativo</span><h3>Impresa di impiantistica</h3><p>Richieste di offerta ai fornitori</p><div class="indic"><b>Indicatore</b>Tempo per richiesta e completezza dei dati nelle richieste inviate</div></div>
+    </div>
+    </div>
+  </div>
+</section>
